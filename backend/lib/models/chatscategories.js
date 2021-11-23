@@ -3,22 +3,22 @@ const {
 	Model
 } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-	class Categories extends Model {
+	class ChatsCategories extends Model {
 		static associate(models) {
-			Categories.belongsToMany(models.Posts, {
-				through: "PostsCategories",
+			ChatsCategories.belongsToMany(models.Chats, {
+				through: "ChatsAndCategories",
 				foreignKey: "categoryId",
 				onDelete: "cascade",
 				hooks: true
 			});
 		}
 	}
-	Categories.init({
+	ChatsCategories.init({
 		title: DataTypes.STRING,
 		description: DataTypes.STRING,
 	}, {
 		sequelize,
-		modelName: "Categories",
+		modelName: "ChatsCategories",
 	});
-	return Categories;
+	return ChatsCategories;
 };

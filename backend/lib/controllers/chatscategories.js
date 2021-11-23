@@ -1,8 +1,10 @@
+const config = require("../config");
 const db = require("../models/index");
+const jwt = require("jsonwebtoken");
 
 module.exports.getAllCategories = async (req, res) => {
 	try {
-		const categories = db.Categories;
+		const categories = db.ChatsCategories;
 		const all = await categories.findAll();
 		res.send(all);
 	} catch (err){
@@ -12,7 +14,7 @@ module.exports.getAllCategories = async (req, res) => {
 
 module.exports.getCategoryById = async (req, res) => {
 	try {
-		const categories = db.Categories;
+		const categories = db.ChatsCategories;
 		const {id} = req.params;
 		const category = await categories.findOne({where: {id: id}});
 		res.send(category);
@@ -21,15 +23,20 @@ module.exports.getCategoryById = async (req, res) => {
 	}
 };
 
-module.exports.getAllPostsFormCategory = async (req, res) => {
+module.exports.getAllChatsFormCategory = async (req, res) => {
 	try {
-		const categories = db.Categories;
-		const posts = db.Posts;
+		const categories = db.ChatsCategories;
+		const users = db.Users;
 		const {id} = req.params;
-		const category = await categories.findByPk(id, {
-			include: posts,
+		const token = getToken(req, res);
+		const decode = await jwt.verify(token, config.token.accessToken);
+		const usrDB = await users.findByPk(decode.id, {
+			include: categories,
 		});
-		res.send(category.Posts);
+		const category = await categories.findByPk(id, {
+			include: usrDB.ChatsCategories,
+		});
+		res.send(category.Chats);
 	} catch (err){
 		res.status(400).send({ error: err.message });
 	}
@@ -37,7 +44,7 @@ module.exports.getAllPostsFormCategory = async (req, res) => {
 
 module.exports.newCategory = async (req, res) => {
 	try {
-		const categories = db.Categories;
+		const categories = db.ChatsCategories;
 		const body = req.body;
 		const category = await categories.create({
 			title: body.title,
@@ -51,7 +58,7 @@ module.exports.newCategory = async (req, res) => {
 
 module.exports.updateCategory = async (req, res) => {
 	try {
-		const categories = db.Categories;
+		const categories = db.ChatsCategories;
 		const body = req.body;
 		const category = await categories.findByPk(req.params.id);
 		const newCategory = await category.update({
@@ -66,7 +73,7 @@ module.exports.updateCategory = async (req, res) => {
 
 module.exports.deleteCategory = async (req, res) => {
 	try {
-		const categories = db.Categories;
+		const categories = db.ChatsCategories;
 		const category = await categories.destroy({
 			where: {
 				id: res.params.id
@@ -77,3 +84,8 @@ module.exports.deleteCategory = async (req, res) => {
 		res.status(400).send({ error: err.message });
 	}
 };
+
+function getToken(req, res){
+	const authHeader = req.get("authorization");
+	return authHeader && authHeader.split(" ")[1];
+}

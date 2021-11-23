@@ -15,6 +15,11 @@ module.exports = {
 				type: Sequelize.STRING,
 				defaultValue: "defaultChat.png",
 			},
+			priority:{
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				defaultValue: -1,
+			},
 			createdAt: {
 				allowNull: false,
 				type: Sequelize.DATE

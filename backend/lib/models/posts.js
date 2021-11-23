@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
 			Posts.hasMany(models.PostsImages, {foreignKey: "postId", onDelete: "cascade", hooks: true});
 			Posts.belongsTo(models.Users, {foreignKey: "userId", onDelete: "cascade", hooks: true});
 			Posts.belongsToMany(models.Categories, {
-				through: "PostsCategories",
+				through: "PostsAndCategories",
 				foreignKey: "postId",
 				onDelete: "cascade",
 				hooks: true
@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
 	}
 	Posts.init({
 		title: DataTypes.STRING,
-		status: DataTypes.ENUM(["live", "inactive"]),
+		isActive: DataTypes.BOOLEAN,
 		content: DataTypes.STRING,
 		userId: DataTypes.INTEGER,
 	}, {

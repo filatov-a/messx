@@ -118,7 +118,7 @@ module.exports.newPost = async (req, res) => {
 			userId: decode.id
 		});
 		body.categories.map(async i => {
-			const category = await db.Categories.findOne({where: {id: i.id}});
+			const category = await db.PostsCategories.findOne({where: {id: i.id}});
 			await post.addCategories(category);
 		});
 

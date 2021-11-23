@@ -22,6 +22,11 @@ module.exports = {
 				onUpdate: "CASCADE",
         		onDelete: "CASCADE",
 			},
+			isAdmin: {
+				type: Sequelize.BOOLEAN,
+				allowNull: false,
+				defaultValue: true,
+			},
 			createdAt: {
 				allowNull: false,
 				type: Sequelize.DATE

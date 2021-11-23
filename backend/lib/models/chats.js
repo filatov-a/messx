@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
 	}
 	Chats.init({
 		name: DataTypes.STRING,
-		picture: DataTypes.STRING
+		picture: DataTypes.STRING,
+		priority: DataTypes.INTEGER,
 	}, {
 		sequelize,
 		modelName: "Chats",
