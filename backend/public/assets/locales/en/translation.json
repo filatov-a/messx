@@ -1,0 +1,25 @@
+{
+  "hello": "hello",
+  "contact": "contact",
+  "contactText": "Information to connect",
+  "cost": "Cost / Book",
+  "costText": "You can chose...",
+  "location": "location",
+  "locationText": "Find us in Google Maps",
+
+  "costTitle": "Find more comfortable",
+  "room2": "Room for two people",
+  "room2Text": "Personal room for two people",
+  "room1": "Room for person",
+  "room1Text": "Personal room for person",
+  "bed": "Bed",
+  "bedText": "Personal Bed",
+
+  "contacts": "Contacts",
+
+  "room2Cost": "Room for two people - 500 uan/day",
+  "room1Cost": "Room for person - 400 uan/day",
+  "bedCost": "Bed - 200 uan/day",
+
+  "book": "book"
+}
