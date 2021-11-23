@@ -38,7 +38,7 @@ module.exports.getAllPostsFormCategory = async (req, res) => {
 module.exports.newCategory = async (req, res) => {
 	try {
 		const categories = db.Categories;
-		const body = request.body;
+		const body = req.body;
 		const category = await categories.create({
 			title: body.title,
 			description: body.description

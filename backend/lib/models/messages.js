@@ -5,7 +5,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
 	class Messages extends Model {
 		static associate(models) {
-			Messages.belongsTo(models.Users, {foreignKey: "userId", onDelete: "cascade"});
+			Messages.belongsTo(models.Chats, {foreignKey: "chatId", onDelete: "cascade"});
 		}
 	}
 	Messages.init({
@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
 		descriptions: DataTypes.STRING,
 		image: DataTypes.STRING,
 		isActive: DataTypes.BOOLEAN,
-		userId: DataTypes.INTEGER,
+		chatId: DataTypes.INTEGER,
 	}, {
 		sequelize,
 		modelName: "Messages",

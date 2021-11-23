@@ -24,12 +24,12 @@ module.exports = {
 				allowNull: false,
 				defaultValue: true,
 			},
-			userId: {
+			chatId: {
 				type: Sequelize.INTEGER,
 				allowNull: false,
-				references: {model: "Users", key: "id"},
-				onUpdate: 'CASCADE',
-        		onDelete: 'CASCADE',
+				references: {model: "Chats", key: "id"},
+				onUpdate: "CASCADE",
+        		onDelete: "CASCADE",
 			},
 			createdAt: {
 				allowNull: false,

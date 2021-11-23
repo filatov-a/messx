@@ -8,7 +8,6 @@ module.exports = (sequelize, DataTypes) => {
 			Users.hasMany(models.Posts, { foreignKey: "userId", onDelete: "cascade"});
       		Users.hasMany(models.LikesToComments, { foreignKey: "userId", onDelete: "cascade"});
       		Users.hasMany(models.LikesToPosts, { foreignKey: "userId", onDelete: "cascade"});
-      		Users.hasMany(models.Messages, { foreignKey: "userId", onDelete: "cascade"});
 			Users.belongsToMany(models.Chats, {
 				through: "UsersChats",
 				foreignKey: "userId",

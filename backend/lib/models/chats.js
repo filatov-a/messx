@@ -5,6 +5,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
 	class Chats extends Model {
 		static associate(models) {
+			Chats.hasMany(models.Messages, { foreignKey: "cahtId", onDelete: "cascade"});
 			Chats.belongsToMany(models.Users, {
 				through: "UsersChats",
 				foreignKey: "chatId",
