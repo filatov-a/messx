@@ -1,4 +1,4 @@
-const config = require("../config");
+const config = require("../config/project");
 const jwt = require("jsonwebtoken");
 const db = require("../models/index");
 

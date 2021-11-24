@@ -6,9 +6,7 @@ const {
 } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
 	class UsersChats extends Model {
-		static associate(models) {
-
-		}
+		static associate(models) {}
 	}
 	UsersChats.init({
 		userId: DataTypes.INTEGER,

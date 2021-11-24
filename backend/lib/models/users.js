@@ -1,17 +1,29 @@
 const {
-	Model, INTEGER,
+	Model,
 } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
 	class Users extends Model {
 		static associate(models) {
 			Users.hasMany(models.Posts, { foreignKey: "userId", onDelete: "cascade"});
-      		Users.hasMany(models.LikesToComments, { foreignKey: "userId", onDelete: "cascade"});
-      		Users.hasMany(models.LikesToPosts, { foreignKey: "userId", onDelete: "cascade"});
+			Users.hasMany(models.LikesToComments, { foreignKey: "userId", onDelete: "cascade"});
+			Users.hasMany(models.LikesToPosts, { foreignKey: "userId", onDelete: "cascade"});
 			Users.belongsToMany(models.Chats, {
 				through: "UsersChats",
 				foreignKey: "userId",
 				onDelete: "cascade",
+			});
+			Users.belongsToMany(Users, {
+				through: "UsersAndUsers",
+				as: "Users",
+				foreignKey: "userId",
+				onDelete: "set null",
+			});
+			Users.belongsToMany(Users, {
+				through: "UsersAndUsers",
+				as: "Followers",
+				foreignKey: "followerId",
+				onDelete: "set null",
 			});
 		}
 	}

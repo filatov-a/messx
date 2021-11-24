@@ -1,3 +1,4 @@
+const config = require("../config/project");
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 const db = require("../models/index");
@@ -97,3 +98,21 @@ module.exports.deleteUser = async (req, res) => {
 	}
 };
 
+module.exports.setAvatar = async (req, res) => {
+	try {
+		const users = db.Users;
+		const avatar = req.file.filename;
+		const token = getToken(req, res);
+		const decode = await jwt.verify(token, config.token.accessToken);
+		const one = await users.findOne({ where: { id: decode.id } });
+		await one.update({profile_picture: avatar});
+		res.send(avatar);
+	} catch (err) {
+		res.status(400).send({ error: err.message });
+	}
+};
+
+function getToken(req, res){
+	const authHeader = req.get("authorization");
+	return authHeader && authHeader.split(" ")[1];
+}

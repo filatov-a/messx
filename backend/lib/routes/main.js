@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const controllerAuth = require("../controllers/auth.js");
-const controllerCategories = require("../controllers/categories.js");
+const controllerCategories = require("../controllers/postscategories.js");
 const controllerComments = require("../controllers/comments");
 const controllerPosts = require("../controllers/posts");
 const controllerMessages = require("../controllers/messages");

@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 			Posts.hasMany(models.Comments, {foreignKey: "postId", onDelete: "cascade", hooks: true});
 			Posts.hasMany(models.PostsImages, {foreignKey: "postId", onDelete: "cascade", hooks: true});
 			Posts.belongsTo(models.Users, {foreignKey: "userId", onDelete: "cascade", hooks: true});
-			Posts.belongsToMany(models.Categories, {
+			Posts.belongsToMany(models.PostsCategories, {
 				through: "PostsAndCategories",
 				foreignKey: "postId",
 				onDelete: "cascade",
