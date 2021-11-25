@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const argon2 = require("argon2");
-const config = require("../config/project");
+const config = require("../config/config");
 const mail = require("../utils/email");
 const db = require("../models/index");
 

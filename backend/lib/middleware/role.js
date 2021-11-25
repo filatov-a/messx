@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const config = require("../config/config.json");
+const config = require("../config/configSeq.js");
 
 function getToken(ctx){
 	const authHeader = ctx.get("authorization");

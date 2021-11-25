@@ -1,26 +1,31 @@
 "use strict";
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		await queryInterface.createTable("ChatsAndCategories", {
+		await queryInterface.createTable("UsersToFollowers", {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
 				primaryKey: true,
 				type: Sequelize.INTEGER
 			},
-			cahtId: {
+			userId: {
 				type: Sequelize.INTEGER,
-				allowNull: false,
-				references: { model: "Chats", key: "id" },
+				references: {model: "Users", key: "id"},
 				onUpdate: "CASCADE",
-				onDelete: "CASCADE",
+				onDelete: "SET NULL",
+				defaultValue: null,
 			},
-			categoryId: {
+			followerId: {
 				type: Sequelize.INTEGER,
-				allowNull: false,
-				references: { model: "ChatsCategories", key: "id" },
+				references: {model: "Users", key: "id"},
 				onUpdate: "CASCADE",
-				onDelete: "CASCADE",
+				onDelete: "SET NULL",
+				defaultValue: null,
+			},
+			isAdmin: {
+				type: Sequelize.BOOLEAN,
+				allowNull: false,
+				defaultValue: true,
 			},
 			createdAt: {
 				allowNull: false,
@@ -33,6 +38,6 @@ module.exports = {
 		});
 	},
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.dropTable("ChatsAndCategories");
+		await queryInterface.dropTable("UsersToFollowers");
 	}
 };

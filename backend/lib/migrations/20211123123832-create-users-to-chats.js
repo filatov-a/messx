@@ -1,16 +1,12 @@
 "use strict";
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		await queryInterface.createTable("LikesToPosts", {
+		await queryInterface.createTable("UsersToChats", {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
 				primaryKey: true,
 				type: Sequelize.INTEGER
-			},
-			type: {
-				type: Sequelize.ENUM(["like", "dislike"]),
-				allowNull: false
 			},
 			userId: {
 				type: Sequelize.INTEGER,
@@ -19,12 +15,17 @@ module.exports = {
 				onUpdate: "CASCADE",
         		onDelete: "CASCADE",
 			},
-			postId: {
+			chatId: {
 				type: Sequelize.INTEGER,
 				allowNull: false,
-				references: { model: "Posts", key: "id" },
+				references: { model: "Chats", key: "id" },
 				onUpdate: "CASCADE",
         		onDelete: "CASCADE",
+			},
+			isAdmin: {
+				type: Sequelize.BOOLEAN,
+				allowNull: false,
+				defaultValue: true,
 			},
 			createdAt: {
 				allowNull: false,
@@ -37,6 +38,6 @@ module.exports = {
 		});
 	},
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.dropTable("LikesToPosts");
+		await queryInterface.dropTable("UsersToChats");
 	}
 };

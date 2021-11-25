@@ -1,24 +1,24 @@
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		await queryInterface.createTable("CommentsAndComments", {
+		await queryInterface.createTable("MessagesToAnswers", {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
 				primaryKey: true,
 				type: Sequelize.INTEGER,
 			},
-			commentId: {
+			messageId: {
 				type: Sequelize.INTEGER,
-				references: {model: "Comments", key: "id"},
+				references: {model: "Messages", key: "id"},
 				onUpdate: "CASCADE",
-				onDelete: "SET NULL",
+        		onDelete: "SET NULL",
 				defaultValue: null,
 			},
-			commentAnswerId: {
+			messageAnswerId: {
 				type: Sequelize.INTEGER,
-				references: {model: "Comments", key: "id"},
+				references: {model: "Messages", key: "id"},
 				onUpdate: "CASCADE",
-				onDelete: "SET NULL",
+        		onDelete: "SET NULL",
 				defaultValue: null,
 			},
 			createdAt: {
@@ -34,6 +34,6 @@ module.exports = {
 		});
 	},
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.dropTable("CommentsAndComments");
+		await queryInterface.dropTable("MessagesToAnswers");
 	},
 };

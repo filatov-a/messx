@@ -1,24 +1,28 @@
 "use strict";
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		await queryInterface.createTable("PostsAndCategories", {
+		await queryInterface.createTable("LikesComments", {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
 				primaryKey: true,
 				type: Sequelize.INTEGER
 			},
-			postId: {
+			type: {
+				type: Sequelize.ENUM(["like", "dislike"]),
+				allowNull: false
+			},
+			userId: {
 				type: Sequelize.INTEGER,
 				allowNull: false,
-				references: { model: "Posts", key: "id" },
+				references: { model: "Users", key: "id" },
 				onUpdate: "CASCADE",
         		onDelete: "CASCADE",
 			},
-			categoryId: {
+			commentId: {
 				type: Sequelize.INTEGER,
 				allowNull: false,
-				references: { model: "PostsCategories", key: "id" },
+				references: { model: "Comments", key: "id" },
 				onUpdate: "CASCADE",
         		onDelete: "CASCADE",
 			},
@@ -33,6 +37,6 @@ module.exports = {
 		});
 	},
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.dropTable("PostsAndCategories");
+		await queryInterface.dropTable("LikesComments");
 	}
 };

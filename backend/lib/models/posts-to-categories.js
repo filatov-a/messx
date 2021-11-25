@@ -5,17 +5,17 @@ const {
 	Model
 } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-	class PostsAndCategories extends Model {
+	class PostsToCategories extends Model {
 		static associate(models) {
 
 		}
 	}
-	PostsAndCategories.init({
+	PostsToCategories.init({
 		postId: DataTypes.INTEGER,
 		categoryId: DataTypes.INTEGER,
 	}, {
 		sequelize,
-		modelName: "PostsAndCategories",
+		modelName: "PostsToCategories",
 	});
-	return PostsAndCategories;
+	return PostsToCategories;
 };

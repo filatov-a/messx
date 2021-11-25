@@ -3,28 +3,31 @@ const path = require("path");
 const Sequelize = require("sequelize");
 
 const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || "development";
-const config = require(`${__dirname}/../config/config.json`)[env];
-const db = {};
+const configApp = require(`${__dirname}/../config/config.js`);
+const type = configApp.project || "development";
+const config = require(`${__dirname}/../config/configSeq.js`)[type];
+let db = {};
 
-let sequelize;
+let sequelize = new Sequelize(config.database, config.username, config.password, config);
+const DataTypes = Sequelize.DataTypes;
 
-if (config.use_env_variable) {
-	sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-	sequelize = new Sequelize(config.database, config.username, config.password, config);
-}
+db.Users = require("./users")(sequelize, DataTypes);
+db.Chats = require("./chats")(sequelize, DataTypes);
+db.Messages = require("./messages")(sequelize, DataTypes);
+db.MessegesToAnswers = require("./messages-to-answers")(sequelize, DataTypes);
+db.Posts = require("./posts")(sequelize, DataTypes);
+db.LikesPosts = require("./likes-posts")(sequelize, DataTypes);
+db.Comments = require("./comments")(sequelize, DataTypes);
+db.LikesComments = require("./likes-comments")(sequelize, DataTypes);
+db.CommentsToAnswers = require("./comments-to-answers")(sequelize, DataTypes);
+db.PostsCategories = require("./posts-categories")(sequelize, DataTypes);
+db.UsersToChats = require("./users-to-chats")(sequelize, DataTypes);
+db.UsersToFollowers = require("./users-to-followers")(sequelize, DataTypes);
+db.PostsImages = require("./posts-images")(sequelize, DataTypes);
+db.ChatsCategories = require("./chats-categories")(sequelize, DataTypes);
+db.ChatsToCategories = require("./chats-to-categories")(sequelize, DataTypes);
 
-fs
-	.readdirSync(__dirname)
-	.filter((file) => (file.indexOf(".") !== 0) && (file !== basename) && (file.slice(-3) === ".js"))
-	.forEach((file) => {
-		const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-
-		db[model.name] = model;
-	});
-
-Object.keys(db).forEach((modelName) => {
+Object.keys(db).forEach(async (modelName) => {
 	if (db[modelName].associate) {
 		db[modelName].associate(db);
 	}

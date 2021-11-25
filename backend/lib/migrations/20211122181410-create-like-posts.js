@@ -1,31 +1,30 @@
 "use strict";
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		await queryInterface.createTable("UsersAndUsers", {
+		await queryInterface.createTable("LikesPosts", {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
 				primaryKey: true,
 				type: Sequelize.INTEGER
 			},
+			type: {
+				type: Sequelize.ENUM(["like", "dislike"]),
+				allowNull: false
+			},
 			userId: {
 				type: Sequelize.INTEGER,
-				references: {model: "Users", key: "id"},
-				onUpdate: "CASCADE",
-				onDelete: "SET NULL",
-				defaultValue: null,
-			},
-			followerId: {
-				type: Sequelize.INTEGER,
-				references: {model: "Users", key: "id"},
-				onUpdate: "CASCADE",
-				onDelete: "SET NULL",
-				defaultValue: null,
-			},
-			isAdmin: {
-				type: Sequelize.BOOLEAN,
 				allowNull: false,
-				defaultValue: true,
+				references: { model: "Users", key: "id" },
+				onUpdate: "CASCADE",
+        		onDelete: "CASCADE",
+			},
+			postId: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				references: { model: "Posts", key: "id" },
+				onUpdate: "CASCADE",
+        		onDelete: "CASCADE",
 			},
 			createdAt: {
 				allowNull: false,
@@ -38,6 +37,6 @@ module.exports = {
 		});
 	},
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.dropTable("UsersAndUsers");
+		await queryInterface.dropTable("LikesPosts");
 	}
 };

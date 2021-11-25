@@ -3,16 +3,16 @@ const {
 } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-	class CommentsAndComments extends Model {
+	class CommentsToAnswers extends Model {
 		static associate(models) {}
 	}
-	CommentsAndComments.init({
+	CommentsToAnswers.init({
 		commentId: DataTypes.INTEGER,
 		commentAnswerId: DataTypes.INTEGER,
 	}, {
 		sequelize,
-		modelName: "CommentsAndComments",
+		modelName: "CommentsToAnswers",
 	});
 
-	return CommentsAndComments;
+	return CommentsToAnswers;
 };

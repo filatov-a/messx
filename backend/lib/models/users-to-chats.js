@@ -5,16 +5,16 @@ const {
 	Model
 } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-	class UsersChats extends Model {
+	class UsersToChats extends Model {
 		static associate(models) {}
 	}
-	UsersChats.init({
+	UsersToChats.init({
 		userId: DataTypes.INTEGER,
 		chatId: DataTypes.INTEGER,
-		isAamin: DataTypes.BOOLEAN,
+		isAdmin: DataTypes.BOOLEAN,
 	}, {
 		sequelize,
-		modelName: "UsersChats",
+		modelName: "UsersToChats",
 	});
-	return UsersChats;
+	return UsersToChats;
 };

@@ -10,4 +10,5 @@ module.exports = {
 		accessToken: "cjsbrdkjcnrkcbje",
 		verifyResetPasswordToken: "ckfjksc23764hdh",
 	},
+	project: "development"
 };

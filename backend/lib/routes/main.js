@@ -7,7 +7,7 @@ const controllerCategories = require("../controllers/postscategories.js");
 const controllerComments = require("../controllers/comments");
 const controllerPosts = require("../controllers/posts");
 const controllerMessages = require("../controllers/messages");
-const controllerUser = require("../controllers/user.js");
+const controllerUser = require("../controllers/users.js");
 
 const schemas = require("../schemas/schemas.js");
 const middleware = require("../middleware/joi.js");

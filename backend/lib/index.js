@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 
 const bodyParser = require("body-parser");
-const config = require("./config/project");
+const config = require("./config/config");
 const routes = require("./routes/main.js");
 
 app.use(cors());

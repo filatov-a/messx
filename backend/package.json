@@ -7,9 +7,9 @@
     "start": "node lib/index.js",
     "mov": "nodemon lib/index.js",
     "lint": "eslint lib --fix --ext .js",
-    "migrate": "cd lib && npx sequelize-cli db:migrate",
-    "migrate:undo": "cd lib && npx sequelize-cli db:migrate:undo:all",
-    "seed": "cd lib && npx sequelize-cli db:seed",
+    "migrate": "npx sequelize-cli db:migrate",
+    "migrate:undo": "npx sequelize-cli db:migrate:undo:all",
+    "seed": "npx sequelize-cli db:seed",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Artem Filatov",

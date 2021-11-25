@@ -1,4 +1,4 @@
-const config = require("../config/project");
+const config = require("../config/config");
 const jwt = require("jsonwebtoken");
 const { Op } = require("sequelize");
 const db = require("../models/index");
@@ -6,6 +6,12 @@ const db = require("../models/index");
 module.exports.getAllPosts = async (req, res) => {
 	try {
 		const posts = db.Posts;
+
+		const one = await posts.findByPk('2');
+
+		one.getAll
+
+
 		const {limit, offset} = req.query;
 		let {title} = req.query;
 		if (title === "undefined") title = "";
