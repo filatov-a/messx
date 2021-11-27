@@ -1,36 +1,32 @@
-const {
-	Model, INTEGER,
-} = require("sequelize");
+const Base = require("./base");
 
-module.exports = (sequelize, DataTypes) => {
-	class Messages extends Model {
-		static associate(models) {
-			Messages.belongsTo(models.Chats, {foreignKey: "chatId", onDelete: "cascade"});
-			Messages.belongsToMany(Messages, {
-				through: "MessagesAndMessages",
-				as: "Messeges",
-				foreignKey: "messageId",
-				onDelete: "set null",
-			});
-			Messages.belongsToMany(Messages, {
-				through: "MessagesAndMessages",
-				as: "Answers",
-				foreignKey: "messageAnswerId",
-				onDelete: "set null",
-			});
-		}
+class Messages extends Base {
+	static modelSchema = {
+		name: this.DT.STRING,
+		descriptions: this.DT.STRING,
+		image: this.DT.STRING,
+		messageId: this.DT.INTEGER,
+		isActive: this.DT.BOOLEAN,
+		chatId: this.DT.INTEGER,
 	}
-	Messages.init({
-		name: DataTypes.STRING,
-		descriptions: DataTypes.STRING,
-		image: DataTypes.STRING,
-		messageId: DataTypes.INTEGER,
-		isActive: DataTypes.BOOLEAN,
-		chatId: DataTypes.INTEGER,
-	}, {
-		sequelize,
-		modelName: "Messages",
-	});
+	static modelName = "Messages";
 
-	return Messages;
-};
+	static associate(models) {
+		Messages.belongsTo(models.Chats, {foreignKey: "chatId", onDelete: "cascade"});
+		Messages.belongsToMany(Messages, {
+			through: "MessagesAndMessages",
+			as: "Messages",
+			foreignKey: "messageId",
+			onDelete: "set null",
+		});
+		Messages.belongsToMany(Messages, {
+			through: "MessagesAndMessages",
+			as: "Answers",
+			foreignKey: "messageAnswerId",
+			onDelete: "set null",
+		});
+	}
+}
+
+module.exports = Messages
+

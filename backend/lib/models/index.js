@@ -1,39 +1,77 @@
-const fs = require("fs");
 const path = require("path");
 const Sequelize = require("sequelize");
+const config = require("../config/config");
 
-const basename = path.basename(__filename);
-const configApp = require(`${__dirname}/../config/config.js`);
-const type = configApp.project || "development";
-const config = require(`${__dirname}/../config/configSeq.js`)[type];
-let db = {};
+const Users = require("./users");
+const Chats = require("./chats");
+const Messages = require("./messages");
+const MessagesToAnswers = require("./messages-to-answers");
+const Posts = require("./posts");
+const LikesPosts = require("./likes-posts");
+const Comments = require("./comments")
+const LikesComments = require("./likes-comments");
+const PostsCategories = require("./posts-categories")
+const UsersToChats = require("./users-to-chats")
+const UsersToFollowers = require("./users-to-followers")
+const PostsImages = require("./posts-images")
+const CommentsToAnswers = require("./comments-to-answers")
+const ChatsToCategories = require("./chats-to-categories")
 
-let sequelize = new Sequelize(config.database, config.username, config.password, config);
-const DataTypes = Sequelize.DataTypes;
+class DataBase {
+	configSeq = null;
+	config = null;
+	db = {}
+	type = null;
+	sequelize = null;
+	Sequelize = null;
+	DataTypes = null;
+	basename = null;
 
-db.Users = require("./users")(sequelize, DataTypes);
-db.Chats = require("./chats")(sequelize, DataTypes);
-db.Messages = require("./messages")(sequelize, DataTypes);
-db.MessegesToAnswers = require("./messages-to-answers")(sequelize, DataTypes);
-db.Posts = require("./posts")(sequelize, DataTypes);
-db.LikesPosts = require("./likes-posts")(sequelize, DataTypes);
-db.Comments = require("./comments")(sequelize, DataTypes);
-db.LikesComments = require("./likes-comments")(sequelize, DataTypes);
-db.CommentsToAnswers = require("./comments-to-answers")(sequelize, DataTypes);
-db.PostsCategories = require("./posts-categories")(sequelize, DataTypes);
-db.UsersToChats = require("./users-to-chats")(sequelize, DataTypes);
-db.UsersToFollowers = require("./users-to-followers")(sequelize, DataTypes);
-db.PostsImages = require("./posts-images")(sequelize, DataTypes);
-db.ChatsCategories = require("./chats-categories")(sequelize, DataTypes);
-db.ChatsToCategories = require("./chats-to-categories")(sequelize, DataTypes);
+	constructor() {
+		this.config = config;
+		this.type = this.config.project ? this.config.project : "development";
+		this.configSeq = require(`${__dirname}/../config/configSeq.js`)[this.type]
+		this.Sequelize = Sequelize;
 
-Object.keys(db).forEach(async (modelName) => {
-	if (db[modelName].associate) {
-		db[modelName].associate(db);
+		this.sequelize = new this.Sequelize(
+			this.configSeq.database,
+			this.configSeq.username,
+			this.configSeq.password,
+			this.configSeq
+		);
+
+		this.DataTypes = Sequelize.DataTypes;
+		this.basename = path.basename(__filename);
+		this.init();
 	}
-});
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+	init(){
+		this.include();
+		this.initAndAssociateModels()
+	}
 
-module.exports = db;
+	include(){
+		this.db.Users = Users;
+		this.db.Chats = Chats;
+		this.db.Messages = Messages;
+		this.db.MessagesToAnswers = MessagesToAnswers;
+		this.db.Posts = Posts;
+		this.db.LikesPosts = LikesPosts;
+		this.db.Comments = Comments;
+		this.db.LikesComments = LikesComments;
+		this.db.CommentsToAnswers = CommentsToAnswers;
+		this.db.PostsCategories = PostsCategories;
+		this.db.UsersToChats = UsersToChats;
+		this.db.UsersToFollowers = UsersToFollowers;
+		this.db.PostsImages = PostsImages
+		this.db.ChatsCategories = PostsCategories;
+		this.db.ChatsToCategories = ChatsToCategories;
+	}
+
+	initAndAssociateModels(){
+		Object.values(this.db).forEach(model => model.init(this.sequelize));
+		Object.values(this.db).forEach(model => model.initAssociateAndHooks(this.db));
+	}
+}
+
+module.exports = DataBase;

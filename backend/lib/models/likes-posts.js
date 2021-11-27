@@ -1,21 +1,16 @@
-"use strict";
-const {
-	Model
-} = require("sequelize");
-module.exports = (sequelize, DataTypes) => {
-	class LikesPosts extends Model {
-		static associate(models) {
-			LikesPosts.belongsTo(models.Posts, {foreignKey: "postId", onDelete: "cascade", hooks: true});
-			LikesPosts.belongsTo(models.Users, {foreignKey: "userId", onDelete: "cascade", hooks: true});
-		}
+const Base = require("./base");
+
+class LikesPosts extends Base {
+	static modelSchema = {
+		type: this.DT.ENUM(["like", "dislike"]),
+		userId: this.DT.INTEGER,
+		postId: this.DT.INTEGER,
 	}
-	LikesPosts.init({
-		type: DataTypes.ENUM(["like", "dislike"]),
-		userId: DataTypes.INTEGER,
-		postId: DataTypes.INTEGER,
-	}, {
-		sequelize,
-		modelName: "LikesPosts",
-	});
-	return LikesPosts;
-};
+	static modelName = "LikesPosts";
+	static associate(models) {
+		LikesPosts.belongsTo(models.Posts, {foreignKey: "postId", onDelete: "cascade", hooks: true});
+		LikesPosts.belongsTo(models.Users, {foreignKey: "userId", onDelete: "cascade", hooks: true});
+	}
+}
+
+module.exports = LikesPosts;

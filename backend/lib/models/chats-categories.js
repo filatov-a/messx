@@ -1,24 +1,20 @@
-"use strict";
-const {
-	Model
-} = require("sequelize");
-module.exports = (sequelize, DataTypes) => {
-	class ChatsCategories extends Model {
-		static associate(models) {
-			ChatsCategories.belongsToMany(models.Chats, {
-				through: "ChatsAndCategories",
-				foreignKey: "categoryId",
-				onDelete: "cascade",
-				hooks: true
-			});
-		}
+const Base = require("./base");
+
+class ChatsCategories extends Base {
+	static modelSchema ={
+		title: this.DT.STRING,
+		description: this.DT.STRING,
 	}
-	ChatsCategories.init({
-		title: DataTypes.STRING,
-		description: DataTypes.STRING,
-	}, {
-		sequelize,
-		modelName: "ChatsCategories",
-	});
-	return ChatsCategories;
-};
+	static modelName = "ChatsCategories";
+
+	static associate(models) {
+		ChatsCategories.belongsToMany(models.Chats, {
+			through: "ChatsAndCategories",
+			foreignKey: "categoryId",
+			onDelete: "cascade",
+			hooks: true
+		});
+	}
+}
+
+module.exports = ChatsCategories

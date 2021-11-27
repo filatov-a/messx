@@ -1,19 +1,12 @@
 "use strict";
-const {
-	Model
-} = require("sequelize");
-module.exports = (sequelize, DataTypes) => {
-	class ChatsToCategories extends Model {
-		static associate(models) {
-
-		}
+const Base= require("./base");
+class ChatsToCategories extends Base {
+	static modelSchema = {
+		chatId: this.DT.INTEGER,
+		categoryId: this.DT.INTEGER,
 	}
-	ChatsToCategories.init({
-		chatId: DataTypes.INTEGER,
-		categoryId: DataTypes.INTEGER,
-	}, {
-		sequelize,
-		modelName: "ChatsToCategories",
-	});
-	return ChatsToCategories;
-};
+	static modelName = "ChatsToCategories";
+	static associate(models) {}
+}
+
+module.exports = ChatsToCategories

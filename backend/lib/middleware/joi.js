@@ -1,18 +1,16 @@
 const Joi = require("joi");
 
-const joi = (schema, property) => async (req, res, next) => {
-	const {error} = await schema.validate(req.body);
+const joi = async (schema, body) => {
+	const {error} = await schema.validate(body);
 	const valid = error == null;
 
 	if (valid) {
-		await next();
+		return true;
 	} else {
 		const {details} = error;
-
 		const message = details.map((i) => i.message).join(",");
-
 		console.log("error", message);
-		res.status(422).send({error: message});
+		throw new Error(message);
 	}
 };
 

@@ -1,18 +1,13 @@
-const {
-	Model,
-} = require("sequelize");
+const Base = require("./base");
 
-module.exports = (sequelize, DataTypes) => {
-	class MessagesToAnswers extends Model {
-		static associate(models) {}
+class MessagesToAnswers extends Base {
+	static modelSchema = {
+		messageId: this.DT.INTEGER,
+		messageAnswerId: this.DT.INTEGER,
 	}
-	MessagesToAnswers.init({
-		messageId: DataTypes.INTEGER,
-		messageAnswerId: DataTypes.INTEGER,
-	}, {
-		sequelize,
-		modelName: "MessagesToAnswers",
-	});
+	static modelName = "MessagesToAnswers";
 
-	return MessagesToAnswers;
-};
+	static associate(models) {}
+}
+
+module.exports = MessagesToAnswers;

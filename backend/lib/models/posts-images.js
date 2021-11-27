@@ -1,21 +1,15 @@
+const Base = require("./base");
 
-"use strict";
-
-const {
-	Model
-} = require("sequelize");
-module.exports = (sequelize, DataTypes) => {
-	class PostsImages extends Model {
-		static associate(models) {
-			PostsImages.belongsTo(models.Posts, {foreignKey: "postId", onDelete: "cascade", hooks: true});
-		}
+class PostsImages extends Base {
+	static modelSchema = {
+		image: this.DT.STRING,
+		postId: this.DT.INTEGER,
 	}
-	PostsImages.init({
-		iamge: DataTypes.STRING,
-		postId: DataTypes.INTEGER,
-	}, {
-		sequelize,
-		modelName: "PostsImages",
-	});
-	return PostsImages;
-};
+	static modelName = "PostsImages";
+
+	static associate(models) {
+		PostsImages.belongsTo(models.Posts, {foreignKey: "postId", onDelete: "cascade", hooks: true});
+	}
+}
+
+module.exports = PostsImages;

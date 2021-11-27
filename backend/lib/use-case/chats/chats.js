@@ -10,7 +10,7 @@ module.exports.createChat = async (req, res) => {
 		const token = getToken(req, res);
 		const decode = await jwt.verify(token, config.token.accessToken);
 		const usrDb = await users.findOne({where: {id: decode.id}});
-		if (!usrDb) throw new Error("user didn't auth! Incorrect token");
+		if (!usrDb) throw new Error("user didn't actions! Incorrect token");
 		const schema = {
 			name: req.body.name,
 			descriptions: req.body.descriptions,
@@ -48,7 +48,7 @@ module.exports.getChatMessages = async (req, res) => {
 			where: {id: id},
 			include: mess,
 		});
-		if (!chat) throw new Error("chat didn't found! Incorrect auth token!");
+		if (!chat) throw new Error("chat didn't found! Incorrect actions token!");
 
 		res.send(chat.Messages);
 	} catch (err) {

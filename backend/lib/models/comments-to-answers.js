@@ -1,18 +1,16 @@
-const {
-	Model,
-} = require("sequelize");
+const Base = require("./base");
 
-module.exports = (sequelize, DataTypes) => {
-	class CommentsToAnswers extends Model {
-		static associate(models) {}
+class CommentsToAnswers extends Base {
+	static modelSchema = {
+		commentId: this.DT.INTEGER,
+		commentAnswerId: this.DT.INTEGER,
 	}
-	CommentsToAnswers.init({
-		commentId: DataTypes.INTEGER,
-		commentAnswerId: DataTypes.INTEGER,
-	}, {
-		sequelize,
-		modelName: "CommentsToAnswers",
-	});
 
-	return CommentsToAnswers;
-};
+	static modelName = "CommentsToAnswers";
+
+	static associate(models) {}
+}
+
+module.exports = CommentsToAnswers
+
+
