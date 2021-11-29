@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node lib/index.js",
-    "mov": "nodemon lib/index.js",
-    "lint": "eslint lib --fix --ext .js",
+    "start": "node lib/index.mjs",
+    "mov": "nodemon lib/index.mjs",
+    "lint": "eslint lib --fix --ext .mjs",
     "migrate": "npx sequelize-cli db:migrate",
     "migrate:undo": "npx sequelize-cli db:migrate:undo:all",
     "seed": "npx sequelize-cli db:seed",
