@@ -9,8 +9,14 @@ class LikesComments extends Base {
 	static modelName = "LikesComments";
 
 	static associate(models) {
-		LikesComments.belongsTo(models.Comments, {foreignKey: "commentId", onDelete: "cascade", hooks: true});
-		LikesComments.belongsTo(models.Users, {foreignKey: "userId", onDelete: "cascade", hooks: true});
+		LikesComments.belongsTo(models.Comments, {
+			foreignKey: "commentId",
+			onDelete: "cascade",
+		});
+		LikesComments.belongsTo(models.Users, {
+			foreignKey: "userId",
+			onDelete: "cascade"
+		});
 	}
 }
 module.exports = LikesComments;

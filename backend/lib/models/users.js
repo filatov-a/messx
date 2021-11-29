@@ -20,21 +20,21 @@ class Users extends Base {
 	static modelName = "Users";
 
 	static associate(models) {
-		this.hasMany(models.Posts, { foreignKey: "userId", onDelete: "cascade"});
-		this.hasMany(models.LikesComments, { foreignKey: "userId", onDelete: "cascade"});
-		this.hasMany(models.LikesPosts, { foreignKey: "userId", onDelete: "cascade"});
-		this.belongsToMany(models.Chats, {
+		Users.hasMany(models.Posts, { foreignKey: "userId", onDelete: "cascade"});
+		Users.hasMany(models.LikesComments, { foreignKey: "userId", onDelete: "cascade"});
+		Users.hasMany(models.LikesPosts, { foreignKey: "userId", onDelete: "cascade"});
+		Users.belongsToMany(models.Chats, {
 			through: "UsersT0Chats",
 			foreignKey: "userId",
 			onDelete: "cascade",
 		});
-		this.belongsToMany(this, {
+		Users.belongsToMany(Users, {
 			through: "UsersToFollowers",
 			as: "users",
 			foreignKey: "userId",
 			onDelete: "set null",
 		});
-		this.belongsToMany(this, {
+		Users.belongsToMany(Users, {
 			through: "UsersToFollowers",
 			as: "followers",
 			foreignKey: "followerId",

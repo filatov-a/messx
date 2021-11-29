@@ -13,13 +13,13 @@ class Messages extends Base {
 
 	static associate(models) {
 		Messages.belongsTo(models.Chats, {foreignKey: "chatId", onDelete: "cascade"});
-		Messages.belongsToMany(Messages, {
+		Messages.belongsToMany(models.Messages, {
 			through: "MessagesAndMessages",
 			as: "Messages",
 			foreignKey: "messageId",
 			onDelete: "set null",
 		});
-		Messages.belongsToMany(Messages, {
+		Messages.belongsToMany(models.Messages, {
 			through: "MessagesAndMessages",
 			as: "Answers",
 			foreignKey: "messageAnswerId",

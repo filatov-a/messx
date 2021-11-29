@@ -5,21 +5,7 @@ const {getToken} = require("../utils/getToken");
 
 module.exports.createChat = async (req, res) => {
 	try {
-		const users = db.Users;
-		const chats = db.Chats;
-		const token = getToken(req, res);
-		const decode = await jwt.verify(token, config.token.accessToken);
-		const usrDb = await users.findOne({where: {id: decode.id}});
-		if (!usrDb) throw new Error("user didn't actions! Incorrect token");
-		const schema = {
-			name: req.body.name,
-			descriptions: req.body.descriptions,
-			isActive: true,
-			userId: usrDb.id,
-		};
-		const newChats = await chats.create(schema);
 
-		res.send(newChats);
 	} catch (err) {
 		res.status(400).send({error: err.message});
 	}

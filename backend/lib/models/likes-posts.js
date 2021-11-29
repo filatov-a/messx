@@ -8,8 +8,14 @@ class LikesPosts extends Base {
 	}
 	static modelName = "LikesPosts";
 	static associate(models) {
-		LikesPosts.belongsTo(models.Posts, {foreignKey: "postId", onDelete: "cascade", hooks: true});
-		LikesPosts.belongsTo(models.Users, {foreignKey: "userId", onDelete: "cascade", hooks: true});
+		LikesPosts.belongsTo(models.Posts, {
+			foreignKey: "postId",
+			onDelete: "cascade"
+		});
+		LikesPosts.belongsTo(models.Users, {
+			foreignKey: "userId",
+			onDelete: "cascade"
+		});
 	}
 }
 

@@ -1,10 +1,11 @@
 const Base = require("../base")
+const Users = require("../../models/users")
 
 module.exports = class register extends Base {
     static async execute(body){
         await this.joi(this.schemas.user_schema, body);
         body.password = await this.argon2.hash(body.password);
-        const usrDb = await this.db.Users.createUser({...body});
+        const usrDb = await Users.createUser({...body});
         const token = await this.jwt.sign({id: usrDb.id}, this.config.token.verifyEmailToken, {expiresIn: "1h"});
         const url = `http://localhost:3000/verify-email/${token}`;
 

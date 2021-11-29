@@ -1,9 +1,9 @@
 const Base = require("../base")
+const Users = require("../../models/users")
 
 module.exports = class login extends Base {
     static async execute(body){
-        const users = this.db.Users;
-        const user = await users.findOne({where: {username: body.username}});
+        const user = await Users.findOne({where: {username: body.username}});
 
         if (user === null) {
             throw new Error("wrong account login");

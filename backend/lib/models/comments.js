@@ -10,16 +10,25 @@ class Comments extends Base {
 	static modelName = "Comments";
 
 	static associate(models) {
-		Comments.belongsTo(models.Posts, {foreignKey: "postId", onDelete: "cascade"});
-		Comments.belongsTo(models.Users, {foreignKey: "userId", onDelete: "cascade"});
-		Comments.hasMany(models.LikesComments, {foreignKey: "commentId", onDelete: "cascade"});
-		Comments.belongsToMany(Comments, {
+		Comments.belongsTo(models.Posts, {
+			foreignKey: "postId",
+			onDelete: "cascade"
+		});
+		Comments.belongsTo(models.Users, {
+			foreignKey: "userId",
+			onDelete: "cascade"
+		});
+		Comments.hasMany(models.LikesComments, {
+			foreignKey: "commentId",
+			onDelete: "cascade"
+		});
+		Comments.belongsToMany(models.Comments, {
 			through: "CommentsToAnswers",
 			as: "Comments",
 			foreignKey: "commentId",
 			onDelete: "set null",
 		});
-		Comments.belongsToMany(Comments, {
+		Comments.belongsToMany(models.Comments, {
 			through: "MessagesToAnswers",
 			as: "Answers",
 			foreignKey: "commentAnswerId",

@@ -9,8 +9,11 @@ class Chats extends Base {
 	static modelName =  "Chats"
 
 	static associate(models) {
-		Chats.hasMany(models.Messages, { foreignKey: "messageId", onDelete: "cascade"});
-		Chats.belongsToMany(models.Users, {
+		this.hasMany(models.Messages, {
+			foreignKey: "messageId",
+			onDelete: "cascade"
+		});
+		this.belongsToMany(models.Users, {
 			through: "UsersToChats",
 			foreignKey: "chatId",
 			onDelete: "cascade",

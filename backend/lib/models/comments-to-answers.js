@@ -5,7 +5,6 @@ class CommentsToAnswers extends Base {
 		commentId: this.DT.INTEGER,
 		commentAnswerId: this.DT.INTEGER,
 	}
-
 	static modelName = "CommentsToAnswers";
 
 	static associate(models) {}

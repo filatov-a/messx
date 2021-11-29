@@ -1,4 +1,3 @@
-const path = require("path");
 const Sequelize = require("sequelize");
 const config = require("../config/config");
 
@@ -17,60 +16,68 @@ const PostsImages = require("./posts-images")
 const CommentsToAnswers = require("./comments-to-answers")
 const ChatsToCategories = require("./chats-to-categories")
 
+const cnfgSeq = require(`${__dirname}/../config/configSeq.js`);
+
 class DataBase {
 	configSeq = null;
 	config = null;
-	db = {}
+	models = {}
 	type = null;
 	sequelize = null;
 	Sequelize = null;
 	DataTypes = null;
 	basename = null;
 
+	params = {};
+	retriesDefault = null;
+
 	constructor() {
 		this.config = config;
-		this.type = this.config.project ? this.config.project : "development";
-		this.configSeq = require(`${__dirname}/../config/configSeq.js`)[this.type]
+		this.type = this.config.projectType ? this.config.projectType : "development";
+		this.configSeq = cnfgSeq[this.type]
 		this.Sequelize = Sequelize;
 
+		this.DataTypes = Sequelize.DataTypes;
+		this.retriesDefault = 4;
+	}
+
+	init(){
+		this.initSequelize();
+		this.include();
+		this.initAndAssociateModels();
+		return this.sequelize;
+	}
+
+	initSequelize(){
 		this.sequelize = new this.Sequelize(
 			this.configSeq.database,
 			this.configSeq.username,
 			this.configSeq.password,
-			this.configSeq
+			this.configSeq,
 		);
-
-		this.DataTypes = Sequelize.DataTypes;
-		this.basename = path.basename(__filename);
-		this.init();
-	}
-
-	init(){
-		this.include();
-		this.initAndAssociateModels()
 	}
 
 	include(){
-		this.db.Users = Users;
-		this.db.Chats = Chats;
-		this.db.Messages = Messages;
-		this.db.MessagesToAnswers = MessagesToAnswers;
-		this.db.Posts = Posts;
-		this.db.LikesPosts = LikesPosts;
-		this.db.Comments = Comments;
-		this.db.LikesComments = LikesComments;
-		this.db.CommentsToAnswers = CommentsToAnswers;
-		this.db.PostsCategories = PostsCategories;
-		this.db.UsersToChats = UsersToChats;
-		this.db.UsersToFollowers = UsersToFollowers;
-		this.db.PostsImages = PostsImages
-		this.db.ChatsCategories = PostsCategories;
-		this.db.ChatsToCategories = ChatsToCategories;
+		this.models.Users = Users;
+		this.models.Posts = Posts;
+		this.models.Chats = Chats;
+		this.models.Messages = Messages;
+		this.models.MessagesToAnswers = MessagesToAnswers;
+		this.models.LikesPosts = LikesPosts;
+		this.models.Comments = Comments;
+		this.models.LikesComments = LikesComments;
+		this.models.CommentsToAnswers = CommentsToAnswers;
+		this.models.PostsCategories = PostsCategories;
+		this.models.UsersToChats = UsersToChats;
+		this.models.UsersToFollowers = UsersToFollowers;
+		this.models.PostsImages = PostsImages
+		this.models.ChatsCategories = PostsCategories;
+		this.models.ChatsToCategories = ChatsToCategories;
 	}
 
 	initAndAssociateModels(){
-		Object.values(this.db).forEach(model => model.init(this.sequelize));
-		Object.values(this.db).forEach(model => model.initAssociateAndHooks(this.db));
+		Object.values(this.models).forEach(model => model.init(this.sequelize));
+		Object.values(this.models).forEach(model => model.initAssociateAndHooks(this.models));
 	}
 }
 
