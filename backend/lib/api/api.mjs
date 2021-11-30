@@ -6,7 +6,7 @@ import routes from "./routes/main.mjs";
 export default class api {
     app = null;
     config = null;
-    constructor(config, db) {
+    constructor(config) {
         this.config = config;
         this.app = express();
         this.app.use(cors());

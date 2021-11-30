@@ -1,10 +1,12 @@
-import config from "./config/config.cjs";
-import api from "./api/api.mjs";
-import db from "./models/index.mjs";
+import config from './config/config.cjs';
+import api from './api/api.mjs';
+import db from './models/index.mjs';
 
 export default class App {
     config = null;
+
     api = null
+
     sequelize = null;
 
     constructor() {
@@ -19,6 +21,6 @@ export default class App {
     }
 
     static create = () => {
-        return new this;
+        return new this();
     }
 }

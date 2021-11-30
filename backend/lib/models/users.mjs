@@ -3,18 +3,18 @@ import argon2 from "argon2";
 
 export default class Users extends Base {
 	static modelSchema = {
-			username: this.DT.STRING,
-			password: this.DT.STRING,
-			full_name: this.DT.STRING,
-			gender: this.DT.ENUM(["male", "female"]),
-			email: this.DT.STRING,
-			profile_picture: this.DT.STRING,
-			rating: this.DT.INTEGER,
-			phone: this.DT.STRING,
-			card: this.DT.STRING,
-			role: this.DT.ENUM(["user", "admin", "superAdmin"]),
-			isVerified: this.DT.BOOLEAN,
-			isActive: this.DT.BOOLEAN,
+		username: this.DT.STRING,
+		password: this.DT.STRING,
+		full_name: this.DT.STRING,
+		gender: this.DT.ENUM(["male", "female"]),
+		email: this.DT.STRING,
+		profile_picture: this.DT.STRING,
+		rating: this.DT.INTEGER,
+		phone: this.DT.STRING,
+		card: this.DT.STRING,
+		role: this.DT.ENUM(["user", "admin", "superAdmin"]),
+		isVerified: this.DT.BOOLEAN,
+		isActive: this.DT.BOOLEAN,
 	}
 
 	static modelName = "Users";
@@ -24,7 +24,7 @@ export default class Users extends Base {
 		Users.hasMany(models.LikesComments, { foreignKey: "userId", onDelete: "cascade"});
 		Users.hasMany(models.LikesPosts, { foreignKey: "userId", onDelete: "cascade"});
 		Users.belongsToMany(models.Chats, {
-			through: "UsersT0Chats",
+			through: "UsersToChats",
 			foreignKey: "userId",
 			onDelete: "cascade",
 		});

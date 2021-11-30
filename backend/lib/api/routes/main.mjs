@@ -3,18 +3,26 @@ import express from "express";
 const router = express.Router();
 
 import controllerActions from "./controlers/action.mjs";
-// const controllerCategories = require("../controllers/postscategories.js");
-// const controllerComments = require("../controllers/comments");
-// const controllerPosts = require("../controllers/posts");
-// const controllerMessages = require("../controllers/messages");
-// const controllerUser = require("../controllers/users.mjs");
-
-// const schemas = require("../schemas/schemas.mjs");
+import controllerUser from "./controlers/users.mjs";
+import controllerChats from "./controlers/chats.mjs";
 
 router.post("/register", controllerActions.register);
 router.get("/verify-email/:token", controllerActions.registerVerify);
 router.post("/login", controllerActions.login);
-//
+
+router.get("/chats/:id", controllerChats.get);
+router.post("/chats", controllerChats.create);
+router.delete("/chats/:id", controllerChats.delete);
+
+router.get("/chats", controllerChats.get);
+router.get("/users/:id", controllerUser.get);
+router.post("/users", controllerUser.create);
+router.patch("/users/:id", controllerUser.update);
+router.delete("/users/:id", controllerUser.delete);
+router.post("/users/avatar", controllerUser.setAvatar);
+
+
+
 // router.get("/api/comments/:id", controllerComments.getCommentById);
 // router.get("/api/comments/:id/likes", controllerComments.getAllLikesFormComment);
 // router.post("/api/comments/:id/like", controllerComments.newLike);
@@ -40,14 +48,5 @@ router.post("/login", controllerActions.login);
 // router.patch("/api/posts/:id", controllerPosts.updatePost);
 // router.delete("/api/posts/:id", controllerPosts.deletePost);
 // router.delete("/api/posts/:id/like", controllerPosts.deleteLikeFromPost);
-
-
-
-// router.get("/users", controllerUser.getAllUsers);
-// router.get("/users/:user_id", controllerUser.getUserById);
-// router.post("/users", role.isAdmin, joi(schemas.create_schema), controllerUser.createUser);
-// router.patch("/users/:user_id", joi(schemas.admin_schema), controllerUser.updateUser);
-// router.delete("/users/:user_id", controllerUser.deleteUser);
-// router.post("/users/avatar", multer.single("avatar"), role.isUser, controllerUser.setAvatar);
 
 export default router;
