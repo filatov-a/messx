@@ -9,8 +9,6 @@ export default class Create extends Base {
 		if (!usrDb) throw new Error("user didn't actions! Incorrect token");
 		const schema = {
 			name: params.body.name,
-			descriptions: params.body.descriptions,
-			isActive: true,
 			userId: usrDb.id,
 		};
 		const newChats = await Chats.create(schema);

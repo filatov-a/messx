@@ -6,6 +6,6 @@ import Runner from "../../utils/use-case-runner.mjs";
 
 export default {
 	register: Runner.makeRunner(register),
-	registerVerify: Runner.makeRunner(login),
-	login: Runner.makeRunner(emailVerify)
+	registerVerify: Runner.makeRunner(emailVerify),
+	login: Runner.makeRunner(login)
 };

@@ -3,7 +3,7 @@ import Users from "../../models/users.mjs";
 
 export default class Update extends Base {
 	static async execute(params){
-		const avatar = params.avatar;
+		const avatar = params.file.filename;
 		const decode = await this.jwt.verify(params.token, this.config.token.accessToken);
 		const user = await Users.updateUser({
 			id: decode.id,

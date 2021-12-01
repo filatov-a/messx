@@ -5,7 +5,6 @@ export default class Messages extends Base {
 		name: this.DT.STRING,
 		descriptions: this.DT.STRING,
 		image: this.DT.STRING,
-		messageId: this.DT.INTEGER,
 		isActive: this.DT.BOOLEAN,
 		chatId: this.DT.INTEGER,
 	}
@@ -13,15 +12,15 @@ export default class Messages extends Base {
 
 	static associate(models) {
 		Messages.belongsTo(models.Chats, {foreignKey: "chatId", onDelete: "cascade"});
-		Messages.belongsToMany(models.Messages, {
-			through: "MessagesAndMessages",
-			as: "Messages",
+		Messages.belongsToMany(Messages, {
+			through: "MessagesToAnswers",
+			as: "messages",
 			foreignKey: "messageId",
 			onDelete: "set null",
 		});
-		Messages.belongsToMany(models.Messages, {
-			through: "MessagesAndMessages",
-			as: "Answers",
+		Messages.belongsToMany(Messages, {
+			through: "MessagesToAnswers",
+			as: "answers",
 			foreignKey: "messageAnswerId",
 			onDelete: "set null",
 		});

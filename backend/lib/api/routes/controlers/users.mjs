@@ -12,6 +12,6 @@ export default {
 	get: Runner.makeRunner(get),
 	getAll: Runner.makeRunner(getAll),
 	update: Runner.makeRunner(update),
-	setAvatar: Runner.makeRunner(setAvatar),
+	setAvatar: Runner.makeRunnerAvatar(setAvatar),
 	delete: Runner.makeRunner(Delete)
 };
