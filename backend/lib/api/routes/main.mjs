@@ -14,14 +14,12 @@ router.get("/chats/:id", controllerChats.get);
 router.post("/chats", controllerChats.create);
 router.delete("/chats/:id", controllerChats.delete);
 
-router.get("/chats", controllerChats.get);
+router.get("/users", controllerUser.getAll);
 router.get("/users/:id", controllerUser.get);
 router.post("/users", controllerUser.create);
 router.patch("/users/:id", controllerUser.update);
 router.delete("/users/:id", controllerUser.delete);
 router.post("/users/avatar", controllerUser.setAvatar);
-
-
 
 // router.get("/api/comments/:id", controllerComments.getCommentById);
 // router.get("/api/comments/:id/likes", controllerComments.getAllLikesFormComment);

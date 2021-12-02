@@ -1,10 +1,12 @@
 import Base from "../base.mjs";
 import Users from "../../models/users.mjs";
 
+import jwt from "jsonwebtoken";
+
 export default class Update extends Base {
-	static async execute(params){
+	async execute(params){
 		const avatar = params.file.filename;
-		const decode = await this.jwt.verify(params.token, this.config.token.accessToken);
+		const decode = await jwt.verify(params.token, this.config.token.accessToken);
 		const user = await Users.updateUser({
 			id: decode.id,
 			params: { profile_picture: avatar }

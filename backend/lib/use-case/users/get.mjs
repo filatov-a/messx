@@ -6,17 +6,17 @@ import LikesPosts from "../../models/likes-posts.mjs";
 import LikesComments from "../../models/likes-comments.mjs";
 
 export default class Get extends Base {
-	static async execute(params){
+	async execute(params){
 		const {id} = params.params;
 		const user = await Users.findOne({
 			where: {id: id},
 			include: [
 				{association: "followers"},
 				{association: "users"},
-				Posts,
-				Chats,
-				LikesPosts,
-				LikesComments
+				{model: Posts},
+				{model: Chats},
+				{model: LikesPosts},
+				{model: LikesComments},
 			]
 		});
 		return {user};

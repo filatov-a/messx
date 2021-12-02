@@ -10,7 +10,7 @@ export default class Chats extends Base {
 
 	static associate(models) {
 		this.hasMany(models.Messages, {
-			foreignKey: "messageId",
+			foreignKey: "chatId",
 			onDelete: "cascade"
 		});
 		this.belongsToMany(models.Users, {
@@ -18,5 +18,9 @@ export default class Chats extends Base {
 			foreignKey: "chatId",
 			onDelete: "cascade",
 		});
+	}
+
+	static AddUser(){
+
 	}
 }

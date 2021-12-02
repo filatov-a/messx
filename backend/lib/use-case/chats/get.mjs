@@ -3,8 +3,7 @@ import Chats from "../../models/chats.mjs";
 import Messages from "../../models/messages.mjs";
 
 export default class Get extends Base {
-	static async execute(params){
-
+	async execute(params){
 		const chat = await Chats.findOne({
 			where: {id: params.params.id},
 			include: Messages,

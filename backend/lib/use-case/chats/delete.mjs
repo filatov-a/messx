@@ -2,7 +2,7 @@ import Base from "../base.mjs";
 import Chats from "../../models/chats.mjs";
 
 export default class Delete extends Base {
-	static async execute(params){
+	async execute(params){
 		const one = await Chats.destroy({
 			where: {
 				id: params.id

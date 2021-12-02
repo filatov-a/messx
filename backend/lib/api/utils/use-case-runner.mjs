@@ -6,7 +6,12 @@ export default class Runner {
 		return async function(req, res){
 			try {
 				const token = getToken(req);
-				const result = await Case.execute({...req, token});
+				const params = {...req, token};
+
+				const _case = new Case();
+				await _case.validate(params.body);
+				const result = await _case.execute(params);
+
 				res.send(result);
 			} catch (err) {
 				res.status(400).send({error: err.message});

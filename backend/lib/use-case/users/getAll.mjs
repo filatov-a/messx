@@ -2,7 +2,7 @@ import Base from "../base.mjs";
 import Users from "../../models/users.mjs";
 
 export default class GetAll extends Base {
-	static async execute(params){
+	async execute(params){
 		const {limit, offset} = params.query;
 		const all = await Users.findAndCountAll({
 			limit: limit,
