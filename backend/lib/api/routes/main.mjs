@@ -5,6 +5,11 @@ const router = express.Router();
 import controllerActions from "./controlers/action.mjs";
 import controllerUser from "./controlers/users.mjs";
 import controllerChats from "./controlers/chats.mjs";
+import controllerComments from "./controlers/comments.mjs";
+import controllerPostsCategories from "./controlers/posts-categories.mjs";
+import controllerChatsCategories from "./controlers/chats-categories.mjs";
+import controllerPosts from "./controlers/posts.mjs";
+import controllerMessages from "./controlers/messages.mjs";
 
 router.post("/register", controllerActions.register);
 router.get("/verify-email/:token", controllerActions.registerVerify);
@@ -21,30 +26,33 @@ router.patch("/users/:id", controllerUser.update);
 router.delete("/users/:id", controllerUser.delete);
 router.post("/users/avatar", controllerUser.setAvatar);
 
-// router.get("/api/comments/:id", controllerComments.getCommentById);
-// router.get("/api/comments/:id/likes", controllerComments.getAllLikesFormComment);
-// router.post("/api/comments/:id/like", controllerComments.newLike);
-// router.patch("/api/comments/:id", controllerComments.updateComment);
-// router.delete("/api/comments/:id", controllerComments.deleteComment);
-// router.delete("/api/comments/:id/like", controllerComments.deleteLikeFromComment);
-//
-// router.get("/categories", controllerCategories.getAllCategories);
-// router.get("/categories/:id", controllerCategories.getCategoryById);
-// router.get("/categories/:id/posts", controllerCategories.getAllPostsFormCategory);
-// router.post("/categories", controllerCategories.newCategory);
-// router.patch("/categories/:id", controllerCategories.updateCategory);
-// router.delete("/categories/:id", controllerCategories.deleteCategory);
-//
-// router.get("/api/posts", controllerPosts.getAllPosts);
-// router.get("/api/posts/:id", controllerPosts.getPostById);
-// router.get("/api/posts/:id/comments", controllerPosts.getAllCommentsFormPost);
-// router.post("/api/posts/:id/comments", controllerPosts.newComment);
-// router.get("/api/posts/:id/categories", controllerPosts.getAllCategoriesFromPost);
-// router.get("/api/posts/:id/like", controllerPosts.getAllLikesFromPost);
-// router.post("/api/posts/", controllerPosts.newPost);
-// router.post("/api/posts/:id/like", controllerPosts.newLike);
-// router.patch("/api/posts/:id", controllerPosts.updatePost);
-// router.delete("/api/posts/:id", controllerPosts.deletePost);
-// router.delete("/api/posts/:id/like", controllerPosts.deleteLikeFromPost);
+router.get("/api/comments/:id", controllerComments.get);
+router.post("/api/comments/:id/like", controllerComments.like);
+router.patch("/api/comments/:id", controllerComments.update);
+router.delete("/api/comments/:id", controllerComments.delete);
+
+router.get("/posts-categories", controllerPostsCategories.getAll);
+router.get("/posts-categories/:id", controllerPostsCategories.get);
+router.post("/posts-categories", controllerPostsCategories.create);
+router.patch("/posts-categories/:id", controllerPostsCategories.update);
+router.delete("/posts-categories/:id", controllerPostsCategories.delete);
+
+router.get("/chats-categories", controllerChatsCategories.getAll);
+router.get("/chats-categories/:id", controllerChatsCategories.get);
+router.post("/chats-categories", controllerChatsCategories.create);
+router.patch("/chats-categories/:id", controllerChatsCategories.update);
+router.delete("/chats-categories/:id", controllerChatsCategories.delete);
+
+router.get("/api/posts", controllerPosts.getAll);
+router.get("/api/posts/:id", controllerPosts.get);
+router.post("/api/posts/", controllerPosts.create);
+router.post("/api/posts/:id/like", controllerPosts.like);
+router.patch("/api/posts/:id", controllerPosts.update);
+router.delete("/api/posts/:id", controllerPosts.delete);
+
+router.get("/messages", controllerMessages.get);
+router.post("/messages", controllerMessages.create);
+router.patch("/messages/:id", controllerMessages.update);
+router.delete("/messages/:id", controllerMessages.delete);
 
 export default router;

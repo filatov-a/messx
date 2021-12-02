@@ -4,6 +4,7 @@ import Posts from "../../models/posts.mjs";
 import Chats from "../../models/chats.mjs";
 import LikesPosts from "../../models/likes-posts.mjs";
 import LikesComments from "../../models/likes-comments.mjs";
+import Messages from "../../models/messages.mjs";
 
 export default class Get extends Base {
 	async execute(params){
@@ -17,6 +18,7 @@ export default class Get extends Base {
 				{model: Chats},
 				{model: LikesPosts},
 				{model: LikesComments},
+				{model: Messages},
 			]
 		});
 		return {user};
