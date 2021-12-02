@@ -2,20 +2,20 @@ module.exports = {
 	up: async (queryInterface, Sequelize) => {
 		await queryInterface.createTable("MessagesToAnswers", {
 			id: {
+				type: Sequelize.UUID,
+				defaultValue: Sequelize.UUIDV4,
 				allowNull: false,
-				autoIncrement: true,
 				primaryKey: true,
-				type: Sequelize.INTEGER,
 			},
 			messageId: {
-				type: Sequelize.INTEGER,
+				type: Sequelize.UUID,
 				references: {model: "Messages", key: "id"},
 				onUpdate: "CASCADE",
         		onDelete: "SET NULL",
 				defaultValue: null,
 			},
 			messageAnswerId: {
-				type: Sequelize.INTEGER,
+				type: Sequelize.UUID,
 				references: {model: "Messages", key: "id"},
 				onUpdate: "CASCADE",
         		onDelete: "SET NULL",

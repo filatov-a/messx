@@ -3,20 +3,20 @@ module.exports = {
 	up: async (queryInterface, Sequelize) => {
 		await queryInterface.createTable("ChatsToCategories", {
 			id: {
+				type: Sequelize.UUID,
+				defaultValue: Sequelize.UUIDV4,
 				allowNull: false,
-				autoIncrement: true,
 				primaryKey: true,
-				type: Sequelize.INTEGER
 			},
 			cahtId: {
-				type: Sequelize.INTEGER,
+				type: Sequelize.UUID,
 				allowNull: false,
 				references: { model: "Chats", key: "id" },
 				onUpdate: "CASCADE",
 				onDelete: "CASCADE",
 			},
 			categoryId: {
-				type: Sequelize.INTEGER,
+				type: Sequelize.UUID,
 				allowNull: false,
 				references: { model: "ChatsCategories", key: "id" },
 				onUpdate: "CASCADE",

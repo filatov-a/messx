@@ -3,29 +3,24 @@ module.exports = {
 	up: async (queryInterface, Sequelize) => {
 		await queryInterface.createTable("UsersToFollowers", {
 			id: {
+				type: Sequelize.UUID,
+				defaultValue: Sequelize.UUIDV4,
 				allowNull: false,
-				autoIncrement: true,
 				primaryKey: true,
-				type: Sequelize.INTEGER
 			},
 			userId: {
-				type: Sequelize.INTEGER,
+				type: Sequelize.UUID,
 				references: {model: "Users", key: "id"},
 				onUpdate: "CASCADE",
 				onDelete: "SET NULL",
 				defaultValue: null,
 			},
 			followerId: {
-				type: Sequelize.INTEGER,
+				type: Sequelize.UUID,
 				references: {model: "Users", key: "id"},
 				onUpdate: "CASCADE",
 				onDelete: "SET NULL",
 				defaultValue: null,
-			},
-			isAdmin: {
-				type: Sequelize.BOOLEAN,
-				allowNull: false,
-				defaultValue: true,
 			},
 			createdAt: {
 				allowNull: false,

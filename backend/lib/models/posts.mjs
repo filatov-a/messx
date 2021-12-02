@@ -2,10 +2,11 @@ import Base from "./base.mjs";
 
 export default class Posts extends Base {
 	static modelSchema = {
+		id: { type: this.DT.UUID, defaultValue: this.DT.UUIDV4, primaryKey: true },
 		title: this.DT.STRING,
 		isActive: this.DT.BOOLEAN,
 		content: this.DT.STRING,
-		userId: this.DT.INTEGER,
+		userId: this.DT.UUID,
 	}
 	static modelName = "Posts";
 

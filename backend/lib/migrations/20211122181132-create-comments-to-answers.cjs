@@ -2,20 +2,20 @@ module.exports = {
 	up: async (queryInterface, Sequelize) => {
 		await queryInterface.createTable("CommentsToAnswers", {
 			id: {
+				type: Sequelize.UUID,
+				defaultValue: Sequelize.UUIDV4,
 				allowNull: false,
-				autoIncrement: true,
 				primaryKey: true,
-				type: Sequelize.INTEGER,
 			},
 			commentId: {
-				type: Sequelize.INTEGER,
+				type: Sequelize.UUID,
 				references: {model: "Comments", key: "id"},
 				onUpdate: "CASCADE",
 				onDelete: "SET NULL",
 				defaultValue: null,
 			},
 			commentAnswerId: {
-				type: Sequelize.INTEGER,
+				type: Sequelize.UUID,
 				references: {model: "Comments", key: "id"},
 				onUpdate: "CASCADE",
 				onDelete: "SET NULL",

@@ -3,6 +3,7 @@ import argon2 from "argon2";
 
 export default class Users extends Base {
 	static modelSchema = {
+		id: { type: this.DT.UUID, defaultValue: this.DT.UUIDV4, primaryKey: true },
 		username: this.DT.STRING,
 		password: this.DT.STRING,
 		full_name: this.DT.STRING,
@@ -21,6 +22,7 @@ export default class Users extends Base {
 
 	static associate(models) {
 		Users.hasMany(models.Posts, { foreignKey: "userId", onDelete: "cascade"});
+		Users.hasMany(models.Messages, { foreignKey: "userId", onDelete: "cascade"});
 		Users.hasMany(models.LikesComments, { foreignKey: "userId", onDelete: "cascade"});
 		Users.hasMany(models.LikesPosts, { foreignKey: "userId", onDelete: "cascade"});
 		Users.belongsToMany(models.Chats, {

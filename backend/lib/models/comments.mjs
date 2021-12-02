@@ -2,9 +2,10 @@ import Base from "./base.mjs";
 
 export default class Comments extends Base {
 	static modelSchema = {
+		id: { type: this.DT.UUID, defaultValue: this.DT.UUIDV4, primaryKey: true },
 		content: this.DT.STRING,
-		userId: this.DT.INTEGER,
-		postId: this.DT.INTEGER,
+		userId: this.DT.UUID,
+		postId: this.DT.UUID,
 	}
 
 	static modelName = "Comments";

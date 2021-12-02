@@ -3,24 +3,24 @@ module.exports = {
 	up: async (queryInterface, Sequelize) => {
 		await queryInterface.createTable("LikesComments", {
 			id: {
+				type: Sequelize.UUID,
+				defaultValue: Sequelize.UUIDV4,
 				allowNull: false,
-				autoIncrement: true,
 				primaryKey: true,
-				type: Sequelize.INTEGER
 			},
 			type: {
 				type: Sequelize.ENUM(["like", "dislike"]),
 				allowNull: false
 			},
 			userId: {
-				type: Sequelize.INTEGER,
+				type: Sequelize.UUID,
 				allowNull: false,
 				references: { model: "Users", key: "id" },
 				onUpdate: "CASCADE",
         		onDelete: "CASCADE",
 			},
 			commentId: {
-				type: Sequelize.INTEGER,
+				type: Sequelize.UUID,
 				allowNull: false,
 				references: { model: "Comments", key: "id" },
 				onUpdate: "CASCADE",

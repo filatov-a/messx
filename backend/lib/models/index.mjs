@@ -3,6 +3,7 @@ import Sequelize from "sequelize";
 import Users from "./users.mjs";
 import Chats from "./chats.mjs";
 import Messages from "./messages.mjs";
+import MessagesImages from "./messages-images.mjs";
 import MessagesToAnswers from "./messages-to-answers.mjs";
 import Posts from "./posts.mjs";
 import LikesPosts from "./likes-posts.mjs";
@@ -16,6 +17,7 @@ import CommentsToAnswers from "./comments-to-answers.mjs";
 import ChatsToCategories from "./chats-to-categories.mjs";
 
 import cnfgSeq from "../config/configSeq.cjs";
+import ChatsCategories from "./chats-categories.mjs";
 
 export default class DataBase {
 	configSeq = null;
@@ -57,21 +59,24 @@ export default class DataBase {
 	}
 
 	include(){
-		this.models.Users = Users;
-		this.models.Posts = Posts;
-		this.models.Chats = Chats;
-		this.models.Messages = Messages;
-		this.models.MessagesToAnswers = MessagesToAnswers;
-		this.models.LikesPosts = LikesPosts;
-		this.models.Comments = Comments;
-		this.models.LikesComments = LikesComments;
-		this.models.CommentsToAnswers = CommentsToAnswers;
-		this.models.PostsCategories = PostsCategories;
-		this.models.UsersToChats = UsersToChats;
-		this.models.UsersToFollowers = UsersToFollowers;
-		this.models.PostsImages = PostsImages
-		this.models.ChatsCategories = PostsCategories;
-		this.models.ChatsToCategories = ChatsToCategories;
+		this.models = {
+			Users,
+			Posts,
+			Chats,
+			Messages,
+			MessagesImages,
+			MessagesToAnswers,
+			LikesPosts,
+			Comments,
+			LikesComments,
+			CommentsToAnswers,
+			PostsCategories,
+			UsersToChats,
+			UsersToFollowers,
+			PostsImages,
+			ChatsCategories,
+			ChatsToCategories
+		};
 	}
 
 	initAndAssociateModels(){

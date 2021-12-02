@@ -3,10 +3,10 @@ module.exports = {
 	up: async (queryInterface, Sequelize) => {
 		await queryInterface.createTable("Posts", {
 			id: {
+				type: Sequelize.UUID,
+				defaultValue: Sequelize.UUIDV4,
 				allowNull: false,
-				autoIncrement: true,
 				primaryKey: true,
-				type: Sequelize.INTEGER
 			},
 			title: {
 				type: Sequelize.STRING,
@@ -22,7 +22,7 @@ module.exports = {
 				allowNull: false
 			},
 			userId: {
-				type: Sequelize.INTEGER,
+				type: Sequelize.UUID,
 				allowNull: false,
 				references: { model: "Users", key: "id" },
 				onUpdate: "CASCADE",

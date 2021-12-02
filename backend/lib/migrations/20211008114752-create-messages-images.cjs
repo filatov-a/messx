@@ -1,23 +1,23 @@
 "use strict";
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		await queryInterface.createTable("PostsImages", {
+		await queryInterface.createTable("MessagesImages", {
 			id: {
 				type: Sequelize.UUID,
 				defaultValue: Sequelize.UUIDV4,
 				allowNull: false,
 				primaryKey: true,
 			},
-      		image: {
+			image: {
 				type: Sequelize.STRING,
-        		defaultValue: null,
+				defaultValue: null,
 			},
-			postId: {
+			messageId: {
 				type: Sequelize.UUID,
 				allowNull: false,
-				references: { model: "Posts", key: "id" },
+				references: {model: "Messages", key: "id"},
 				onUpdate: "CASCADE",
-        		onDelete: "CASCADE",
+				onDelete: "CASCADE",
 			},
 			createdAt: {
 				allowNull: false,
@@ -30,6 +30,6 @@ module.exports = {
 		});
 	},
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.dropTable("PostsImages");
+		await queryInterface.dropTable("MessagesImages");
 	}
 };

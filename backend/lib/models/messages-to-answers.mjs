@@ -2,8 +2,9 @@ import Base from "./base.mjs";
 
 export default class MessagesToAnswers extends Base {
 	static modelSchema = {
-		messageId: this.DT.INTEGER,
-		messageAnswerId: this.DT.INTEGER,
+		id: { type: this.DT.UUID, defaultValue: this.DT.UUIDV4, primaryKey: true },
+		messageId: this.DT.UUID,
+		messageAnswerId: this.DT.UUID,
 	}
 	static modelName = "MessagesToAnswers";
 
