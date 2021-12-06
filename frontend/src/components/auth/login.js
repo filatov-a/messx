@@ -1,30 +1,27 @@
 import React from "react";
-import {Button, TextField} from "@material-ui/core";
-import {Alert} from "@material-ui/lab";
-import {UseStyles} from "../../styles/login";
-import {sendLogin, clearError} from "../../redux/modules/users";
+import {Button, TextField} from "@mui/material";
+import {styleAuth} from "../../styles/main"
+import {sendLogin} from "../../redux/modules/users";
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
 import * as r from "react";
+import {useTranslation} from 'react-i18next'
+const Tr = useTranslation;
 
 function login() {
-    const classes = UseStyles();
+    const {t} = Tr();
     const dispatch = rr.useDispatch();
     const users = rr.useSelector(state => state.users);
 
     const [username, setUsername] = r.useState('');
     const [password, setPassword] = r.useState('');
-    const history = rd.useHistory();
-
-    r.useEffect(() => {
-        dispatch(clearError());
-    }, [dispatch])
+    const navigate = rd.useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const User = {username, password};
         if (users.status === 'idle'){
-            dispatch(sendLogin({user: User, history: history}));
+            dispatch(sendLogin({user: User, navigate: navigate}));
         }
     };
 
@@ -32,19 +29,12 @@ function login() {
     const onChangePassword = (e) => setPassword(e.target.value);
 
     return (
-        <div className={classes.main}>
-            <h2>Sing in</h2>
+        <div style={styleAuth.Div}>
+            <h2>{t('sing in')}</h2>
             <form onSubmit={handleSubmit}>
-                {users.error &&
-                    <Alert className={classes.error} severity="error">
-                        {/* <AlertTitle>Error</AlertTitle> */}
-                        {users.error}
-                    </Alert>
-                }
-
-                <TextField onChange={onChangeUsername} className={classes.input } required label='username'/>
-                <TextField onChange={onChangePassword} className={classes.input} required label='password' type='password'/>
-                <Button className={classes.button} type="submit" variant='contained' color='primary'>Send</Button>
+                <TextField style={styleAuth.TextField} onChange={onChangeUsername} required label={t('username')}/>
+                <TextField style={styleAuth.TextField} onChange={onChangePassword} required label={t('password')} type='password'/>
+                <Button style={styleAuth.Button} type="submit" variant='contained' color='primary'>{t("send")}</Button>
             </form>
         </div>
     )

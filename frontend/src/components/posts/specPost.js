@@ -8,7 +8,7 @@ import {
 } from '../../redux/modules/posts';
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
-import {Avatar, ButtonBase, Box, Button} from '@material-ui/core';
+import {Avatar, ButtonBase, Box, Button} from '@mui/material';
 import config from '../../config/config';
 import * as r from "react";
 import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
@@ -23,7 +23,7 @@ import CreateComment from "./createComment";
 function post() {
     const users = rr.useSelector(state => state.users);
     const posts = rr.useSelector(state => state.posts);
-    const history = rd.useHistory();
+    const navigate = rd.useNavigate();
     const dispatch = rr.useDispatch();
     const classes = UseStyles();
     const id = parseInt(rd.useParams().id);
@@ -55,7 +55,7 @@ function post() {
 
     const handleDelete = () => {
         dispatch(sendDeletePost(id));
-        history.push('/posts');
+        navigate('/posts');
     }
 
     const handleSetLike = () => {

@@ -1,14 +1,16 @@
 import React from "react";
-import {Button, TextField} from "@material-ui/core";
-import {Alert, AlertTitle} from "@material-ui/lab";
-import {UseStyles} from "../../styles/login";
+import {MenuItem} from "@mui/material";
 import {clearError, sendRegister} from "../../redux/modules/users";
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
 import * as r from "react";
+import {Button, Avatar, Toolbar, TextField, Select} from "@mui/material";
+import {styleAuth} from "../../styles/main"
+import {useTranslation} from 'react-i18next'
+const Tr = useTranslation;
 
 function register() {
-    const classes = UseStyles();
+    const {t} = Tr();
     const dispatch = rr.useDispatch();
     const users = rr.useSelector(state => state.users);
 
@@ -16,43 +18,40 @@ function register() {
     const [username, setUsername] = r.useState('');
     const [email, setEmail] = r.useState('');
     const [password, setPassword] = r.useState('');
-    const [password_confirmation, setPasswordConfirmation] = r.useState('');
-    const history = rd.useHistory();
-
-    r.useEffect(() => {
-        dispatch(clearError());
-    }, [dispatch])
+    const [gender, setGender] = r.useState('male');
+    const navigate = rd.useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const User = { full_name, username, email, password, password_confirmation };
+        const User = { full_name, username, email, password, gender };
         if (users.status === 'idle'){
-            dispatch(sendRegister({user: User, history: history}));
+            dispatch(sendRegister({user: User, navigate: navigate}));
         }
     }
 
     const onChangeUsername = (e) => setUsername(e.target.value);
     const onChangeName = (e) => setFullName(e.target.value);
     const onChangePassword = (e) => setPassword(e.target.value);
-    const onChangePassword2 = (e) => setPasswordConfirmation(e.target.value);
     const onChangeEmail = (e) => setEmail(e.target.value);
+    const onChangeGender = (e) => setGender(e.target.value);
 
     return (
-        <div className={classes.main}>
-            <h2>Register</h2>
+        <div style={styleAuth.Div}>
+            <h2>{t('register')}</h2>
             <form onSubmit={handleSubmit}>
-                {users.error &&
-                    <Alert className={classes.error} severity="error">
-                        <AlertTitle>Error</AlertTitle>
-                        {users.error}
-                    </Alert>
-                }
-                <TextField onChange={onChangeUsername} className={classes.input} required label='username'/>
-                <TextField onChange={onChangeName} className={classes.input} required label='full name'/>
-                <TextField onChange={onChangeEmail} className={classes.input} required label='email' type='email' placeholder='my@gmail.com'/>
-                <TextField onChange={onChangePassword} className={classes.input} required label='password' type='password'/>
-                <TextField onChange={onChangePassword2} className={classes.input} required label='confirm password' type='password'/>
-                <Button className={classes.button} type="submit" variant='contained' color='primary'>Send</Button>
+                <TextField style={styleAuth.TextField} onChange={onChangeUsername} required label={t('username')}/>
+                <TextField style={styleAuth.TextField} onChange={onChangeName} required label={t('full name')}/>
+                <TextField style={styleAuth.TextField} onChange={onChangeEmail} required label={t('email')} type='email' placeholder='my@gmail.com'/>
+                <TextField style={styleAuth.TextField} onChange={onChangePassword} required label={t('password')} type='password'/>
+                <Select
+                    style={styleAuth.TextField}
+                    value={gender}
+                    onChange={onChangeGender}
+                >
+                    <MenuItem value={"male"}>{t("male")}</MenuItem>
+                    <MenuItem value={"female"}>{t("female")}</MenuItem>
+                </Select>
+                <Button style={styleAuth.Button} type="submit" variant='contained' color='primary'>{t("send")}</Button>
             </form>
         </div>
     );

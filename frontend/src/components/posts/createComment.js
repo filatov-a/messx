@@ -1,6 +1,6 @@
 import React from "react";
-import {Button, TextField, TextareaAutosize} from "@material-ui/core";
-import {Alert} from "@material-ui/lab";
+import {Button, TextField, TextareaAutosize} from "@mui/material";
+import {Alert} from "@mui/material";
 import {UseStyles} from "../../styles/login";
 import {sendCreateComment, sendCreatePost, sendGetPostById} from "../../redux/modules/posts";
 import {sendGetAllCategories} from "../../redux/modules/categories";

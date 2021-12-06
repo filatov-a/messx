@@ -1,16 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from "axios";
-import config from "../../config/config";
+import axios from "../utils/axios";
 
 export const sendGetUserById = createAsyncThunk(
     'users/sendGetUserById',
     async (id, thunkAPI) => {
         try {
             if (!id) return null;
-            const res = await axios.get(`${config.url}/api/users/${id}`);
+            const res = await axios.get(`/users/${id}`);
             return res.data;
         } catch (err) {
-
+            return {error: err.response.data.error};
         }
     }
 )
@@ -20,10 +19,10 @@ export const sendGetAllUsers = createAsyncThunk(
     async (param) => {
         try {
             const lim = 10
-            const res = await axios.get(`${config.url}/api/users?limit=${lim}&offset=${lim*(param.page-1)}`);
+            const res = await axios.get(`/users?limit=${lim}&offset=${lim*(param.page-1)}`);
             return {users: res.data.users, count: res.data.count, page: param.page};
         } catch (err) {
-            console.log(err);
+            return {error: err.response.data.error};
         }
     }
 )
@@ -32,21 +31,22 @@ export const sendDeleteUser = createAsyncThunk(
     'users/sendDeleteUser',
     async (id) => {
         try {
-            await axios.delete(`${config.url}/api/users/${id}`);
+            await axios.delete(`/users/${id}`);
+            return {success: "user deleted"};
         } catch (err) {
-
+            return {error: err.response.data.error};
         }
     }
 )
 
 export const sendCreateUser = createAsyncThunk(
-    'users/sendDeleteUser',
+    'users/sendCreateUser',
     async (param) => {
         try {
             let header = { headers: { Authorization: `Bearer ${param.token}` }}
-            const user = await axios.post(`${config.url}/api/users`, param.user, header);
+            const user = await axios.post(`/users`, param.user, header);
             param.history.push(`/users/${user.data.id}`);
-            return {error: null};
+            return {success: "user created"};
         } catch (err) {
             return {error: err.response.data.error};
         }
@@ -58,10 +58,10 @@ export const sendSetAvatar = createAsyncThunk(
     async (param, thunkAPI) => {
         try {
             let header = { headers: { Authorization: `Bearer ${param.token}` }}
-            const res = await axios.post(`${config.url}/api/users/avatar`, param.file, header);
-            return res.data;
+            const res = await axios.post(`/users/avatar`, param.file, header);
+            return {success: "set avatar", avatar: res.data};
         } catch (err) {
-
+            return {error: err.response.data.error};
         }
     }
 )
@@ -70,9 +70,9 @@ export const sendUpdate = createAsyncThunk(
     'users/sendUpdate',
     async (param, thunkAPI) => {
         try {
-            const res = await axios.patch(`${config.url}/api/users/${param.id}`, param.user);
-            param.history.push(`/users/${param.id}`);
-            return {error: null, user: res.data};
+            const res = await axios.patch(`/users/${param.id}`, param.user);
+            param.navigate(`/users/${param.id}`);
+            return {success: "updated", user: res.data};
         } catch (err) {
             return {error: err.response.data.error};
         }
@@ -83,13 +83,16 @@ export const sendLogin = createAsyncThunk(
     'users/sendLogin',
     async (param, thunkAPI) => {
         try {
-            const res = await axios.post(`${config.url}/api/auth/login`, param.user);
-            param.history.push('/');
-            return {token: res.data.token,
+            const res = await axios.post(`/login`, param.user);
+            param.navigate('/');
+            return {
+                token: res.data.token,
                 user: res.data.user,
-                error: null};
+                error: null,
+                success: "login"
+            };
         } catch (err) {
-            return {token: null, user: null, error: err.response.data.error};
+            return {error: err.response.data.error};
         }
     }
 )
@@ -98,9 +101,9 @@ export const sendRegister = createAsyncThunk(
     'users/sendRegister',
     async (param, thunkAPI) => {
         try {
-            await axios.post(`${config.url}/api/auth/register`, param.user);
-            param.history.push('/login');
-            return {error: null};
+            await axios.post(`/register`, param.user);
+            param.navigate('/login');
+            return {error: null, success: "check your email"};
         } catch (err) {
             return {error: err.response.data.error};
         }
@@ -111,8 +114,8 @@ export const sendVerifyEmail = createAsyncThunk(
     'users/sendVerifyEmail',
     async (token, thunkAPI) => {
         try {
-            await axios.get(`${config.url}/api/auth/register/verify-email/${token}`);
-            return {error: null};
+            await axios.get(`/verify-email/${token}`);
+            return {success: "email is verified"};
         } catch (err) {
             return {error: err.response.data.error};
         }
@@ -123,6 +126,7 @@ const initialState = {
     users: [],
     specUser: null,
     error: null,
+    success: null,
     status: 'idle',
     token: null,
     user: null,
@@ -137,52 +141,61 @@ const slice = createSlice({
         logOut: (state, action) => {
             state.user = null;
             state.token = null;
+            state.success = "logout";
         },
         setAvatar: (state, action) => {
             state.user.profile_picture = action.payload;
         },
-        clearError: (state, action) => {
+        clearMess: (state, action) => {
             state.error = null;
+            state.success = null;
         },
     },
-    extraReducers: {
-        [sendGetAllUsers.fulfilled]: (state, action) => {
+    extraReducers: (builder) => {
+        builder.addCase(sendGetAllUsers.fulfilled, (state, action) => {
             state.count = action.payload.count;
             state.page = action.payload.page;
             state.users = action.payload.users;
             state.specUser = null;
-        },
-        [sendGetUserById.fulfilled]: (state, action) => {
+        })
+        builder.addCase(sendGetUserById.fulfilled, (state, action) => {
             state.specUser = action.payload;
-        },
-        [sendDeleteUser.fulfilled]: (state, action) => {
+        })
+        builder.addCase(sendDeleteUser.fulfilled, (state, action) => {
             state.specUser = null;
             state.users = null;
-        },
-        [sendCreateUser.fulfilled]: (state, action) => {
+            state.success = "user deleted";
+        })
+        builder.addCase(sendCreateUser.fulfilled, (state, action) => {
             state.error = action.payload.error;
-        },
-        [sendSetAvatar.fulfilled]: (state, action) => {
+            state.success = action.payload.success;
+        })
+        builder.addCase(sendSetAvatar.fulfilled, (state, action) => {
             state.specUser.profile_picture = action.payload;
             state.user.profile_picture = action.payload;
-        },
-        [sendUpdate.fulfilled]: (state, action) => {
+            state.error = action.payload.error;
+            state.success = action.payload.success;
+        })
+        builder.addCase(sendUpdate.fulfilled, (state, action) => {
             state.error = action.payload.error;
             if (action.payload.user) state.user = action.payload.user;
-        },
-        [sendLogin.fulfilled]: (state, action) => {
+        })
+        builder.addCase(sendLogin.fulfilled, (state, action) => {
             state.token = action.payload.token;
             state.user = action.payload.user;
             state.error = action.payload.error;
-        },
-        [sendRegister.fulfilled]: (state, action) => {
+            state.success = action.payload.success;
+        })
+        builder.addCase(sendRegister.fulfilled, (state, action) => {
             state.error = action.payload.error;
-        },
-        [sendVerifyEmail.fulfilled]: (state, action) => {
+            state.success = action.payload.success;
+        })
+        builder.addCase(sendVerifyEmail.fulfilled, (state, action) => {
             state.error = action.payload.error;
-        },
+            state.success = action.payload.success;
+        })
     }
 })
 
 export default slice.reducer;
-export const { logOut, setAvatar, clearError } = slice.actions;
+export const { logOut, setAvatar, clearMess } = slice.actions;

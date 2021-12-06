@@ -1,9 +1,9 @@
 import React from "react";
-import {Box} from '@material-ui/core';
+import {Box} from '@mui/material';
 import {sendDeleteCategory, sendGetAllCategories} from '../../redux/modules/categories'
 import * as rr from "react-redux";
 import * as r from "react";
-import {CustomCard} from '../extra/card'
+import {CustomCard} from '../utils/card'
 import {Link} from "react-router-dom";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";

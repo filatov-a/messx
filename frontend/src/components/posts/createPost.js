@@ -1,7 +1,7 @@
 import React from "react";
-import {Button, TextField, TextareaAutosize} from "@material-ui/core";
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import {Alert} from "@material-ui/lab";
+import {Button, TextField, TextareaAutosize} from "@mui/material";
+import Autocomplete from '@mui/material/Autocomplete';
+import {Alert} from "@mui/material";
 import {UseStyles} from "../../styles/login";
 import {sendCreatePost, sendGetPostById} from "../../redux/modules/posts";
 import {sendGetAllCategories} from "../../redux/modules/categories";
@@ -20,7 +20,7 @@ function createPost() {
     const [title, setTitle] = r.useState('');
     const [content, setContent] = r.useState('');
     const [Categories, setCategories] = r.useState([]);
-    const history = rd.useHistory();
+    const navigate = rd.useNavigate();
 
     r.useEffect(() => {
         dispatch(sendGetAllCategories());
@@ -34,7 +34,7 @@ function createPost() {
             categories: Categories,
         };
         if (users.status === 'idle'){
-            dispatch(sendCreatePost({user: param, token: users.token, history}));
+            dispatch(sendCreatePost({user: param, token: users.token, navigate}));
         }
     };
 

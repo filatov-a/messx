@@ -2,7 +2,7 @@ import React from "react";
 import {sendVerifyEmail} from "../../redux/modules/users";
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
-import {Redirect} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import * as r from "react";
 
 function verify() {
@@ -24,7 +24,7 @@ function verify() {
 
     return (
         <div>
-            {users.error && <Redirect to="/404" />}
+            {users.error && <Navigate to="/404" />}
             {!users.error && ok}
         </div>
     )

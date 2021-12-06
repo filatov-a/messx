@@ -1,15 +1,17 @@
 import React from "react";
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import {Button, ButtonBase} from '@material-ui/core';
-import Avatar from '@material-ui/core/Avatar';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import {Link} from "react-router-dom";
+import {
+    Card,
+    Typography,
+    Box,
+    Avatar,
+    Button,
+    ButtonBase,
+    CardMedia,
+    CardActions,
+    CardActionArea,
+    CardContent,
+} from '@mui/material';
+import {makeStyles} from '@mui/styles'
 import config from "../../config/config";
 import * as rd from "react-router-dom";
 
@@ -46,12 +48,12 @@ const UseStyles = makeStyles({
 
 export const CustomCard = (props) => {
     const classes = UseStyles();
-    const history = rd.useHistory();
+    const navigate = rd.useNavigate();
 
     let width = props.width, height = props.height;
 
     const onClick = () => {
-        history.push(props.to)
+        navigate(props.to)
     }
 
     return (

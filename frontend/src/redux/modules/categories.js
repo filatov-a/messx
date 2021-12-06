@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import axios from "axios";
-import config from "../../config";
+import axios from "../utils/axios";
+import config from "../../config/config";
 
 export const sendGetAllCategories = createAsyncThunk(
     'categories/sendCreatePost',

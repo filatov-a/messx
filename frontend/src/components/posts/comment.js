@@ -1,7 +1,7 @@
 import React from "react";
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
-import {Avatar, ButtonBase, Box, Button} from '@material-ui/core';
+import {Avatar, ButtonBase, Box, Button} from '@mui/material';
 import config from '../../config/config';
 import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import ThumbDownOutlinedIcon from '@material-ui/icons/ThumbDownOutlined';

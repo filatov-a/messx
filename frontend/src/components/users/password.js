@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, TextField} from "@material-ui/core";
+import {Button, TextField} from "@mui/material";
 import {Alert} from "@material-ui/lab";
 import {UseStyles} from "../../styles/login";
 import {clearError} from "../../redux/modules/users";
@@ -17,7 +17,7 @@ function password() {
 
     const [password, setPassword] = r.useState('');
     const [password2, setPassword2] = r.useState('');
-    const history = rd.useHistory();
+    const navigate = rd.useNavigate();
 
     r.useEffect(() => {
         dispatch(clearError());
@@ -30,7 +30,7 @@ function password() {
             password_confirmation: password2,
         };
         if (users.status === 'idle'){
-            dispatch(sendUpdate({user: User, history: history, id: decode.id}));
+            dispatch(sendUpdate({user: User, navigate: navigate, id: decode.id}));
         }
     };
 

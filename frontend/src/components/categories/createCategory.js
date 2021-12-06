@@ -1,6 +1,6 @@
 import React from "react";
-import {Button, TextField, TextareaAutosize} from "@material-ui/core";
-import {Alert} from "@material-ui/lab";
+import {Button, TextField, TextareaAutosize} from "@mui/material";
+import {Alert} from "@mui/material";
 import {UseStyles} from "../../styles/login";
 import {sendCreateCategory} from "../../redux/modules/categories";
 import {sendGetAllCategories} from "../../redux/modules/categories";
@@ -16,7 +16,7 @@ function createCategory() {
 
     const [title, setTitle] = r.useState('');
     const [description, setDescription] = r.useState('');
-    const history = rd.useHistory();
+    const navigate = rd.useNavigate();
 
     r.useEffect(() => {
         dispatch(sendGetAllCategories());
@@ -29,7 +29,7 @@ function createCategory() {
             description: description,
         };
         if (users.status === 'idle'){
-            dispatch(sendCreateCategory({user: param, history: history}));
+            dispatch(sendCreateCategory({user: param, navigate}));
         }
     };
 

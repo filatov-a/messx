@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "axios";
-import config from "../../config";
+import config from "../../config/config";
 import {convertDate} from "../../utils/date";
 
 export const sendGetAllPosts = createAsyncThunk(
@@ -8,29 +8,12 @@ export const sendGetAllPosts = createAsyncThunk(
     async (param) => {
         try {
             const lim = 10;
-            const url = `${config.url}/api/posts?limit=${lim}&offset=${lim*(param.page-1)}&title=${param.text}`;
+            const url = `/posts?limit=${lim}&offset=${lim*(param.page-1)}&title=${param.text}`;
             const res = await axios.get(url);
 
             convertDate(res.data);
 
-            let posts = []
-            for (let i = 0; i < res.data.posts.length; i++){
-                const id = res.data.posts[i].id;
-                const post = res.data.posts[i];
-                const resL = await axios.get(`${config.url}/api/posts/${id}/like`);
-                const comments = await axios.get(`${config.url}/api/posts/${id}/comments`);
-                const user = await axios.get(`${config.url}/api/users/${post.userId}`);
-                let obj = {
-                    post: post,
-                    user: user.data,
-                    votes: resL.data.likes.length-resL.data.dislikes.length,
-                    answers: comments.data.length,
-                }
-                posts.push(obj)
-            }
-            let search = ''
-            if (param.text) search = param.text;
-            return {posts: posts, page: param.page, count: res.data.count, search: search};
+            return {posts: res.data.posts, page: param.page, count: res.data.count};
         } catch (err) {
             return {error: err.response.data.error};
         }

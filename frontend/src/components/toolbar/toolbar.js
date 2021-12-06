@@ -1,65 +1,94 @@
 import React from "react";
-import {Link} from "react-router-dom";
-import {UseStyles} from "../../styles/toolbar";
-import {Button, Avatar, Box, InputBase} from "@material-ui/core";
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import {Button, Avatar} from "@mui/material";
+import {styleToolbar} from "../../styles/main";
+import {Link} from "react-router-dom"
+import {Box, Fab, AppBar, Tooltip, Toolbar} from "@mui/material";
+import {Add, Send} from "@mui/icons-material"
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
 import config from "../../config/config";
-import AddIcon from '@material-ui/icons/Add';
-import Fab from '@material-ui/core/Fab';
-import Tooltip from '@material-ui/core/Tooltip';
 import {parseToken} from '../../utils/parseToken';
 import Lg from './lgSelector'
+import {useTranslation} from 'react-i18next'
+import Alert from "../utils/alert";
+const Tr = useTranslation;
 
 function toolbar() {
-    const classes = UseStyles();
+    const {t} = Tr();
     const users = rr.useSelector(state => state.users);
-    const posts = rr.useSelector(state => state.posts);
-    const history = rd.useHistory();
+    const dispatch = rr.useDispatch();
+    const navigate = rd.useNavigate();
     let decode = parseToken(users.token);
 
     const register = () => {
-        history.push('/register');
+        navigate('/register');
     }
 
     return (
-        <div className={classes.root}>
-            <AppBar className={classes.toolbar} position="static">
-                <Toolbar>
-                    <div className={classes.homeDiv}>
-                        <Link className={classes.a} to="/">HOME</Link>
+        <div>
+            <AppBar position="static">
+                <Toolbar style={styleToolbar.toolbar}>
+                    <div style={{flexGrow: 7, textAlign: 'left'}}>
+                        <Link style={styleToolbar.Link} to="/">{t("home")}</Link>
                     </div>
+                    {!users.token &&
                     <Lg/>
+                    }
                     {!users.token &&
                     <div>
-                        <Link className={classes.a} to="/login">SING IN</Link>
-                        <Button className={classes.button}
+                        <Link style={styleToolbar.Link} to="/login">{t("sing in")}</Link>
+                        <Button
+                            style={styleToolbar.button}
                                 onClick={register}
-                                variant='contained' color='primary'>REGISTER</Button>
+                                variant='contained' color='primary'
+                        >
+                            {t("register")}
+                        </Button>
                     </div>
                     }
                     {users.token && decode && users.user &&
                     <Box display='flex'>
-                        {users.user.role === "admin" &&
-                        <Tooltip title="Add post" aria-label="add">
+                        <Tooltip title="Add post" arrow style={{marginLeft: 10}}>
                             <Link to={'/createpost'}>
                                 <Fab color="primary" size="small">
-                                    <AddIcon/>
+                                    <Add/>
                                 </Fab>
                             </Link>
                         </Tooltip>
-                        }
-                        <Tooltip title="account" placement="bottom-start" style={{marginLeft: 10}}>
+                        <Tooltip title="Send message" arrow style={{marginLeft: 10}}>
+                            <Link to={'/chats'}>
+                                <Fab color="primary" size="small">
+                                    <Send/>
+                                </Fab>
+                            </Link>
+                        </Tooltip>
+                        <Tooltip title="account" placement="bottom-start" arrow style={{marginLeft: 10}}>
                             <Link to={`/users/${decode.id}`}>
-                                <Avatar alt="Remy Sharp" src={`${config.url}/images/${users.user.profile_picture}`} className={classes.img}/>
+                                <Avatar style={styleToolbar.Avatar} alt="Remy Sharp" src={`${config.url}/images/${users.user.profile_picture}`}/>
                             </Link>
                         </Tooltip>
                     </Box>
                     }
                 </Toolbar>
             </AppBar>
+            {users.error &&
+                <div style={{width: 250, margin: 15, right: 15, position: "absolute"}}>
+                    <Alert
+                        dispatch={dispatch}
+                        text={users.error}
+                        severity={"error"}
+                    />
+                </div>
+            }
+            {users.success &&
+            <div style={{width: 250, margin: 15, right: 15, position: "absolute"}}>
+                <Alert
+                    dispatch={dispatch}
+                    text={users.success}
+                    severity={"success"}
+                />
+            </div>
+            }
         </div>
     )
 }

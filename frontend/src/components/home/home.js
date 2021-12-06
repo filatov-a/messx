@@ -1,13 +1,14 @@
 import React from "react";
-import { Box, Typography } from '@material-ui/core';
-import {CustomCard} from '../extra/card'
-import {makeStyles} from '@material-ui/core/styles'
+import { Box, Typography } from '@mui/material';
+import {CustomCard} from '../utils/card'
+import {makeStyles} from '@mui/styles'
 import {useTranslation} from 'react-i18next'
 const Tr = useTranslation;
 
 const UseStyles = makeStyles({
     text: {
-        marginTop: 20
+        marginTop: 20,
+        color: "green"
     }
 })
 
@@ -19,20 +20,6 @@ function home() {
             <Typography className={classes.text} variant="h4" component="h2">
                 {t("hello")}
             </Typography>
-            <Box display='block'>
-                <CustomCard title={t("contact")}
-                            content={t("contactText")}
-                            to={`/contacts`}/>
-                <CustomCard title={t("cost")}
-                            content={t("costText")}
-                            to={`/cost`}/>
-                <CustomCard title={t("location")}
-                            content={t("locationText")}
-                            to={`map`}/>
-            </Box>
-            <Box display='flex' justifyContent={'center'}>
-
-            </Box>
         </Box>
     );
 

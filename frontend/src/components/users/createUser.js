@@ -1,7 +1,5 @@
 import React from "react";
-import {Button, TextField} from "@material-ui/core";
-import {Autocomplete} from "@material-ui/lab";
-import {Alert} from "@material-ui/lab";
+import {Alert, Autocomplete, Button, TextField} from "@mui/material";
 import {UseStyles} from "../../styles/login";
 import {sendCreateUser} from "../../redux/modules/users";
 import * as rr from "react-redux";
@@ -18,7 +16,7 @@ function createUser() {
     const [password, setPassword] = r.useState('');
     const [fullName, setFullName] = r.useState('');
     const [role, setRole] = r.useState('');
-    const history = rd.useHistory();
+    const navigate = rd.useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -30,7 +28,7 @@ function createUser() {
             role: role,
         };
         if (users.status === 'idle'){
-            dispatch(sendCreateUser({user: param, history: history, token: users.token}));
+            dispatch(sendCreateUser({user: param, navigate: navigate, token: users.token}));
         }
     };
 

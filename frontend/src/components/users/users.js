@@ -1,15 +1,12 @@
 import React from "react";
-import {Avatar, Box} from '@material-ui/core';
-import {CustomCard} from '../extra/card';
+import {Avatar, Box, Tooltip, Pagination, Fab} from '@mui/material';
+import {CustomCard} from '../utils/card';
 import {sendGetAllUsers} from '../../redux/modules/users'
 import * as rr from "react-redux";
 import * as r from "react";
 import config from "../../config/config";
-import {Pagination} from "@material-ui/lab";
-import {sendGetAllPosts} from "../../redux/modules/posts";
-import Tooltip from "@material-ui/core/Tooltip";
 import {Link} from "react-router-dom";
-import Fab from "@material-ui/core/Fab";
+
 import AddIcon from "@material-ui/icons/Add";
 
 function users() {

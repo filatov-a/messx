@@ -1,14 +1,14 @@
 import React from "react";
-import {Box} from '@material-ui/core';
-import {Pagination} from '@material-ui/lab';
+import {Box} from '@mui/material';
+import {Pagination} from '@mui/material';
 import {sendGetAllPosts, sendGetPostById} from '../../redux/modules/posts'
 import { sendGetAllUsers, sendGetUserById} from '../../redux/modules/users'
 import * as rr from "react-redux";
 import * as r from "react";
-import {CustomCard} from '../extra/card'
-import Tooltip from "@material-ui/core/Tooltip";
+import {CustomCard} from '../utils/card'
+import Tooltip from "@mui/material/Tooltip";
 import {Link} from "react-router-dom";
-import Fab from "@material-ui/core/Fab";
+import Fab from "@mui/material/Fab";
 import AddIcon from "@material-ui/icons/Add";
 
 function posts() {

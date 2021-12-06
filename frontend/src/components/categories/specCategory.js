@@ -6,18 +6,18 @@ import {
 import { sendGetCategoryById, sendDeleteCategory } from '../../redux/modules/categories';
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
-import {Avatar, ButtonBase, Box, Button} from '@material-ui/core';
+import {Avatar, ButtonBase, Box, Button} from '@mui/material';
 import * as r from "react";
 import {UseStyles} from '../../styles/specP';
 import {parseToken} from '../../utils/parseToken';
 import DeleteIcon from "@material-ui/icons/Delete";
-import {CustomCard} from '../extra/card'
+import {CustomCard} from '../utils/card'
 
 function category() {
     const users = rr.useSelector(state => state.users);
     const posts = rr.useSelector(state => state.posts);
     const categories = rr.useSelector(state => state.categories);
-    const history = rd.useHistory();
+    const navigate = rd.useNavigate();
     const dispatch = rr.useDispatch();
     const classes = UseStyles();
     const id = parseInt(rd.useParams().id);
@@ -35,7 +35,7 @@ function category() {
     },[dispatch])
 
     const handleDelete = () => {
-        dispatch(sendDeleteCategory({id: id, history: history}));
+        dispatch(sendDeleteCategory({id: id, navigate}));
     }
 
     // console.log(posts);

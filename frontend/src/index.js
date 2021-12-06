@@ -24,13 +24,21 @@ const loadingMarkup = (
     </div>
 )
 
-ReactDOM.render(
-    <Suspense fallback={loadingMarkup}>
-        <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-                <App />
-            </PersistGate>
-        </Provider>
-    </Suspense>,
-    document.getElementById('root')
-);
+const render = () => {
+    ReactDOM.render(
+        <Suspense fallback={loadingMarkup}>
+            <Provider store={store}>
+                <PersistGate loading={null} persistor={persistor}>
+                    <App/>
+                </PersistGate>
+            </Provider>
+        </Suspense>,
+        document.getElementById('root')
+    );
+}
+
+function main(){
+    render();
+}
+
+main()

@@ -1,8 +1,5 @@
 import React from "react";
-import {Button, TextField} from "@material-ui/core";
-import {Alert} from "@material-ui/lab";
-import {UseStyles} from "../../styles/login";
-import {clearError} from "../../redux/modules/users";
+import {Button, TextField, Alert} from "@mui/material";
 import {sendUpdate} from "../../redux/modules/users";
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
@@ -10,17 +7,12 @@ import * as r from "react";
 import {parseToken} from "../../utils/parseToken";
 
 function email() {
-    const classes = UseStyles();
     const dispatch = rr.useDispatch();
     const users = rr.useSelector(state => state.users);
     const decode = parseToken(users.token)
 
     const [email, setEmail] = r.useState('');
-    const history = rd.useHistory();
-
-    r.useEffect(() => {
-        dispatch(clearError());
-    }, [dispatch])
+    const navigate = rd.useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,7 +20,7 @@ function email() {
             email: email,
         };
         if (users.status === 'idle'){
-            dispatch(sendUpdate({user: User, history: history, id: decode.id}));
+            dispatch(sendUpdate({user: User, navigate: navigate, id: decode.id}));
         }
     };
 
