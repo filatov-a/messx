@@ -11,8 +11,6 @@ export default class Users extends Base {
 		email: this.DT.STRING,
 		profile_picture: this.DT.STRING,
 		rating: this.DT.INTEGER,
-		phone: this.DT.STRING,
-		card: this.DT.STRING,
 		role: this.DT.ENUM(["user", "admin", "superAdmin"]),
 		isVerified: this.DT.BOOLEAN,
 		isActive: this.DT.BOOLEAN,

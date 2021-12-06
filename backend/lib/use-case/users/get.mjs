@@ -21,6 +21,6 @@ export default class Get extends Base {
 				{model: Messages},
 			]
 		});
-		return {user};
+		return user;
 	}
 }

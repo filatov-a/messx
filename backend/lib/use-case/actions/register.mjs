@@ -14,6 +14,7 @@ export default class register extends Base {
 
 	async execute(params){
 		params.body.password = await argon2.hash(params.body.password);
+		params.body.profile_picture = `defaultUser-${params.body.gender}.png`;
 		const usrDb = await Users.createUser({...params.body});
 		const token = await jwt.sign({id: usrDb.id}, this.config.token.verifyEmailToken, {expiresIn: "1h"});
 		const url = `http://localhost:3000/verify-email/${token}`;

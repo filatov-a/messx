@@ -22,7 +22,9 @@ export default class login extends Base {
 			throw new Error("u must to verify account");
 		}
 
-		return jwt.sign({id: user.id},
+		const token = await jwt.sign({id: user.id},
 			this.config.token.accessToken, {expiresIn: "7d"});
+
+		return {user, token};
 	}
 }

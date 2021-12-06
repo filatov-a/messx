@@ -8,6 +8,6 @@ export default class Update extends Base {
 			id: id,
 			params: params.body
 		});
-		return {update};
+		return update;
 	}
 }

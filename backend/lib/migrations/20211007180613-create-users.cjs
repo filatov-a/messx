@@ -30,18 +30,11 @@ module.exports = {
 			},
 			profile_picture: {
 				type: Sequelize.STRING,
-				defaultValue: "defaultUser.png",
+				defaultValue: "defaultUser-male.png",
 			},
 			rating: {
 				type: Sequelize.INTEGER,
 				defaultValue: 0,
-			},
-			phone: {
-				type: Sequelize.STRING,
-				unique: true,
-			},
-			card: {
-				type: Sequelize.STRING,
 			},
 			role: {
 				type: Sequelize.ENUM(["user", "admin", "superAdmin"]),
