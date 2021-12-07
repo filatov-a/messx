@@ -1,7 +1,6 @@
 import React from "react";
-import {Button, TextField, Alert} from "@mui/material";
-import {UseStyles} from "../../styles/login";
-import {clearError} from "../../redux/modules/users";
+import {Button, TextField} from "@mui/material";
+import {styleAuth} from "../../styles/main";
 import {sendUpdate} from "../../redux/modules/users";
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
@@ -9,17 +8,12 @@ import * as r from "react";
 import {parseToken} from "../../utils/parseToken";
 
 function name() {
-    const classes = UseStyles();
     const dispatch = rr.useDispatch();
     const users = rr.useSelector(state => state.users);
     const decode = parseToken(users.token)
 
     const [username, setUsername] = r.useState('');
     const navigate = rd.useNavigate();
-
-    r.useEffect(() => {
-        dispatch(clearError());
-    }, [dispatch])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -33,20 +27,13 @@ function name() {
 
     const onChangeLogin = (e) => setUsername(e.target.value);
 
-    console.log(users)
-
     return (
-        <div className={classes.main}>
+        <div style={styleAuth.Div}>
             <h2>Change your username</h2>
             <p>current username: <b>{users.user.username}</b></p>
             <form onSubmit={handleSubmit}>
-                {users.error &&
-                <Alert className={classes.error} severity="error">
-                    {users.error}
-                </Alert>
-                }
-                <TextField onChange={onChangeLogin} className={classes.input} required label='login'/>
-                <Button className={classes.button} type="submit" variant='contained' color='primary'>Send</Button>
+                <TextField onChange={onChangeLogin} style={styleAuth.TextField} required label='login'/>
+                <Button style={styleAuth.Button} type="submit" variant='contained' color='primary'>Send</Button>
             </form>
         </div>
     )

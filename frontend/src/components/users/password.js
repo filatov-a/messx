@@ -1,8 +1,6 @@
 import React from "react";
 import {Button, TextField} from "@mui/material";
-import {Alert} from "@material-ui/lab";
-import {UseStyles} from "../../styles/login";
-import {clearError} from "../../redux/modules/users";
+import {styleAuth} from "../../styles/main";
 import {sendUpdate} from "../../redux/modules/users";
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
@@ -10,7 +8,6 @@ import * as r from "react";
 import {parseToken} from "../../utils/parseToken";
 
 function password() {
-    const classes = UseStyles();
     const dispatch = rr.useDispatch();
     const users = rr.useSelector(state => state.users);
     const decode = parseToken(users.token)
@@ -18,10 +15,6 @@ function password() {
     const [password, setPassword] = r.useState('');
     const [password2, setPassword2] = r.useState('');
     const navigate = rd.useNavigate();
-
-    r.useEffect(() => {
-        dispatch(clearError());
-    }, [dispatch])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -38,17 +31,12 @@ function password() {
     const onChangePass2 = (e) => setPassword2(e.target.value);
 
     return (
-        <div className={classes.main}>
-            <h2>Change email</h2>
+        <div style={styleAuth.Div}>
+            <h2>Change password</h2>
             <form onSubmit={handleSubmit}>
-                {users.error &&
-                <Alert className={classes.error} severity="error">
-                    {users.error}
-                </Alert>
-                }
-                <TextField onChange={onChangePass} className={classes.input} required label='password' type='password'/>
-                <TextField onChange={onChangePass2} className={classes.input} required label='confirm password' type='password'/>
-                <Button className={classes.button} type="submit" variant='contained' color='primary'>Send</Button>
+                <TextField onChange={onChangePass} style={styleAuth.TextField} required label='password' type='password'/>
+                <TextField onChange={onChangePass2} style={styleAuth.TextField} required label='confirm password' type='password'/>
+                <Button style={styleAuth.Button} type="submit" variant='contained' color='primary'>Send</Button>
             </form>
         </div>
     )

@@ -1,52 +1,62 @@
 import React from "react";
-import {sendDeleteUser, sendGetUserById, sendSetAvatar} from '../../redux/modules/users';
+import {sendGetUserById} from '../../redux/modules/users';
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
-import {Avatar, Button, ButtonBase} from '@mui/material';
-import Lg from '../toolbar/lgSelector';
+import {Avatar, Button, ButtonBase, Box} from '@mui/material';
 import * as r from "react";
-import {logOut} from "../../redux/modules/users";
-import DeleteIcon from '@mui/icons-material/DeleteOutline';
 import {parseToken} from '../../utils/parseToken';
+import config from "../../config/config";
+import {StarOutline, Start, Settings} from '@mui/icons-material';
 
 const styles = {
     personalInformation: {
-        width: '50%',
+        width: '90%',
         minWidth: '400px',
         margin: 'auto',
+        // border: "1px solid black",
         marginTop: 40,
-        // border: '1px solid gray',
-        borderRadius: 4,
         paddingLeft: 10,
         paddingRight: 10,
         textAlign: 'left',
     },
-    base: {
-        width: '100%',
-        textTransform: 'none',
-        marginBottom: '10px',
-        display: 'flex'
+    box: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
     },
-    baseAvatar: {
-        // width: '100%',
-        borderRadius: '100px',
-        marginBottom: '30px',
+    button: {
+        width: 50,
+        height: 50,
+        borderRadius: 100,
+        margin: 20,
     },
-    type: {
-        flex: 1,
-        padding: 15,
-        textAlign: 'left',
+    avatar: {
+        width: '300px',
+        height: '300px',
+        marginRight: 5,
+        marginBottom: 3,
     },
-    value: {
-        flex: 3,
-        textAlign: 'left',
-        font: '1.2em "Fira Sans", sans-serif',
+    grayText: {
+        color: "#a2a2a2",
+        font: "italic small-caps bold 24px/2 cursive"
     },
-    img: {
-        width: '200px',
-        height: '200px',
-        boxShadow: '0 0 0 0px black, 0 0 4px #333',
-    }
+    headText: {
+        marginTop: 5,
+        fontSize: 30,
+    },
+    handleText: {
+        margin: 20,
+        fontSize: 20,
+        borderRadius: 100,
+        width: 80,
+        textTransform: "none"
+    },
+    line: {
+        width: "100%",
+        height: 10,
+        borderBottom: "1px solid #a2a2a2"
+    },
 }
 
 function account() {
@@ -63,68 +73,59 @@ function account() {
         dispatch(sendGetUserById(id));
     },[]);
 
-    const handleLogOut = () => {
-        dispatch(logOut());
-        navigate('/login');
-    }
-
-    const handleDelete = () => {
-        dispatch(sendDeleteUser(id));
-        if (clientId === id){
-            dispatch(logOut());
-            navigate('/login');
-        } else {
-            navigate('/users');
+    const handleInfo = () => {
+        if (clientId === id) {
+            navigate(`/users/${users.specUser.id}/info`)
         }
     }
-
-    const handleName = () => {if (clientId === id) navigate('/name')}
-    const handleEmail = () => {if (clientId === id) navigate('/email')}
-    const handleFullName = () => {if (clientId === id) navigate('/fullname')}
-    const handlePassword = () => {if (clientId === id) navigate('/password')}
 
     return (
         <div>
             {users.specUser &&
-            <div style={styles.personalInformation}>
-                <h2>Language</h2>
-                {(clientId === id) &&
-                <div style={{margin: 10}}>
-                    <Lg/>
+            <div>
+                <div style={styles.personalInformation}>
+                    <Box style={styles.box}>
+                        <Avatar
+                            src={`${config.url}/images/${users.specUser.profile_picture}`}
+                            sx={styles.avatar}
+                        />
+                        <div>
+                            <div style={styles.headText}>{users.specUser.full_name}</div>
+                            <div style={styles.grayText}>{users.specUser.username}</div>
+                        </div>
+                        <div>
+                            <Box style={styles.box}>
+                                <ButtonBase style={styles.handleText}>
+                                    {`stars ${users.specUser.followers.length}`}
+                                </ButtonBase>
+                                <ButtonBase style={styles.handleText}>
+                                    {`stared ${users.specUser.users.length}`}
+                                </ButtonBase>
+                                <ButtonBase style={styles.handleText}>
+                                    {`rating ${users.specUser.rating}`}
+                                </ButtonBase>
+                            </Box>
+                            <Box style={styles.box}>
+                                {clientId!==id &&
+                                <Button style={styles.button} variant='outlined'>
+                                    <StarOutline/>
+                                </Button>
+                                }
+                                {clientId!==id &&
+                                <Button style={styles.button} variant='outlined'>
+                                    direct
+                                </Button>
+                                }
+                                {clientId===id &&
+                                <Button style={styles.button} onClick={handleInfo} variant='outlined'>
+                                    <Settings/>
+                                </Button>
+                                }
+                            </Box>
+                        </div>
+                    </Box>
                 </div>
-                }
-                <h2>Personal information</h2>
-                <Button style={styles.base} onClick={handleName} variant='outlined'>
-                    <div style={styles.type}>Username</div>
-                    <div style={styles.value}>{users.specUser.username}</div>
-                </Button>
-                <Button style={styles.base} onClick={handleFullName} variant='outlined'>
-                    <div style={styles.type}>Full name</div>
-                    <div style={styles.value}>{users.specUser.full_name}</div>
-                </Button>
-                {(clientId === id) &&
-                <Button style={styles.base} onClick={handleEmail} variant='outlined'>
-                    <div style={styles.type}>email</div>
-                    <div style={styles.value}>{users.specUser.email}</div>
-                </Button>
-                }
-                {(clientId === id) &&
-                <Button style={styles.base} onClick={handlePassword} variant='outlined'>
-                    <div style={styles.type}>password</div>
-                    <div style={styles.value}>********</div>
-                </Button>
-                }
-                {(clientId === id) &&
-                <Button style={{marginRight:20, marginBottom:10}} onClick={handleLogOut} variant='outlined' color='secondary'>
-                    LOG OUT
-                </Button>
-                }
-                {users.user && (users.user.role === 'admin' || clientId === id) &&
-                <Button onClick={handleDelete} style={{marginBottom:10}} variant='contained' color='secondary'>
-                    <DeleteIcon fontSize='small'/>
-                    delete
-                </Button>
-                }
+                <div style={styles.line}> </div>
             </div>
             }
         </div>

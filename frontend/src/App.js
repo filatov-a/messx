@@ -13,11 +13,12 @@ import NotFound from "./components/utils/notfound";
 // import Users from "./components/users/users";
 // import Posts from "./components/posts/posts";
 import SepcUser from "./components/users/sepcUser";
+import SepcUserInfo from "./components/users/sepcUserInfo";
 // import SpecPost from "./components/posts/specPost";
-// import Name from "./components/users/name";
-// import FullName from "./components/users/fullname";
-// import Password from "./components/users/password";
-// import Email from "./components/users/email";
+import Name from "./components/users/name";
+import FullName from "./components/users/fullname";
+import Password from "./components/users/password";
+import Email from "./components/users/email";
 // import CreatePost from "./components/posts/createPost";
 // import Categories from "./components/categories/categories";
 // import SpecCategory from "./components/categories/specCategory";
@@ -35,10 +36,11 @@ function App(){
                       {/*<RouteClient exact path="/createuser" element={CreateUser}/>*/}
                       {/*<RouteClient exact path="/createpost" element={CreatePost}/>*/}
                       {/*<RouteClient exact path="/createcategory" element={CreateCategory}/>*/}
-                      {/*<Route exact path="/name" element={Name}/>*/}
-                      {/*<Route exact path="/fullname" element={FullName}/>*/}
-                      {/*<Route exact path="/password" element={Password}/>*/}
-                      {/*<Route exact path="/email" element={Email}/>*/}
+                      <Route exact path="/name" element={<Name/>}/>
+                      <Route exact path="/fullname" element={<FullName/>}/>
+                      <Route exact path="/password" element={<Password/>}/>
+                      <Route exact path="/email" element={<Email/>}/>
+                      <Route exact path="/users/:id/info" element={<SepcUserInfo/>} />
                       <Route exact path="/users/:id" element={<SepcUser/>} />
                       {/*<Route exact path="/posts/:id" element={SpecPost} />*/}
                       {/*<Route exact path="/categories/:id" element={SpecCategory} />*/}

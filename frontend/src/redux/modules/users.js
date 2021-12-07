@@ -178,7 +178,8 @@ const slice = createSlice({
         })
         builder.addCase(sendUpdate.fulfilled, (state, action) => {
             state.error = action.payload.error;
-            if (action.payload.user) state.user = action.payload.user;
+            state.success = action.payload.success;
+            state.user = action.payload.user;
         })
         builder.addCase(sendLogin.fulfilled, (state, action) => {
             state.token = action.payload.token;

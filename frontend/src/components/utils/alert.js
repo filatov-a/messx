@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
 import Slide from '@mui/material/Slide';
-import Zoom from '@mui/material/Zoom';
 import CloseIcon from '@mui/icons-material/Close';
 import * as r from "react";
 import {clearMess} from "../../redux/modules/users";
@@ -22,14 +21,13 @@ export default function TransitionAlerts(props) {
     }
 
     r.useEffect(() => {
-        const timer = setTimeout( off, 4 * 1000 );
+        const timer = setTimeout( off, 3.5 * 1000 );
         return () => clearTimeout(timer);
     },[])
 
     return (
-        <Box sx={{ width: '100%' }} >
-            {/*<Slide in={open} direction="left">*/}
-            <Zoom in={open}>
+        <Box sx={{ width: '100%' }} style={{overflow: 'hidden'}}>
+            <Slide in={open} direction="left">
                 <Alert
                     severity={props.severity}
                     // variant="outlined"
@@ -47,8 +45,7 @@ export default function TransitionAlerts(props) {
                 >
                     {props.text}
                 </Alert>
-            {/*</Slide>*/}
-            </Zoom>
+            </Slide>
         </Box>
     );
 }
