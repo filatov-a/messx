@@ -3,10 +3,24 @@ import axios from "../utils/axios";
 
 export const sendGetUserById = createAsyncThunk(
     'users/sendGetUserById',
+    async (param, thunkAPI) => {
+        try {
+            if (!param.id) return null;
+            const header = { headers: { Authorization: `Bearer ${param.token}` }}
+            const res = await axios.get(`/users/${param.id}`, header);
+            return res.data;
+        } catch (err) {
+            return {error: err.response.data.error};
+        }
+    }
+)
+
+export const sendGetUser = createAsyncThunk(
+    'users/sendGetUser',
     async (id, thunkAPI) => {
         try {
             if (!id) return null;
-            const res = await axios.get(`/users/${id}`);
+            const res = await axios.get(`/users/${id}/simple`);
             return res.data;
         } catch (err) {
             return {error: err.response.data.error};
@@ -85,8 +99,9 @@ export const sendLogin = createAsyncThunk(
         try {
             const res = await axios.post(`/login`, param.user);
             param.navigate('/');
+            localStorage.setItem('token', res.data.token)
             return {
-                token: res.data.token,
+                token: localStorage.getItem('token'),
                 user: res.data.user,
                 error: null,
                 success: "login"
@@ -128,7 +143,7 @@ const initialState = {
     error: null,
     success: null,
     status: 'idle',
-    token: null,
+    token: localStorage.getItem('token'),
     user: null,
     count: 1,
     page: 1,
@@ -142,6 +157,7 @@ const slice = createSlice({
             state.user = null;
             state.token = null;
             state.success = "logout";
+            localStorage.removeItem('token');
         },
         setAvatar: (state, action) => {
             state.user.profile_picture = action.payload;
@@ -149,6 +165,32 @@ const slice = createSlice({
         clearMess: (state, action) => {
             state.error = null;
             state.success = null;
+        },
+        addLikeInPost: (state, action) => {
+            for (let i = 0; i < state.specUser.Posts.length; i++){
+                if (state.specUser.Posts[i].id === action.payload.like?.postId){
+                    state.specUser.Posts[i].LikesPosts.push(action.payload.like)
+                    if (action.payload.like.type === 'like'){
+                        state.specUser.Posts[i].likesCount++;
+                        state.specUser.Posts[i].isLiked = true;
+                    }
+                    else {
+                        state.specUser.Posts[i].dislikesCount++;
+                        state.specUser.Posts[i].isDisliked = true;
+                    }
+                }
+                if (state.specUser.Posts[i].id === action.payload.dLike?.postId){
+                    state.specUser.Posts[i].LikesPosts.splice(i, 1);
+                    if (action.payload.dLike.type === 'like') {
+                        state.specUser.Posts[i].likesCount--;
+                        state.specUser.Posts[i].isLiked = false;
+                    }
+                    else {
+                        state.specUser.Posts[i].dislikesCount--;
+                        state.specUser.Posts[i].isDisliked = false;
+                    }
+                }
+            }
         },
     },
     extraReducers: (builder) => {
@@ -160,6 +202,9 @@ const slice = createSlice({
         })
         builder.addCase(sendGetUserById.fulfilled, (state, action) => {
             state.specUser = action.payload;
+        })
+        builder.addCase(sendGetUser.fulfilled, (state, action) => {
+            state.user = action.payload;
         })
         builder.addCase(sendDeleteUser.fulfilled, (state, action) => {
             state.specUser = null;
@@ -199,4 +244,4 @@ const slice = createSlice({
 })
 
 export default slice.reducer;
-export const { logOut, setAvatar, clearMess } = slice.actions;
+export const { logOut, setAvatar, clearMess, addLikeInPost, isLikedPost, getLikesInPost } = slice.actions;

@@ -1,24 +1,27 @@
-import React from "react";
+import * as React from "react";
 import {
     Card,
-    Typography,
     Box,
     Avatar,
     Button,
     ButtonBase,
     CardMedia,
     CardActions,
-    CardActionArea,
     CardContent,
 } from '@mui/material';
-import {makeStyles} from '@mui/styles'
+import {FavoriteBorder, Favorite, HeartBrokenOutlined, HeartBroken} from '@mui/icons-material'
 import config from "../../config/config";
 import * as rd from "react-router-dom";
+import {sendSetLike, sendGetAllPosts} from "../../redux/modules/posts";
+import * as rr from "react-redux";
+import {addLikeInPost, isLikedPost, getLikesInPost} from "../../redux/modules/users";
 
-const UseStyles = makeStyles({
+const styles = {
     root: {
-        // width: 240,
-        margin: '20px'
+        margin: '20px',
+        boxShadow: "2px 3px 10px black, 0 0 40px #9f8274 inset",
+        background: "#fffef0",
+        borderRadius: 10
     },
     media: {
         height: 130,
@@ -31,62 +34,93 @@ const UseStyles = makeStyles({
         textTransform: "none"
     },
     text: {
-        // whiteSpace: 'wrap',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
+        // fontFamily: "'Shadows Into Light', cursive",
+        textAlign: "justify",
+        lineHeight: "25px",
+        outline: 0,
+        fontSize: 18,
         textOverflow: 'ellipsis',
     },
-    right: {
-        display: 'flex',
-        flex:1,
-        textAlign:'left',
-        "& > *": {
-            marginRight: 15,
-        }
+    cardActions: {
+        width: '100%',
+        // borderBottom: "1px solid black",
+        borderTop: "3px dashed gray",
+        boxShadow: "0px 5px 5px gray",
     },
-});
+    titleText: {
+        fontSize: 25,
+        fontFamily: "blud"
+    }
+};
 
 export const CustomCard = (props) => {
-    const classes = UseStyles();
     const navigate = rd.useNavigate();
-
-    let width = props.width, height = props.height;
+    const dispatch = rr.useDispatch();
 
     const onClick = () => {
         navigate(props.to)
     }
 
+    const onClickAvatar = () => {
+        navigate(`/users/${props.post.userId}`)
+    }
+
+    const onLike = async () => {
+        // if (props.decode.id !== id) {
+        const like = await dispatch(sendSetLike({type: "like", token: props.users.token, id: props.post.id}));
+        await dispatch(addLikeInPost(like.payload));
+        // if (props.page) await dispatch(sendGetAllPosts({page: props.page}));
+        // }
+    }
+
+    const onDislike = async () => {
+        // if (props.decode.id === id) {
+        const like = await dispatch(sendSetLike({type: "dislike", token: props.users.token, id: props.post.id}));
+        await dispatch(addLikeInPost(like.payload));
+        // if (props.page) await dispatch(sendGetAllPosts({page: props.page}));
+        // }
+    }
+
     return (
-        <Card className={classes.root} style={{width: width, height: height}}>
-            <Button className={classes.link} onClick={onClick}>
+        <Card style={styles.root} >
+            <Button style={styles.link} onClick={onClick}>
                 {props.image &&
                 <CardMedia
-                    className={classes.media}
+                    style={styles.media}
                     image={props.image}
                     title="Contemplative Reptile"
                 />
                 }
                 <CardContent>
-                    <Typography className={classes.text} gutterBottom variant="h5" component="h2">
-                        {props.title}
-                    </Typography>
-                    <Typography className={classes.text} variant="body2" color="textSecondary" component="p">
-                        {props.content}
-                    </Typography>
+                    <div style={styles.titleText}>
+                        {props.post.title}
+                    </div>
+                    <div>
+                        <div style={styles.text} contentEditable="true">
+                            {props.post.content}
+                        </div>
+                    </div>
                 </CardContent>
             </Button>
             {props.cardActions &&
             <CardActions>
-                <Box display='flex' style={{width: '100%'}}>
-                    <Box className={classes.right}>
-                        <Button size="small" color="primary" href={props.to} >
-                            Learn More
+                <Box display='flex' style={styles.cardActions}>
+                    <Box display={"flex"}>
+                        <Button onClick={onLike} size="small" color="primary">
+                            {props.post?.isLiked && <Favorite/>}
+                            {!props.post?.isLiked && <FavoriteBorder/>}
+                            {props.post?.likesCount}
+                        </Button>
+                        <Button onClick={onDislike} size="small" color="primary">
+                            {props.post?.isDisliked && <HeartBroken/>}
+                            {!props.post?.isDisliked && <HeartBrokenOutlined/>}
+                            {props.post?.dislikesCount}
                         </Button>
                     </Box>
-                    {props.author && props.userId &&
+                    {props.post.User &&
                     <Box style={{flex:1, textAlign:'right'}}>
-                        <ButtonBase href={`/users/${props.userId}`} style={{borderRadius:'100%', padding:10}}>
-                            <Avatar alt="Remy Sharp" src={`${config.url}/${props.author}`} style={{width: 30, height:30}}/>
+                        <ButtonBase onClick={onClickAvatar} style={{borderRadius:'100%', padding:10}}>
+                            <Avatar alt="Remy Sharp" src={`${config.url}/images/${props.post.User.profile_picture}`} style={{width: 30, height:30}}/>
                         </ButtonBase>
                     </Box>
                     }

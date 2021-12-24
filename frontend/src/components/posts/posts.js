@@ -9,15 +9,18 @@ import {CustomCard} from '../utils/card'
 import Tooltip from "@mui/material/Tooltip";
 import {Link} from "react-router-dom";
 import Fab from "@mui/material/Fab";
-import AddIcon from "@material-ui/icons/Add";
+import AddIcon from "@mui/icons-material/Add";
+import {parseToken} from "../../utils/parseToken";
 
 function posts() {
     const posts = rr.useSelector(state => state.posts);
     const users = rr.useSelector(state => state.users);
     const dispatch = rr.useDispatch();
+    const [decode, setDecode] = r.useState(null);
 
     r.useEffect(() => {
         if (posts.status === 'idle'){
+            setDecode(parseToken(users.token))
             dispatch(sendGetAllPosts({page: 1}));
         }
     }, [dispatch])
@@ -39,23 +42,20 @@ function posts() {
             </Tooltip>
             }
             {posts.posts && posts.posts.length !== 0 &&
-                <Box>
+                <div>
                     {posts.posts.map(i => (
-                        <div key={i.post.id}>
-                            <CustomCard
-                                title={i.post.title}
-                                content={i.post.content}
-                                to={`/posts/${i.post.id}`}
-                                author={i.user.profile_picture}
-                                userId={i.post.userId}
-                                votes={i.votes}
-                                answers={i.answers}
-                            />
-                        </div>
+                        <CustomCard
+                            key={i.id}
+                            cardActions={true}
+                            post={i}
+                            users={users}
+                            decode={decode}
+                            page={posts.page}
+                        />
                     ))}
-                </Box>
+                </div>
             }
-            {posts.count > 10 &&
+            {posts > 10 &&
             <div style={{margin: 20}}>
                 <Pagination count={Math.ceil(posts.count/10)} page={posts.page} onChange={handleChange} variant="outlined" color="primary" />
             </div>

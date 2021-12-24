@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from "axios";
+import axios from "../utils/axios";
 import config from "../../config/config";
 import {convertDate} from "../../utils/date";
 
@@ -8,7 +8,7 @@ export const sendGetAllPosts = createAsyncThunk(
     async (param) => {
         try {
             const lim = 10;
-            const url = `/posts?limit=${lim}&offset=${lim*(param.page-1)}&title=${param.text}`;
+            const url = `/posts?limit=${lim}&offset=${lim*(param.page-1)}`;
             const res = await axios.get(url);
 
             convertDate(res.data);
@@ -80,15 +80,8 @@ export const sendSetLike = createAsyncThunk(
         try {
             let header = { headers: { Authorization: `Bearer ${param.token}` }}
             let type = {type: param.type}
-            const res = await axios.post(`${config.url}/api/posts/${param.id}/like`, type, header);
-            let isLiked = false, isDisliked = false;
-            if (param.decode !== null) {
-                const L = await res.data.likes.find(i => i.userId === param.decode.id);
-                if (L) isLiked = true;
-                const D = await res.data.dislikes.find(i => i.userId === param.decode.id);
-                if (D) isDisliked = true;
-            }
-            return {likes: res.data.likes, dislikes: res.data.dislikes, isLiked: isLiked, isDisliked: isDisliked};
+            const res = await axios.post(`/posts/${param.id}/like`, type, header);
+            return res.data;
         } catch (err) {
             return {error: err.response.data.error};
         }
@@ -265,12 +258,8 @@ const initialState = {
     user: null,
     categories: [],
     comments: [],
-    likes: [],
-    dislikes: [],
     error: null,
     status: 'idle',
-    isLiked: false,
-    isDisliked: false,
     count: 1,
     search: '',
 };
@@ -318,22 +307,15 @@ const slice = createSlice({
             state.count = action.payload.count;
             state.specPost = null;
             state.comments = [];
-            state.likes = [];
-            state.dislikes = []
-            state.isLiked = false;
-            state.isDisliked = false;
         },
         [sendGetAllPostsFromCategory.fulfilled]: (state, action) => {
-            state.search = action.payload.search;
+            // state.search = action.payload.search;
             state.posts = action.payload.posts;
             state.count = action.payload.count;
             if (action.payload.page) state.page = action.payload.page;
         },
         [sendSetLike.fulfilled]: (state, action) => {
-            state.likes = action.payload.likes;
-            state.dislikes = action.payload.dislikes;
-            state.isLiked = action.payload.isLiked;
-            state.isDisliked = action.payload.isDisliked;
+            return action.payload;
         },
         [sendSetLikeToComment.fulfilled]: (state, action) => {
             state.comments = action.payload;

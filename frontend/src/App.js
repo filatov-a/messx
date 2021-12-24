@@ -11,7 +11,7 @@ import Home from "./components/home/home";
 import Toolbar from "./components/toolbar/toolbar";
 import NotFound from "./components/utils/notfound";
 // import Users from "./components/users/users";
-// import Posts from "./components/posts/posts";
+import Posts from "./components/posts/posts";
 import SepcUser from "./components/users/sepcUser";
 import SepcUserInfo from "./components/users/sepcUserInfo";
 // import SpecPost from "./components/posts/specPost";
@@ -46,7 +46,7 @@ function App(){
                       {/*<Route exact path="/categories/:id" element={SpecCategory} />*/}
                       {/*<Route exact path="/categories" element={Categories} />*/}
                       {/*<Route exact path="/users" element={Users} />*/}
-                      {/*<Route exact path="/posts" element={Posts} />*/}
+                      <Route exact path="/posts" element={<Posts/>} />
 
                       <Route exact path="/login" element={<Login/>}/>
                       <Route exact path="/register" element={<Register/>}/>

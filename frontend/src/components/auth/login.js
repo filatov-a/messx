@@ -20,9 +20,7 @@ function login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const User = {username, password};
-        if (users.status === 'idle'){
-            dispatch(sendLogin({user: User, navigate: navigate}));
-        }
+        dispatch(sendLogin({user: User, navigate: navigate}));
     };
 
     const onChangeUsername = (e) => setUsername(e.target.value);

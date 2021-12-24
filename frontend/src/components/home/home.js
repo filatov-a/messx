@@ -1,8 +1,8 @@
 import React from "react";
 import { Box, Typography } from '@mui/material';
-import {CustomCard} from '../utils/card'
 import {makeStyles} from '@mui/styles'
 import {useTranslation} from 'react-i18next'
+import {Link} from "react-router-dom"
 const Tr = useTranslation;
 
 const UseStyles = makeStyles({
@@ -20,6 +20,7 @@ function home() {
             <Typography className={classes.text} variant="h4" component="h2">
                 {t("hello")}
             </Typography>
+            <Link to={"/posts"}>Posts</Link>
         </Box>
     );
 

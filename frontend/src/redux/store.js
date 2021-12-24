@@ -1,13 +1,13 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
-import { persistStore, persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
+// import { persistStore, persistReducer } from 'redux-persist'
+// import storage from 'redux-persist/lib/storage'
 
 import rootReducer from './modules/index'
 
-const persistConfig = {
-    key: 'root',
-    storage,
-}
+// const persistConfig = {
+//     key: 'root',
+//     storage,
+// }
 
 const middleware = getDefaultMiddleware({
     immutableCheck: false,
@@ -15,14 +15,16 @@ const middleware = getDefaultMiddleware({
     thunk: true
 })
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+// const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 const store = configureStore({
-    reducer: persistedReducer,
+    // reducer: persistedReducer,
+    reducer: rootReducer,
     middleware: middleware,
     devTools: true
 })
 
-let persistor = persistStore(store);
+// let persistor = persistStore(store);
 
-export {store, persistor};
+// export {store, persistor};
+export {store};
