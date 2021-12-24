@@ -12,19 +12,21 @@ export default class Like extends Base {
 		const prevLike = await LikesPosts.findOne({where: {
 			userId: decode.id, postId: post.id
 		}});
+
 		const one = await Users.findOne({ where: { id: post.userId } });
 
 		if (prevLike !== null) {
-			await this.#deleteLike(params);
+			const dLike = await this.#deleteLike({...params, decode});
+			let l = null;
 			if (prevLike.type !== params.body.type){
-				await this.execute(params);
+				l = await this.execute(params);
 				if (params.body.type === "like") await one.update({rating: one.rating+2});
 				else await one.update({rating: one.rating-2});
 			} else {
 				if (params.body.type === "like") await one.update({rating: one.rating-1});
 				else await one.update({rating: one.rating+1});
 			}
-			return;
+			return {dLike, like: l?.like};
 		} else {
 			if (params.body.type === "like") await one.update({rating: one.rating+1});
 			else await one.update({rating: one.rating-1});
@@ -39,13 +41,18 @@ export default class Like extends Base {
 	}
 
 	async #deleteLike(params){
-		const decode = await jwt.verify(params.token, params.config.token.accessToken);
-		const like = await LikesPosts.destroy({
+		const like = await LikesPosts.findOne({
 			where: {
 				postId: params.params.id,
-				userId: decode.id
+				userId: params.decode.id
 			},
 		});
-		return {like}
+		await LikesPosts.destroy({
+			where: {
+				postId: params.params.id,
+				userId: params.decode.id
+			},
+		});
+		return like
 	}
 }

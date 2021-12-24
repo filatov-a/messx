@@ -8,7 +8,7 @@ export default class Runner {
 				const token = getToken(req);
 				const params = {...req, token};
 
-				const _case = new Case();
+				const _case = new Case(req.sequelize);
 				await _case.validate(params.body);
 				const result = await _case.execute(params);
 

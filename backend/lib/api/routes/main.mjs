@@ -21,6 +21,7 @@ router.delete("/chats/:id", controllerChats.delete);
 
 router.get("/users", controllerUser.getAll);
 router.get("/users/:id", controllerUser.get);
+router.get("/users/:id/simple", controllerUser.getSimple);
 router.post("/users", controllerUser.create);
 router.patch("/users/:id", controllerUser.update);
 router.delete("/users/:id", controllerUser.delete);
@@ -43,12 +44,12 @@ router.post("/chats-categories", controllerChatsCategories.create);
 router.patch("/chats-categories/:id", controllerChatsCategories.update);
 router.delete("/chats-categories/:id", controllerChatsCategories.delete);
 
-router.get("/api/posts", controllerPosts.getAll);
-router.get("/api/posts/:id", controllerPosts.get);
-router.post("/api/posts/", controllerPosts.create);
-router.post("/api/posts/:id/like", controllerPosts.like);
-router.patch("/api/posts/:id", controllerPosts.update);
-router.delete("/api/posts/:id", controllerPosts.delete);
+router.get("/posts", controllerPosts.getAll);
+router.get("/posts/:id", controllerPosts.get);
+router.post("/posts/", controllerPosts.create);
+router.post("/posts/:id/like", controllerPosts.like);
+router.patch("/posts/:id", controllerPosts.update);
+router.delete("/posts/:id", controllerPosts.delete);
 
 router.get("/messages", controllerMessages.get);
 router.post("/messages", controllerMessages.create);

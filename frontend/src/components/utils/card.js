@@ -12,9 +12,9 @@ import {
 import {FavoriteBorder, Favorite, HeartBrokenOutlined, HeartBroken} from '@mui/icons-material'
 import config from "../../config/config";
 import * as rd from "react-router-dom";
-import {sendSetLike, sendGetAllPosts} from "../../redux/modules/posts";
+import {sendSetLike} from "../../redux/modules/posts";
 import * as rr from "react-redux";
-import {addLikeInPost, isLikedPost, getLikesInPost} from "../../redux/modules/users";
+import {addLikeInPost} from "../../redux/modules/users";
 
 const styles = {
     root: {
@@ -43,6 +43,7 @@ const styles = {
     },
     cardActions: {
         width: '100%',
+        margin: "auto",
         // borderBottom: "1px solid black",
         borderTop: "3px dashed gray",
         boxShadow: "0px 5px 5px gray",
@@ -65,6 +66,10 @@ export const CustomCard = (props) => {
         navigate(`/users/${props.post.userId}`)
     }
 
+    const onClickCategory = () => {
+        navigate(`/users/${props.post.userId}`)
+    }
+
     const onLike = async () => {
         // if (props.decode.id !== id) {
         const like = await dispatch(sendSetLike({type: "like", token: props.users.token, id: props.post.id}));
@@ -81,7 +86,7 @@ export const CustomCard = (props) => {
         // }
     }
 
-    return (
+     return (
         <Card style={styles.root} >
             <Button style={styles.link} onClick={onClick}>
                 {props.image &&
@@ -103,22 +108,29 @@ export const CustomCard = (props) => {
                 </CardContent>
             </Button>
             {props.cardActions &&
-            <CardActions>
-                <Box display='flex' style={styles.cardActions}>
-                    <Box display={"flex"}>
-                        <Button onClick={onLike} size="small" color="primary">
-                            {props.post?.isLiked && <Favorite/>}
-                            {!props.post?.isLiked && <FavoriteBorder/>}
-                            {props.post?.likesCount}
+            <CardActions style={{display: "block"}}>
+                <div style={{display: "flex", flexWrap: "wrap", marginBottom: 10}}>
+                    {props.post.PostsCategories.map(i=>(
+                        <Button style={{margin: 5, textAlign: "center"}} onClick={onClickCategory} variant={"outlined"} color="secondary">
+                            {i.title}
                         </Button>
-                        <Button onClick={onDislike} size="small" color="primary">
-                            {props.post?.isDisliked && <HeartBroken/>}
-                            {!props.post?.isDisliked && <HeartBrokenOutlined/>}
-                            {props.post?.dislikesCount}
+                    ))}
+                </div>
+                <Box display='flex' style={styles.cardActions}>
+                    <Box display={"flex"} style={{flexGrow: 7}}>
+                        <Button onClick={onLike} size="small" color="primary">
+                            {props.post?.isLiked ? <Favorite/> : <div/>}
+                            {!props.post?.isLiked ? <FavoriteBorder/> : <div/>}
+                            {props.post?.likesCount ? props.post?.likesCount : ''}
+                        </Button>
+                        <Button onClick={onDislike} size="small" color="secondary">
+                            {props.post?.isDisliked ? <HeartBroken/> : <div/>}
+                            {!props.post?.isDisliked ? <HeartBrokenOutlined/> : <div/>}
+                            {props.post?.dislikesCount ? props.post?.dislikesCount : ''}
                         </Button>
                     </Box>
                     {props.post.User &&
-                    <Box style={{flex:1, textAlign:'right'}}>
+                    <Box display={"flex"}>
                         <ButtonBase onClick={onClickAvatar} style={{borderRadius:'100%', padding:10}}>
                             <Avatar alt="Remy Sharp" src={`${config.url}/images/${props.post.User.profile_picture}`} style={{width: 30, height:30}}/>
                         </ButtonBase>

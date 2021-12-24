@@ -11,7 +11,7 @@ export default class Posts extends Base {
 	static modelName = "Posts";
 
 	static associate(models) {
-		Posts.hasMany(models.LikesPosts, {foreignKey: "postId", onDelete: "cascade"});
+		Posts.hasMany(models.LikesPosts, {foreignKey: "postId", onDelete: "cascade",});
 		Posts.hasMany(models.Comments, {foreignKey: "postId", onDelete: "cascade"});
 		Posts.hasMany(models.PostsImages, {foreignKey: "postId", onDelete: "cascade"});
 		Posts.belongsTo(models.Users, {foreignKey: "userId", onDelete: "cascade"});

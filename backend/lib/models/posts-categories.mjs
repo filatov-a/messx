@@ -10,10 +10,9 @@ export default class PostsCategories extends Base {
 
 	static associate(models) {
 		PostsCategories.belongsToMany(models.Posts, {
-			through: "PostsAndCategories",
+			through: "PostsToCategories",
 			foreignKey: "categoryId",
 			onDelete: "cascade",
-			hooks: true
 		});
 	}
 }

@@ -1,21 +1,34 @@
 version: "3.9"  # optional since v1.27.0
 services:
+  s3:
+    platform: linux/amd64
+    image: minio/minio
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./storage/minio:/data
+    environment:
+      MINIO_ACCESS_KEY: minio_access_key
+      MINIO_SECRET_KEY: minio_secret_key
+    command: server /data
   db:
+    platform: linux/amd64
     image: mysql
     container_name: mysql_db
     command: --default-authentication-plugin=mysql_native_password
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: messx
-      MYSQL_USER: artem
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: strong-password
-      TZ: Europe/Kiev
+        MYSQL_DATABASE: messx
+        MYSQL_USER: artem
+        MYSQL_PASSWORD: password
+        MYSQL_ROOT_PASSWORD: strong-password
+        TZ: Europe/Kiev
     ports: [ '3306:3306' ]
-#     volumes:
-#       - ./databases:/var/lib/mysql
+    volumes:
+      - ./database:/var/lib/mysql
 #      - ./docker_mysql_init.sql:/docker-entrypoint-initdb.d/docker_mysql_init.sql
   # backend:
+  #   platform: linux/amd64
   #   container_name: backend
   #   build:
   #     context: ./backend
@@ -31,6 +44,7 @@ services:
   #     - '/app/node_modules'
   #   command: sh -c 'npm run migrate && npm run mov'
 #   frontend:
+#      platform: linux/amd64
 #      container_name: frontend
 #      build:
 #        context: ./frontend

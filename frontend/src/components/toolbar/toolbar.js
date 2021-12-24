@@ -55,7 +55,7 @@ export default function HideAppBar(props) {
     }
 
     useEffect(()=>{
-        dispatch(sendGetUser(decode.id))
+        if (decode?.id) dispatch(sendGetUser(decode?.id))
     }, [])
 
     return (
