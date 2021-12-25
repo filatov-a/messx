@@ -7,7 +7,7 @@ import Users from "../../models/users.mjs";
 
 export default class Like extends Base {
 	async execute(params){
-		const decode = await jwt.verify(params.token, this.config.token.accessToken);
+		const decode = await this.decodeToken(params.token);
 		const comment = await Comments.findByPk(params.params.id);
 		const body = params.body;
 

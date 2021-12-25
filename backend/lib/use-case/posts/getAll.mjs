@@ -13,7 +13,7 @@ export default class GetAll extends Base {
 	async execute(params){
 		const interval = params.interval ? params.interval : 1;
 		const {limit, offset} = params.query;
-		const decode = await jwt.verify(params.token, this.config.token.accessToken);
+		const decode = await this.decodeToken(params.token);
 
 		const limitInt = parseInt(limit);
 		const offsetInt = parseInt(offset);

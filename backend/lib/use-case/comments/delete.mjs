@@ -1,6 +1,5 @@
 import Base from "../base.mjs";
 import Comments from "../../models/comments.mjs";
-import jwt from "jsonwebtoken";
 
 export default class Delete extends Base {
 	async execute(params){

@@ -7,7 +7,7 @@ import LikesPosts from "../../models/likes-posts.mjs";
 
 export default class Like extends Base {
 	async execute(params){
-		const decode = await jwt.verify(params.token, this.config.token.accessToken);
+		const decode = await this.decodeToken(params.token);
 		const post = await Posts.findByPk(params.params.id);
 		const prevLike = await LikesPosts.findOne({where: {
 			userId: decode.id, postId: post.id

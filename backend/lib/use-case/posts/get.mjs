@@ -10,7 +10,7 @@ export default class Get extends Base {
 	async execute(params){
 		const posts = Posts;
 		const {id} = params.params;
-		const decode = await jwt.verify(params.token, this.config.token.accessToken);
+		const decode = await this.decodeToken(params.token);
 
 		return posts.findOne({
 			where: {id: id},

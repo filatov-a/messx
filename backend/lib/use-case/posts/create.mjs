@@ -6,7 +6,7 @@ import PostsImages from "../../models/posts-images.mjs";
 
 export default class Create extends Base {
 	async execute(params){
-		const decode = await jwt.verify(this.token, this.config.token.accessToken);
+		const decode = await this.decodeToken(params.token);
 		const post = await Posts.create({
 			title: params.body.title,
 			status: "live",

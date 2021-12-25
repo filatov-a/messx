@@ -6,7 +6,12 @@ export default class Runner {
 		return async function(req, res){
 			try {
 				const token = getToken(req);
-				const params = {...req, token};
+				const params = {
+					body: req.body,
+					params: req.params,
+					query: req.query,
+					token
+				};
 
 				const _case = new Case(req.sequelize);
 				await _case.validate(params.body);
