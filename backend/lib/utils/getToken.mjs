@@ -11,5 +11,13 @@ export default function (req) {
 		return req.params.token;
 	}
 
+	if (req.params && req.params.token) {
+		return req.params.token;
+	}
+
+	if (req.get('X-AuthToken')) {
+		return req.get('X-AuthToken')
+	}
+
 	return null;
 }

@@ -1,21 +1,25 @@
 import getToken from "../../utils/getToken.mjs";
 import multer from "../../middleware/multer.mjs";
+import {validateJwt} from "../../use-case/sessions/validate.mjs";
 
 export default class Runner {
 	static makeRunner(Case) {
 		return async function(req, res){
 			try {
 				const token = getToken(req);
-				const params = {
-					body: req.body,
-					params: req.params,
-					query: req.query,
-					token
-				};
+
+				const userData = await validateJwt({token})
 
 				const _case = new Case(req.sequelize);
-				await _case.validate(params.body);
-				const result = await _case.execute(params);
+				await _case.validate({...req.body});
+
+				const result = await _case.execute({
+					data: {...req.body, ...req.params, ...req.query},
+					context : {
+						...userData,
+						userId: userData.id
+					}
+				});
 
 				res.send(result);
 			} catch (err) {

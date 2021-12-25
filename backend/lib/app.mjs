@@ -1,3 +1,4 @@
+import 'module-alias/register.js';
 import config from './config/config.cjs';
 import api from './api/api.mjs';
 import db from './models/index.mjs';
