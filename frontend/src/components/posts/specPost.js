@@ -33,19 +33,11 @@ function post() {
 
     const [isWrite, setIsWrite] = r.useState(false);
 
-    let clientId = '';
-    if (decode) clientId = decode.id;
-
     r.useEffect(() => {
-        if (posts.status === 'idle'){
-            const param = {id: id, token: users.token, decode: decode}
-            dispatch(sendGetPostById(param));
-        }
-    },[dispatch]);
+        const param = {id: id, token: users.token, decode: decode}
+        dispatch(sendGetPostById(param));
+    },[]);
 
-    r.useEffect(() => {
-        dispatch(sendGetAllCategoriesFromPost(id));
-    },[dispatch]);
 
     if(posts.isLiked) isLiked = classes.clicked;
     if(posts.isDisliked) isDisliked = classes.clicked;

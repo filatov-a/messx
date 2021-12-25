@@ -62,7 +62,7 @@ function accountInfo() {
     if (decode) clientId = decode.id;
 
     r.useEffect(() => {
-        dispatch(sendGetUserById(id));
+        dispatch(sendGetUserById({id}));
     },[]);
 
     const handleLogOut = () => {
