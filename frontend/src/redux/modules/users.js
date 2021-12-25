@@ -166,32 +166,6 @@ const slice = createSlice({
             state.error = null;
             state.success = null;
         },
-        addLikeInPost: (state, action) => {
-            for (let i = 0; i < state.specUser.Posts.length; i++){
-                if (state.specUser.Posts[i].id === action.payload.like?.postId){
-                    state.specUser.Posts[i].LikesPosts.push(action.payload.like)
-                    if (action.payload.like.type === 'like'){
-                        state.specUser.Posts[i].likesCount++;
-                        state.specUser.Posts[i].isLiked = true;
-                    }
-                    else {
-                        state.specUser.Posts[i].dislikesCount++;
-                        state.specUser.Posts[i].isDisliked = true;
-                    }
-                }
-                if (state.specUser.Posts[i].id === action.payload.dLike?.postId){
-                    state.specUser.Posts[i].LikesPosts.splice(i, 1);
-                    if (action.payload.dLike.type === 'like') {
-                        state.specUser.Posts[i].likesCount--;
-                        state.specUser.Posts[i].isLiked = false;
-                    }
-                    else {
-                        state.specUser.Posts[i].dislikesCount--;
-                        state.specUser.Posts[i].isDisliked = false;
-                    }
-                }
-            }
-        },
     },
     extraReducers: (builder) => {
         builder.addCase(sendGetAllUsers.fulfilled, (state, action) => {
@@ -244,4 +218,4 @@ const slice = createSlice({
 })
 
 export default slice.reducer;
-export const { logOut, setAvatar, clearMess, addLikeInPost, isLikedPost, getLikesInPost } = slice.actions;
+export const { logOut, setAvatar, clearMess } = slice.actions;

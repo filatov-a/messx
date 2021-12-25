@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "../utils/axios";
 import config from "../../config/config";
 import {convertDate} from "../../utils/date";
+import addLike from "../utils/addLike";
 
 export const sendGetAllPosts = createAsyncThunk(
     'posts/sendGetAllPosts',
@@ -9,7 +10,8 @@ export const sendGetAllPosts = createAsyncThunk(
         try {
             const lim = 10;
             const url = `/posts?limit=${lim}&offset=${lim*(param.page-1)}`;
-            const res = await axios.get(url);
+            const header = { headers: { Authorization: `Bearer ${param.token}` }}
+            const res = await axios.get(url, header);
 
             convertDate(res.data);
 
@@ -20,29 +22,30 @@ export const sendGetAllPosts = createAsyncThunk(
     }
 )
 
+export const sendGetUsersPosts = createAsyncThunk(
+    'posts/sendGetUsersPosts',
+    async (param) => {
+        try {
+            const url = `/users/${param.id}/posts`;
+            const header = { headers: { Authorization: `Bearer ${param.token}` }}
+            const res = await axios.get(url, header);
+
+            convertDate(res.data);
+
+            return res.data;
+        } catch (err) {
+            return {error: err.response.data.error};
+        }
+    }
+)
+
 export const sendGetAllPostsFromCategory = createAsyncThunk(
-    'posts/sendGetAllPosts',
+    'posts/sendGetAllPostsFromCategory',
     async (id) => {
         try {
             const res = await axios.get(`${config.url}/api/categories/${id}/posts`);
             convertDate(res.data);
-            let posts = []
-            for (let i = 0; i < res.data.length; i++){
-                const id = res.data[i].id;
-                const post = res.data[i];
-                const resL = await axios.get(`${config.url}/api/posts/${id}/like`);
-                const comments = await axios.get(`${config.url}/api/posts/${id}/comments`);
-                const user = await axios.get(`${config.url}/api/users/${post.userId}`);
-
-                let obj = {
-                    post: post,
-                    user: user.data,
-                    votes: resL.data.likes.length-resL.data.dislikes.length,
-                    answers: comments.data.length,
-                }
-                posts.push(obj)
-            }
-            return {posts};
+            return res.data;
         } catch (err) {
             return {error: err.response.data.error};
         }
@@ -81,7 +84,7 @@ export const sendSetLike = createAsyncThunk(
             let header = { headers: { Authorization: `Bearer ${param.token}` }}
             let type = {type: param.type}
             const res = await axios.post(`/posts/${param.id}/like`, type, header);
-            return res.data;
+            return {like: res.data, usersPosts: param.usersPosts};
         } catch (err) {
             return {error: err.response.data.error};
         }
@@ -94,40 +97,8 @@ export const sendSetLikeToComment = createAsyncThunk(
         try {
             let header = { headers: { Authorization: `Bearer ${param.token}` }}
             let type = {type: param.type}
-            await axios.post(`${config.url}/api/comments/${param.id}/like`, type, header);
-            let comments = [];
-            const res = await axios.get(`${config.url}/api/posts/${param.postId}/comments`);
-            convertDate(res.data);
-
-            for (let i = 0; i < res.data.length; i++){
-                const com = res.data[i];
-                const resL = await axios.get(`${config.url}/api/comments/${com.id}/likes`);
-                const userComment = await axios.get(`${config.url}/api/users/${com.userId}`);
-                let l = resL.data.likes;
-                if (l.length === 0) l = [];
-                let d = resL.data.dislikes;
-                if (d.length === 0) d = [];
-
-                let isLikedComment = false;
-                let isDislikedComment = false;
-                if (param.decode !== null) {
-                    const L = await resL.data.likes.find(i => i.userId === param.decode.id);
-                    if (L) isLikedComment = true;
-                    const D = await resL.data.dislikes.find(i => i.userId === param.decode.id);
-                    if (D) isDislikedComment = true;
-                }
-
-                const obj = {
-                    comment: com,
-                    likes: l,
-                    dislikes: d,
-                    isLiked: isLikedComment,
-                    isDisliked: isDislikedComment,
-                    user: userComment.data,
-                }
-                comments.push(obj);
-            }
-            return comments;
+            const res = await axios.post(`${config.url}/comments/${param.id}/like`, type, header);
+            return res.data;
         } catch (err) {
             return {error: err.response.data.error};
         }
@@ -139,63 +110,9 @@ export const sendGetPostById = createAsyncThunk(
     async (param, thunkAPI) => {
         try {
             let header = { headers: { Authorization: `Bearer ${param.token}` }}
-            const resPost = await axios.get(`${config.url}/api/posts/${param.id}`);
-            const user = await axios.get(`${config.url}/api/users/${resPost.data.userId}`);
-            const post = resPost.data;
-
-            convertDate(post);
-            const postLikes = await axios.get(`${config.url}/api/posts/${param.id}/like`);
-
-            let comments = [];
-            const res = await axios.get(`${config.url}/api/posts/${post.id}/comments`);
+            const res = await axios.get(`${config.url}/api/posts/${param.id}`, header);
             convertDate(res.data);
-
-            for (let i = 0; i < res.data.length; i++){
-                const com = res.data[i];
-                const resL = await axios.get(`${config.url}/api/comments/${com.id}/likes`);
-                const userComment = await axios.get(`${config.url}/api/users/${com.userId}`);
-                let l = resL.data.likes;
-                if (l.length === 0) l = [];
-                let d = resL.data.dislikes;
-                if (d.length === 0) d = [];
-
-                let isLikedComment = false;
-                let isDislikedComment = false;
-                if (param.decode !== null) {
-                    const L = await resL.data.likes.find(i => i.userId === param.decode.id);
-                    if (L) isLikedComment = true;
-                    const D = await resL.data.dislikes.find(i => i.userId === param.decode.id);
-                    if (D) isDislikedComment = true;
-                }
-
-                const obj = {
-                    comment: com,
-                    likes: l,
-                    dislikes: d,
-                    isLiked: isLikedComment,
-                    isDisliked: isDislikedComment,
-                    user: userComment.data,
-                }
-                comments.push(obj);
-            }
-
-            let isLiked = false, isDisliked = false;
-            if (param.decode !== null) {
-                const L = postLikes.data.likes.find(i => i.userId === param.decode.id);
-                if (L) isLiked = true;
-                const D = await postLikes.data.dislikes.find(i => i.userId === param.decode.id);
-                if (D) isDisliked = true;
-            }
-
-            return {
-                post: post,
-                user: user.data,
-                comments: comments,
-                isLiked: isLiked,
-                isDisliked: isDisliked,
-                likes: postLikes.data.likes,
-                dislikes: postLikes.data.dislikes,
-            };
+            return res.data;
         } catch (err) {
             return {error: err.response.data.error};
         }
@@ -210,18 +127,6 @@ export const sendCreatePost = createAsyncThunk(
             const res = await axios.post(`${config.url}/api/posts/`, param.user, header);
             param.history.push(`/posts/${res.data.id}`)
             return {error: null};
-        } catch (err) {
-            return {error: err.response.data.error};
-        }
-    }
-)
-
-export const sendGetAllCategoriesFromPost = createAsyncThunk(
-    'posts/sendGetAllCategoriesFromPost',
-    async (id, thunkAPI) => {
-        try {
-            const res = await axios.get(`${config.url}/api/posts/${id}/categories`);
-            return res.data;
         } catch (err) {
             return {error: err.response.data.error};
         }
@@ -262,26 +167,24 @@ const initialState = {
     status: 'idle',
     count: 1,
     search: '',
+    newLike: null
 };
 
 const slice = createSlice({
     name: 'posts',
     initialState: initialState,
     reducers: {},
-    extraReducers: {
-        [sendGetPostById.fulfilled]: (state, action) => {
-            state.specPost = action.payload.post;
-            state.user = action.payload.user;
-            state.comments = action.payload.comments;
-            state.likes = action.payload.likes;
-            state.dislikes = action.payload.dislikes;
-            state.isLiked = action.payload.isLiked;
-            state.isDisliked = action.payload.isDisliked;
-        },
-        [sendCreatePost.fulfilled]: (state, action) => {
+    extraReducers: (builder) => {
+        builder.addCase(sendGetPostById.fulfilled, (state, action) => {
+            state.specPost = action.payload;
+        })
+        builder.addCase(sendGetUsersPosts.fulfilled, (state, action) => {
+            state.posts = action.payload;
+        })
+        builder.addCase(sendCreatePost.fulfilled, (state, action) => {
             state.error = action.payload.error
-        },
-        [sendDeleteComment.fulfilled]: (state, action) => {
+        })
+        builder.addCase(sendDeleteComment.fulfilled, (state, action) => {
             const tmp = [];
             state.comments.map(i=>{
                 if (i.comment.id !== action.payload.id){
@@ -289,8 +192,8 @@ const slice = createSlice({
                 }
             });
             state.comments = tmp;
-        },
-        [sendDeletePost.fulfilled]: (state, action) => {
+        })
+        builder.addCase(sendDeletePost.fulfilled, (state, action) => {
             state.specPost = null;
             const tmp = [];
             state.posts.map(i=>{
@@ -299,37 +202,29 @@ const slice = createSlice({
                 }
             });
             state.posts = tmp;
-        },
-        [sendGetAllPosts.fulfilled]: (state, action) => {
+        })
+        builder.addCase(sendGetAllPosts.fulfilled, (state, action) => {
             state.posts = action.payload.posts;
-            state.search = action.payload.search;
             if (action.payload.page) state.page = action.payload.page;
             state.count = action.payload.count;
-            state.specPost = null;
-            state.comments = [];
-        },
-        [sendGetAllPostsFromCategory.fulfilled]: (state, action) => {
-            // state.search = action.payload.search;
+        })
+        builder.addCase(sendGetAllPostsFromCategory.fulfilled, (state, action) => {
             state.posts = action.payload.posts;
             state.count = action.payload.count;
             if (action.payload.page) state.page = action.payload.page;
-        },
-        [sendSetLike.fulfilled]: (state, action) => {
-            return action.payload;
-        },
-        [sendSetLikeToComment.fulfilled]: (state, action) => {
+        })
+        builder.addCase(sendSetLike.fulfilled, (state, action) => {
+            addLike(state.posts, action.payload.like);
+            addLike(state.specPost, action.payload.like);
+        })
+        builder.addCase(sendSetLikeToComment.fulfilled, (state, action) => {
             state.comments = action.payload;
-        },
-        [sendSetLikeToComment.fulfilled]: (state, action) => {
-            state.comments = action.payload;
-        },
-        [sendGetAllCategoriesFromPost.fulfilled]: (state, action) => {
-            state.categories = action.payload;
-        },
-        [sendCreateComment.fulfilled]: (state, action) => {
+        })
+        builder.addCase(sendCreateComment.fulfilled, (state, action) => {
             state.comments.push(action.payload.comment);
             state.error = action.payload.error;
-        },
+        })
     }
 })
+
 export default slice.reducer;

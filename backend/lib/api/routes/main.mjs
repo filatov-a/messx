@@ -21,7 +21,7 @@ router.delete("/chats/:id", controllerChats.delete);
 
 router.get("/users", controllerUser.getAll);
 router.get("/users/:id", controllerUser.get);
-router.get("/users/:id/simple", controllerUser.getSimple);
+router.get("/users/:id/posts", controllerUser.getPosts);
 router.post("/users", controllerUser.create);
 router.patch("/users/:id", controllerUser.update);
 router.delete("/users/:id", controllerUser.delete);

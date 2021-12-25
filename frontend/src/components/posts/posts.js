@@ -21,12 +21,12 @@ function posts() {
     r.useEffect(() => {
         if (posts.status === 'idle'){
             setDecode(parseToken(users.token))
-            dispatch(sendGetAllPosts({page: 1}));
+            dispatch(sendGetAllPosts({page: 1, token: users.token}));
         }
     }, [dispatch])
 
     const handleChange = (event, value) => {
-        dispatch(sendGetAllPosts({page: value}));
+        dispatch(sendGetAllPosts({page: value, token: users.token}));
     }
 
     return (
@@ -42,18 +42,18 @@ function posts() {
             </Tooltip>
             }
             {posts.posts && posts.posts.length !== 0 &&
-                <div>
-                    {posts.posts.map(i => (
-                        <CustomCard
-                            key={i.id}
-                            cardActions={true}
-                            post={i}
-                            users={users}
-                            decode={decode}
-                            page={posts.page}
-                        />
-                    ))}
-                </div>
+            <div style={{width: "90%", margin: "auto"}}>
+                {posts.posts.map(i => (
+                    <CustomCard
+                        key={i.id}
+                        cardActions={true}
+                        post={i}
+                        users={users}
+                        posts={posts}
+                        decode={decode}
+                    />
+                ))}
+            </div>
             }
             {posts > 10 &&
             <div style={{margin: 20}}>

@@ -15,6 +15,7 @@ import * as rd from "react-router-dom";
 import {sendSetLike} from "../../redux/modules/posts";
 import * as rr from "react-redux";
 import {addLikeInPost} from "../../redux/modules/users";
+import {addLikeInPosts, tmp} from "../../redux/modules/posts";
 
 const styles = {
     root: {
@@ -72,17 +73,24 @@ export const CustomCard = (props) => {
 
     const onLike = async () => {
         // if (props.decode.id !== id) {
-        const like = await dispatch(sendSetLike({type: "like", token: props.users.token, id: props.post.id}));
-        await dispatch(addLikeInPost(like.payload));
+        await dispatch(sendSetLike({
+            type: "like",
+            token: props.users.token,
+            id: props.post.id
+        }));
+        // if (props.users.specUser) await dispatch(addLikeInPost(like.payload));
+        // if (props.posts) await dispatch(addLikeInPosts(like.payload));
         // if (props.page) await dispatch(sendGetAllPosts({page: props.page}));
         // }
     }
 
     const onDislike = async () => {
         // if (props.decode.id === id) {
-        const like = await dispatch(sendSetLike({type: "dislike", token: props.users.token, id: props.post.id}));
-        await dispatch(addLikeInPost(like.payload));
-        // if (props.page) await dispatch(sendGetAllPosts({page: props.page}));
+        await dispatch(sendSetLike({
+            type: "dislike",
+            token: props.users.token,
+            id: props.post.id,
+        }));
         // }
     }
 

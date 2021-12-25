@@ -9,12 +9,12 @@ export const convertDate = (posts) => {
     };
 
     if (!posts.length) {
-        let date = new Date(posts.publish_date)
-        posts.publish_date = date.toLocaleString("en-US", options);
+        let date = new Date(posts.createdAt)
+        posts.createdAt = date.toLocaleString("en-US", options);
     } else {
         for (let i = 0; i < posts.length; i++) {
-            let date = new Date(posts[i].publish_date)
-            posts[i].publish_date = date.toLocaleString("en-US", options);
+            let date = new Date(posts[i].createdAt)
+            posts[i].createdAt = date.toLocaleString("en-US", options);
         }
     }
 }
