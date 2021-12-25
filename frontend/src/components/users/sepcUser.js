@@ -1,5 +1,6 @@
 import React from "react";
 import {sendGetUserById} from '../../redux/modules/users';
+import {sendGetUserPosts} from '../../redux/modules/posts';
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
 import * as r from "react";
@@ -104,6 +105,7 @@ let styles = {
 
 function account() {
     const users = rr.useSelector(state => state.users);
+    const posts = rr.useSelector(state => state.posts);
     const navigate = rd.useNavigate();
     const dispatch = rr.useDispatch();
     const id = rd.useParams().id;
@@ -112,7 +114,8 @@ function account() {
     const [decode, setDecode] = r.useState(null);
 
     r.useEffect(() => {
-        dispatch(sendGetUserById({id, token: users?.token}));
+        dispatch(sendGetUserById({id}));
+        dispatch(sendGetUserPosts({id, token: users?.token}));
     },[]);
 
     r.useEffect(() => {
@@ -195,9 +198,9 @@ function account() {
                 </div>
                 <div style={styles.line}> </div>
                 <div style={styles.headText}>Posts:</div>
-                { users.specUser.Posts &&
+                { posts.posts &&
                 <div style={styles.divPosts}>
-                    {users.specUser.Posts.map( (i) => (
+                    {posts.posts.map( (i) => (
                         <CustomCard
                             key={i.id}
                             cardActions={true}

@@ -22,8 +22,8 @@ export const sendGetAllPosts = createAsyncThunk(
     }
 )
 
-export const sendGetUsersPosts = createAsyncThunk(
-    'posts/sendGetUsersPosts',
+export const sendGetUserPosts = createAsyncThunk(
+    'posts/sendGetUserPosts',
     async (param) => {
         try {
             const url = `/users/${param.id}/posts`;
@@ -178,7 +178,7 @@ const slice = createSlice({
         builder.addCase(sendGetPostById.fulfilled, (state, action) => {
             state.specPost = action.payload;
         })
-        builder.addCase(sendGetUsersPosts.fulfilled, (state, action) => {
+        builder.addCase(sendGetUserPosts.fulfilled, (state, action) => {
             state.posts = action.payload;
         })
         builder.addCase(sendCreatePost.fulfilled, (state, action) => {

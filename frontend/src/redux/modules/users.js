@@ -6,8 +6,7 @@ export const sendGetUserById = createAsyncThunk(
     async (param, thunkAPI) => {
         try {
             if (!param.id) return null;
-            const header = { headers: { Authorization: `Bearer ${param.token}` }}
-            const res = await axios.get(`/users/${param.id}`, header);
+            const res = await axios.get(`/users/${param.id}`);
             return res.data;
         } catch (err) {
             return {error: err.response.data.error};
@@ -20,7 +19,7 @@ export const sendGetUser = createAsyncThunk(
     async (id, thunkAPI) => {
         try {
             if (!id) return null;
-            const res = await axios.get(`/users/${id}/simple`);
+            const res = await axios.get(`/users/${id}`);
             return res.data;
         } catch (err) {
             return {error: err.response.data.error};
