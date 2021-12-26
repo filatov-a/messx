@@ -23,7 +23,6 @@
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
     "minio": "^7.0.25",
-    "module-alias": "^2.2.2",
     "moment": "^2.29.1",
     "multer": "^1.4.3",
     "mysql2": "^2.3.2",
@@ -34,7 +33,7 @@
     "sequelize": "^6.8.0",
     "ws": "^8.3.0"
   },
-  "_moduleAliases": {
-    "messx-global-config": ".lib/config/config.cjs"
+  "imports": {
+    "#messx-global-config": "./lib/config/config.cjs"
   }
 }

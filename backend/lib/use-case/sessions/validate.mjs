@@ -1,10 +1,9 @@
 import jwt from "jsonwebtoken";
 import Users from "../../models/users.mjs";
-import config from '../../config/config.cjs';
+import config from '#messx-global-config';
 
 async function validateJwt({token}) {
     try {
-
         const userData = await jwt.verify(token, config.token.accessToken);
 
         const isValid = await Users.findByPk(userData.id);
