@@ -103,7 +103,7 @@ export const CustomCard = (props) => {
     const ButtonDiv = (prp) => {
         if (props.single) {
             return (
-                <div>
+                <div style={styles.link} >
                     {prp.children}
                 </div>
             )
@@ -164,9 +164,10 @@ export const CustomCard = (props) => {
                         <ButtonBase onClick={onClickAvatar} style={{borderRadius:'100%', padding:10}}>
                             <Avatar alt="Remy Sharp" src={`${config.url}/images/${props.post.User.profile_picture}`} style={{width: 30, height:30}}/>
                         </ButtonBase>
-                        {props.users.user.role === "admin" ||
-                            props.users.user.role === "superAdmin" ||
-                            props.users.user.id === props.users.specUser.id &&
+                        {
+                            (props.users?.user?.role === "admin" ||
+                            props.users?.user?.role === "superAdmin" ||
+                            props.users?.user?.id === props.users?.specUser?.id) &&
                             <Button onClick={onDelete} size="small" color="secondary">
                                 <Delete/>
                             </Button>

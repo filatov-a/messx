@@ -5,7 +5,7 @@ export default class Delete extends Base {
 	async execute({data}){
 		const post = await Posts.destroy({
 			where: {
-				id: data.params.id
+				id: data.id
 			},
 		});
 		return {post};

@@ -2,10 +2,10 @@ import Base from "../base.mjs";
 import PostsCategories from "../../models/posts-categories.mjs";
 
 export default class Create extends Base {
-	async execute(params){
+	async execute({data}){
 		const category = await PostsCategories.create({
-			title: params.body.title,
-			description: params.body.description
+			title: data.title,
+			description: data.description
 		});
 		return category;
 	}

@@ -7,8 +7,8 @@ import Users from "../../models/users.mjs";
 
 export default class Like extends Base {
 	async execute({data, context}){
-		const comment = await Comments.findByPk(data.params.id);
-		const body = data.body;
+		const comment = await Comments.findByPk(data.id);
+		const body = data;
 
 		const post = await Posts.findByPk(comment.postId);
 		const one = await Users.findOne({ where: { id: post.userId } });
@@ -43,7 +43,7 @@ export default class Like extends Base {
 	async #deleteLike({data, context}){
 		await LikesToComments.destroy({
 			where: {
-				commentId: data.params.id,
+				commentId: data.id,
 				userId: context.userId
 			},
 		});

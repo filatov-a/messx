@@ -10,14 +10,13 @@ export default class Runner {
 				const _case = new Case(req.sequelize);
 
 				await _case.livrValidate(data);
-
+        
 				const result = await _case.execute({
 					data,
 					context : {
 						...req.userData
 					}
 				});
-
 				res.send(result);
 			} catch (err) {
 				res.status(400).send({

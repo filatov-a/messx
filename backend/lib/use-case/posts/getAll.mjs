@@ -10,8 +10,8 @@ const { Op } = pkg;
 
 export default class GetAll extends Base {
 	async execute({data, context}){
-		const interval = data.body.interval ? data.body.interval : 1;
-		const {limit, offset} = data.query;
+		const interval = data.interval ? data.interval : 1;
+		const {limit, offset} = data;
 
 		const limitInt = parseInt(limit);
 		const offsetInt = parseInt(offset);

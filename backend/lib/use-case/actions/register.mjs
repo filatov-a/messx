@@ -12,14 +12,20 @@ export default class register extends Base {
 		this.validateSchema = schemas.user_schema;
 	}
 
-	async execute(params){
-		params.body.password = await argon2.hash(params.body.password);
-		params.body.profile_picture = `defaultUser-${params.body.gender}.png`;
-		const usrDb = await Users.createUser({...params.body});
-		const token = await jwt.sign({id: usrDb.id}, this.config.token.verifyEmailToken, {expiresIn: "1h"});
+	async execute({data}){
+		data.password = await argon2.hash(data.password);
+		data.profile_picture = `defaultUser-${data.gender}.png`;
+		const usr = {
+			username: data.usersname,
+			password: data.password,
+			email: data.email,
+			gender: data.gender
+		};
+		const usrDb = await Users.createUser(usr);
+		const token = await jwt.sign({id: usrDb.id}, this.config.token.accessToken, {expiresIn: "1h"});
 		const url = `http://localhost:3000/verify-email/${token}`;
 
-		await mail(params.body.email, url, "click to verify account", "");
+		await mail(data.email, url, "click to verify account", "");
 
 		return {token};
 	}

@@ -2,11 +2,11 @@ import Base from "../base.mjs";
 import Users from "../../models/users.mjs";
 
 export default class Update extends Base {
-	async execute(params){
-		const {id} = params.params;
+	async execute({data}){
+		const {id} = data;
 		const update = await Users.updateUser({
 			id: id,
-			params: params.body
+			params: data
 		});
 		return update;
 	}

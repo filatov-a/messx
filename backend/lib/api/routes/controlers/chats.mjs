@@ -5,7 +5,7 @@ import Delete from "../../../use-case/chats/delete.mjs";
 import Runner from "../../utils/use-case-runner.mjs";
 
 export default {
-	create: Runner.makeRunner(create),
+	create: Runner.makeRunnerToken(create),
 	get: Runner.makeRunner(get),
 	delete: Runner.makeRunner(Delete)
 };

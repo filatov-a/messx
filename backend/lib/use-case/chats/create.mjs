@@ -4,16 +4,15 @@ import Chats from "../../models/chats.mjs";
 import UsersToChats from "../../models/users-to-chats.mjs";
 
 export default class Create extends Base {
-	async execute({data}){
-		if (!data.context.userId) throw new Error("user didn't actions! Incorrect token");
+	async execute({data, context}){
 		const schema = {
-			name: data.body.name,
-			userId: data.context.userId,
+			name: data.name,
+			userId: context.userId,
 		};
 		const newChat = await Chats.create(schema);
 
 		await UsersToChats.create({
-			userId: data.context.userId,
+			userId: context.userId,
 			chatId: newChat.id,
 			isAdmin: true
 		});

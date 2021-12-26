@@ -7,9 +7,9 @@ import LikesPosts from "../../models/likes-posts.mjs";
 
 export default class Like extends Base {
 	async execute({data, context}){
-		const post = await Posts.findByPk(data.params.id);
+		const post = await Posts.findByPk(data.id);
 		const prevLike = await LikesPosts.findOne({where: {
-			userId: context.id, postId: post.id
+			userId: context.userId, postId: post.id
 		}});
 
 		const one = await Users.findOne({ where: { id: post.userId } });
@@ -17,22 +17,22 @@ export default class Like extends Base {
 		if (prevLike !== null) {
 			const dLike = await this.#deleteLike({data, context});
 			let l = null;
-			if (prevLike.type !== data.body.type){
+			if (prevLike.type !== data.type){
 				l = await this.execute({data, context});
-				if (data.body.type === "like") await one.update({rating: one.rating+2});
+				if (data.type === "like") await one.update({rating: one.rating+2});
 				else await one.update({rating: one.rating-2});
 			} else {
-				if (data.body.type === "like") await one.update({rating: one.rating-1});
+				if (data.type === "like") await one.update({rating: one.rating-1});
 				else await one.update({rating: one.rating+1});
 			}
 			return {dLike, like: l?.like};
 		} else {
-			if (data.body.type === "like") await one.update({rating: one.rating+1});
+			if (data.type === "like") await one.update({rating: one.rating+1});
 			else await one.update({rating: one.rating-1});
 		}
 		const like = await LikesPosts.create({
 			publish_date: new Date(),
-			type: data.body.type,
+			type: data.type,
 			userId: context.userId,
 			postId: post.id
 		});
@@ -42,13 +42,13 @@ export default class Like extends Base {
 	async #deleteLike({data, context}){
 		const like = await LikesPosts.findOne({
 			where: {
-				postId: data.params.id,
-				userId: data.decode.id
+				postId: data.id,
+				userId: context.userId
 			},
 		});
 		await LikesPosts.destroy({
 			where: {
-				postId: data.params.id,
+				postId: data.id,
 				userId: context.userId
 			},
 		});

@@ -5,12 +5,12 @@ import ChatsToCategories from "../../models/chats-to-categories.mjs";
 export default class Create extends Base {
 	async execute({data}){
 		const category = await ChatsCategories.create({
-			title: data.body.title,
-			description: data.body.description
+			title: data.title,
+			description: data.description
 		});
 
 		await ChatsToCategories.create({
-			chatId: data.params.id,
+			chatId: data.id,
 			categoryId: category.id
 		});
 
