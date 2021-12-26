@@ -5,17 +5,23 @@ export default class Runner {
 	static makeRunner(Case) {
 		return async function(req, res){
 			try {
+				const data = {...req.body, ...req.params, ...req.query}
+
 				const _case = new Case(req.sequelize);
-				await _case.validate({...req.body});
+
+				await _case.livrValidate(data);
+        
 				const result = await _case.execute({
-					data: {...req.body, ...req.params, ...req.query},
+					data,
 					context : {
-						userId: req.userData?.id
+						...req.userData
 					}
 				});
 				res.send(result);
 			} catch (err) {
-				res.status(400).send({error: err.message});
+				res.status(400).send({
+					error: {...err}
+				});
 			}
 		};
 	}

@@ -14,11 +14,16 @@ async function validateJwt(req, res, next) {
 			throw new Error("NOT_VALID_USER");
 		}
 
-		req.userData = userData;
-		req.userInstance = isValid;
-		await next();
+		req.userData = {
+			userId: userData.id,
+			userInstance: isValid
+		};
+
+		await next()
 	} catch (e) {
-		throw new Error("WRONG_TOKEN");
+		res.status(400).send({
+			error: "WRONG_TOKEN"
+		});
 	}
 }
 
