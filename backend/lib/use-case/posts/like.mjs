@@ -9,7 +9,7 @@ export default class Like extends Base {
 	async execute({data, context}){
 		const post = await Posts.findByPk(data.id);
 		const prevLike = await LikesPosts.findOne({where: {
-			userId: context.id, postId: post.id
+			userId: context.userId, postId: post.id
 		}});
 
 		const one = await Users.findOne({ where: { id: post.userId } });

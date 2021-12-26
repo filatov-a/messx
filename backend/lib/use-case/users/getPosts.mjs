@@ -6,7 +6,6 @@ import PostsCategories from "../../models/posts-categories.mjs";
 
 export default class Get extends Base {
 	async execute({data, context}){
-		console.log(data);
 		const {id} = data;
 		const users = await Users.findOne({
 			where: {id: id},
@@ -53,7 +52,7 @@ export default class Get extends Base {
 										SELECT COUNT(*)
 										FROM LikesPosts
 										WHERE
-											LikesPosts.userId = "${context.id}"
+											LikesPosts.userId = "${context.userId}"
 											AND
 											LikesPosts.postId = Posts.id
 											AND
