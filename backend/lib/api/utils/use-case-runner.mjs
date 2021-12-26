@@ -1,4 +1,3 @@
-import getToken from "../../utils/getToken.mjs";
 import multer from "../../middleware/multer.mjs";
 import {validateJwt} from "../../use-case/sessions/validate.mjs";
 
@@ -8,14 +7,12 @@ export default class Runner {
 			try {
 				const _case = new Case(req.sequelize);
 				await _case.validate({...req.body});
-				console.log(req.userData?.id);
 				const result = await _case.execute({
 					data: {...req.body, ...req.params, ...req.query},
 					context : {
 						userId: req.userData?.id
 					}
 				});
-
 				res.send(result);
 			} catch (err) {
 				res.status(400).send({error: err.message});

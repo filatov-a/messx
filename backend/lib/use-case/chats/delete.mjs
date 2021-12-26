@@ -5,7 +5,7 @@ export default class Delete extends Base {
 	async execute({data}){
 		const one = await Chats.destroy({
 			where: {
-				id: data.params.id
+				id: data.id
 			},
 		});
 		if (!one) throw new Error("event didn't found! Incorrect id!");

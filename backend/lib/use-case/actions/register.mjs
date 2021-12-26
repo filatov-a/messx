@@ -13,13 +13,19 @@ export default class register extends Base {
 	}
 
 	async execute({data}){
-		data.body.password = await argon2.hash(data.body.password);
-		data.body.profile_picture = `defaultUser-${data.body.gender}.png`;
-		const usrDb = await Users.createUser({...data.body});
+		data.password = await argon2.hash(data.password);
+		data.profile_picture = `defaultUser-${data.gender}.png`;
+		const usr = {
+			username: data.usersname,
+			password: data.password,
+			email: data.email,
+			gender: data.gender
+		};
+		const usrDb = await Users.createUser(usr);
 		const token = await jwt.sign({id: usrDb.id}, this.config.token.accessToken, {expiresIn: "1h"});
 		const url = `http://localhost:3000/verify-email/${token}`;
 
-		await mail(data.body.email, url, "click to verify account", "");
+		await mail(data.email, url, "click to verify account", "");
 
 		return {token};
 	}

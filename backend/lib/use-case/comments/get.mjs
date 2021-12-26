@@ -5,7 +5,7 @@ import LikesToComments from "../../models/likes-comments.mjs";
 export default class Get extends Base {
 	async execute({data}){
 		const comments = Comments;
-		const {id} = data.params;
+		const {id} = data;
 		const comment = await comments.findByPk(id, {
 			include: LikesToComments,
 		});

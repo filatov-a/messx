@@ -2,11 +2,11 @@ import Base from "../base.mjs";
 import Messages from "../../models/messages.mjs";
 
 export default class Update extends Base {
-	async execute(params){
-		const mess = await Messages.findByPk(params.params.id);
+	async execute({data}){
+		const mess = await Messages.findByPk(data.id);
 		const newMessages = await mess.update({
-			name: params.body.name,
-			descriptions: params.body.descriptions,
+			name: data.name,
+			descriptions: data.descriptions,
 		});
 		return {newMessages};
 	}

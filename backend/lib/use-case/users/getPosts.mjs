@@ -6,7 +6,8 @@ import PostsCategories from "../../models/posts-categories.mjs";
 
 export default class Get extends Base {
 	async execute({data, context}){
-		const {id} = data.params;
+		console.log(data);
+		const {id} = data;
 		const users = await Users.findOne({
 			where: {id: id},
 			include: [

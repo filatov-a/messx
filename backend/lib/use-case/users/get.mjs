@@ -5,7 +5,7 @@ import Messages from "../../models/messages.mjs";
 
 export default class Get extends Base {
 	async execute({data}){
-		const {id} = data.params;
+		const {id} = data;
 		return Users.findOne({
 			where: {id: id},
 			include: [

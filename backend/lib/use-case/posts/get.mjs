@@ -7,7 +7,7 @@ import LikesComments from "../../models/likes-comments.mjs";
 
 export default class Get extends Base {
 	async execute({data, context}){
-		const {id} = data.params;
+		const {id} = data;
 
 		const post = await Posts.findOne({
 			where: {id: id},

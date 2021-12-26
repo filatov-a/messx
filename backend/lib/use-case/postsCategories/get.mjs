@@ -5,8 +5,8 @@ import PostsCategories from "../../models/posts-categories.mjs";
 import LikesPosts from "../../models/likes-posts.mjs";
 
 export default class Get extends Base {
-	async execute(params){
-		const {id} = params.params;
+	async execute({data}){
+		const {id} = data;
 		const category = await PostsCategories.findOne({
 			where: {id: id},
 			include: [

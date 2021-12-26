@@ -6,13 +6,13 @@ import argon2  from "argon2";
 
 export default class login extends Base {
 	async execute({data}){
-		const user = await Users.findOne({where: {username: data.body.username}});
+		const user = await Users.findOne({where: {username: data.username}});
 
 		if (user === null) {
 			throw new Error("wrong account login");
 		}
 
-		const ok = await argon2.verify(user.password, data.body.password);
+		const ok = await argon2.verify(user.password, data.password);
 
 		if (!ok) {
 			throw new Error("wrong account password");
