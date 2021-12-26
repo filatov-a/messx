@@ -3,7 +3,7 @@ import Users from "../../models/users.mjs";
 import config from "#messx-global-config";
 import getToken from "../../utils/getToken.mjs";
 
-async function validateJwt(req, res) {
+async function validateJwt(req, res, next) {
 	try {
 		const token = getToken(req);
 		const userData = await jwt.verify(token, config.token.accessToken);
@@ -16,6 +16,7 @@ async function validateJwt(req, res) {
 
 		req.userData = userData;
 		req.userInstance = isValid;
+		await next();
 	} catch (e) {
 		throw new Error("WRONG_TOKEN");
 	}

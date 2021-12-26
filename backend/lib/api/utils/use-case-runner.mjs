@@ -8,7 +8,7 @@ export default class Runner {
 			try {
 				const _case = new Case(req.sequelize);
 				await _case.validate({...req.body});
-
+				console.log(req.userData?.id);
 				const result = await _case.execute({
 					data: {...req.body, ...req.params, ...req.query},
 					context : {

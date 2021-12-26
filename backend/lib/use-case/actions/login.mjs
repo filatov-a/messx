@@ -5,14 +5,14 @@ import jwt from "jsonwebtoken";
 import argon2  from "argon2";
 
 export default class login extends Base {
-	async execute(params){
-		const user = await Users.findOne({where: {username: params.body.username}});
+	async execute({data}){
+		const user = await Users.findOne({where: {username: data.body.username}});
 
 		if (user === null) {
 			throw new Error("wrong account login");
 		}
 
-		const ok = await argon2.verify(user.password, params.body.password);
+		const ok = await argon2.verify(user.password, data.body.password);
 
 		if (!ok) {
 			throw new Error("wrong account password");
