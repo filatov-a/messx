@@ -3,20 +3,17 @@ import Posts from "../../models/posts.mjs";
 import Comments from "../../models/comments.mjs";
 import PostsCategories from "../../models/posts-categories.mjs";
 import LikesPosts from "../../models/likes-posts.mjs";
-import jwt from "jsonwebtoken";
 import LikesComments from "../../models/likes-comments.mjs";
 
 export default class Get extends Base {
-	async execute(params){
-		const posts = Posts;
-		const {id} = params.params;
-		const decode = await this.decodeToken(params.token);
+	async execute({data, context}){
+		const {id} = data.params;
 
-		return posts.findOne({
+		const post = await Posts.findOne({
 			where: {id: id},
 			include: [
-				PostsCategories,
-				LikesPosts,
+				{model: PostsCategories},
+				{model: LikesPosts},
 				{
 					model: Comments,
 					include: [LikesComments],
@@ -26,7 +23,7 @@ export default class Get extends Base {
 								this.sequelize.literal(`(
 									SELECT COUNT(*)
 									FROM LikesComments
-									WHERE 
+									WHERE
 									LikesComments.commentId = Comments.id
 									AND
 									LikesComments.type = "like"
@@ -36,7 +33,7 @@ export default class Get extends Base {
 								this.sequelize.literal(`(
 									SELECT COUNT(*)
 									FROM LikesComments
-									WHERE 
+									WHERE
 										LikesComments.commentId = Comments.id
 										AND
 										LikesComments.type = "dislike"
@@ -47,7 +44,7 @@ export default class Get extends Base {
 									SELECT COUNT(*)
 									FROM LikesComments
 									WHERE
-										LikesComments.userId = "${decode?.id}"
+										LikesComments.userId = "${context.userId}"
 										AND
 										LikesComments.commentId = Comments.id
 										AND
@@ -59,7 +56,7 @@ export default class Get extends Base {
 									SELECT COUNT(*)
 									FROM LikesComments
 									WHERE
-										LikesComments.userId = "${decode?.id}"
+										LikesComments.userId = "${context.userId}"
 										AND
 										LikesComments.commentId = Comments.id
 										AND
@@ -76,7 +73,7 @@ export default class Get extends Base {
 						this.sequelize.literal(`(
 							SELECT COUNT(*)
 							FROM LikesPosts
-							WHERE 
+							WHERE
 							LikesPosts.postId = Posts.id
 							AND
 							LikesPosts.type = "like"
@@ -86,7 +83,7 @@ export default class Get extends Base {
 						this.sequelize.literal(`(
 							SELECT COUNT(*)
 							FROM LikesPosts
-							WHERE 
+							WHERE
 								LikesPosts.postId = Posts.id
 								AND
 								LikesPosts.type = "dislike"
@@ -97,7 +94,7 @@ export default class Get extends Base {
 							SELECT COUNT(*)
 							FROM LikesPosts
 							WHERE
-								LikesPosts.userId = "${decode?.id}"
+								LikesPosts.userId = "${context.userId}"
 								AND
 								LikesPosts.postId = Posts.id
 								AND
@@ -109,7 +106,7 @@ export default class Get extends Base {
 							SELECT COUNT(*)
 							FROM LikesPosts
 							WHERE
-								LikesPosts.userId = "${decode?.id}"
+								LikesPosts.userId = "${context.userId}"
 								AND
 								LikesPosts.postId = Posts.id
 								AND
@@ -119,5 +116,6 @@ export default class Get extends Base {
 				]
 			},
 		});
+		return post;
 	}
 }

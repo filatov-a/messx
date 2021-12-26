@@ -5,9 +5,8 @@ import LikesPosts from "../../models/likes-posts.mjs";
 import PostsCategories from "../../models/posts-categories.mjs";
 
 export default class Get extends Base {
-	async execute(params){
-		const {id} = params.params;
-		const decode = await this.decodeToken(params.token);
+	async execute({data, context}){
+		const {id} = data.params;
 		const users = await Users.findOne({
 			where: {id: id},
 			include: [
@@ -41,7 +40,7 @@ export default class Get extends Base {
 										SELECT COUNT(*)
 										FROM LikesPosts
 										WHERE
-											LikesPosts.userId = "${decode?.id}"
+											LikesPosts.userId = "${context.userId}"
 											AND
 											LikesPosts.postId = Posts.id
 											AND
@@ -53,7 +52,7 @@ export default class Get extends Base {
 										SELECT COUNT(*)
 										FROM LikesPosts
 										WHERE
-											LikesPosts.userId = "${decode?.id}"
+											LikesPosts.userId = "${context.id}"
 											AND
 											LikesPosts.postId = Posts.id
 											AND

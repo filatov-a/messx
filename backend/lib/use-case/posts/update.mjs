@@ -2,11 +2,11 @@ import Base from "../base.mjs";
 import Posts from "../../models/posts.mjs";
 
 export default class Update extends Base {
-	async execute(params){
-		const post = await Posts.findByPk(params.params.id);
+	async execute({data}){
+		const post = await Posts.findByPk(data.params.id);
 		const newPost = await post.update({
-			title: params.body.title,
-			content: params.body.content,
+			title: data.body.title,
+			content: data.body.content,
 		});
 		return {newPost};
 	}

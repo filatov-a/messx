@@ -11,7 +11,7 @@ import Runner from "../../utils/use-case-runner.mjs";
 export default {
 	create: Runner.makeRunner(create),
 	get: Runner.makeRunner(get),
-	getPosts: Runner.makeRunner(getPosts),
+	getPosts: Runner.makeRunnerToken(getPosts),
 	getAll: Runner.makeRunner(getAll),
 	update: Runner.makeRunner(update),
 	setAvatar: Runner.makeRunnerAvatar(setAvatar),

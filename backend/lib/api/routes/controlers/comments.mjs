@@ -7,7 +7,7 @@ import like from "../../../use-case/comments/like.mjs";
 import Runner from "../../utils/use-case-runner.mjs";
 
 export default {
-	create: Runner.makeRunner(create),
+	create: Runner.makeRunnerToken(create),
 	get: Runner.makeRunner(get),
 	update: Runner.makeRunner(update),
 	delete: Runner.makeRunner(Delete),

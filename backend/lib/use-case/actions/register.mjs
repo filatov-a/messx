@@ -21,6 +21,6 @@ export default class register extends Base {
 
 		await mail(params.body.email, url, "click to verify account", "");
 
-		return {jwt: token};
+		return {token};
 	}
 }

@@ -9,13 +9,17 @@ import {
     CardActions,
     CardContent,
 } from '@mui/material';
-import {FavoriteBorder, Favorite, HeartBrokenOutlined, HeartBroken} from '@mui/icons-material'
+import {
+    FavoriteBorder,
+    Favorite,
+    HeartBrokenOutlined,
+    HeartBroken,
+    Delete
+} from '@mui/icons-material'
 import config from "../../config/config";
 import * as rd from "react-router-dom";
-import {sendSetLike} from "../../redux/modules/posts";
+import {sendDeletePost, sendSetLike} from "../../redux/modules/posts";
 import * as rr from "react-redux";
-import {addLikeInPost} from "../../redux/modules/users";
-import {addLikeInPosts, tmp} from "../../redux/modules/posts";
 
 const styles = {
     root: {
@@ -60,7 +64,7 @@ export const CustomCard = (props) => {
     const dispatch = rr.useDispatch();
 
     const onClick = () => {
-        navigate(props.to)
+        navigate(`/posts/${props.post.id}`)
     }
 
     const onClickAvatar = () => {
@@ -78,9 +82,6 @@ export const CustomCard = (props) => {
             token: props.users.token,
             id: props.post.id
         }));
-        // if (props.users.specUser) await dispatch(addLikeInPost(like.payload));
-        // if (props.posts) await dispatch(addLikeInPosts(like.payload));
-        // if (props.page) await dispatch(sendGetAllPosts({page: props.page}));
         // }
     }
 
@@ -94,9 +95,30 @@ export const CustomCard = (props) => {
         // }
     }
 
-     return (
+    const onDelete = () => {
+        dispatch(sendDeletePost(props.post.id));
+        navigate('/posts');
+    }
+
+    const ButtonDiv = (prp) => {
+        if (props.single) {
+            return (
+                <div>
+                    {prp.children}
+                </div>
+            )
+        } else {
+            return (
+                <Button style={styles.link} onClick={onClick}>
+                    {prp.children}
+                </Button>
+            )
+        }
+    }
+
+    return (
         <Card style={styles.root} >
-            <Button style={styles.link} onClick={onClick}>
+            <ButtonDiv>
                 {props.image &&
                 <CardMedia
                     style={styles.media}
@@ -114,11 +136,11 @@ export const CustomCard = (props) => {
                         </div>
                     </div>
                 </CardContent>
-            </Button>
+            </ButtonDiv>
             {props.cardActions &&
             <CardActions style={{display: "block"}}>
                 <div style={{display: "flex", flexWrap: "wrap", marginBottom: 10}}>
-                    {props.post.PostsCategories.map(i=>(
+                    {props.post.PostsCategories?.map(i=>(
                         <Button style={{margin: 5, textAlign: "center"}} onClick={onClickCategory} variant={"outlined"} color="secondary">
                             {i.title}
                         </Button>
@@ -142,6 +164,13 @@ export const CustomCard = (props) => {
                         <ButtonBase onClick={onClickAvatar} style={{borderRadius:'100%', padding:10}}>
                             <Avatar alt="Remy Sharp" src={`${config.url}/images/${props.post.User.profile_picture}`} style={{width: 30, height:30}}/>
                         </ButtonBase>
+                        {props.users.user.role === "admin" ||
+                            props.users.user.role === "superAdmin" ||
+                            props.users.user.id === props.users.specUser.id &&
+                            <Button onClick={onDelete} size="small" color="secondary">
+                                <Delete/>
+                            </Button>
+                        }
                     </Box>
                     }
                 </Box>

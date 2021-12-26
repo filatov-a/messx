@@ -6,18 +6,13 @@ export default class Runner {
 	static makeRunner(Case) {
 		return async function(req, res){
 			try {
-				const token = getToken(req);
-
-				const userData = await validateJwt({token})
-
 				const _case = new Case(req.sequelize);
 				await _case.validate({...req.body});
 
 				const result = await _case.execute({
 					data: {...req.body, ...req.params, ...req.query},
 					context : {
-						...userData,
-						userId: userData.id
+						userId: req.userData?.id
 					}
 				});
 
@@ -29,6 +24,10 @@ export default class Runner {
 	}
 
 	static makeRunnerAvatar(Case) {
-		return [multer.single("avatar"), this.makeRunner(Case)];
+		return [validateJwt, multer.single("avatar"), this.makeRunner(Case)];
+	}
+
+	static makeRunnerToken(Case) {
+		return [validateJwt, this.makeRunner(Case)];
 	}
 }

@@ -1,8 +1,7 @@
 import React from "react";
 import {Box} from '@mui/material';
 import {Pagination} from '@mui/material';
-import {sendGetAllPosts, sendGetPostById} from '../../redux/modules/posts'
-import { sendGetAllUsers, sendGetUserById} from '../../redux/modules/users'
+import {sendGetAllPosts} from '../../redux/modules/posts'
 import * as rr from "react-redux";
 import * as r from "react";
 import {CustomCard} from '../utils/card'

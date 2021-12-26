@@ -2,11 +2,11 @@ import Base from "../base.mjs";
 import ChatsCategories from "../../models/chats-categories.mjs";
 
 export default class Update extends Base {
-	async execute(params){
-		const one = await ChatsCategories.findByPk(params.params.id);
+	async execute({data}){
+		const one = await ChatsCategories.findByPk(data.params.id);
 		const category = await one.update({
-			title: params.body.title,
-			description: params.body.description
+			title: data.body.title,
+			description: data.body.description
 		});
 
 		return {category};

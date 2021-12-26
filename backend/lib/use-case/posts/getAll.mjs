@@ -5,15 +5,13 @@ import LikesPosts from "../../models/likes-posts.mjs";
 import pkg from "sequelize";
 import moment from "moment";
 import PostsCategories from "../../models/posts-categories.mjs";
-import jwt from "jsonwebtoken";
 
 const { Op } = pkg;
 
 export default class GetAll extends Base {
-	async execute(params){
-		const interval = params.interval ? params.interval : 1;
-		const {limit, offset} = params.query;
-		const decode = await this.decodeToken(params.token);
+	async execute({data, context}){
+		const interval = data.body.interval ? data.body.interval : 1;
+		const {limit, offset} = data.query;
 
 		const limitInt = parseInt(limit);
 		const offsetInt = parseInt(offset);
@@ -63,7 +61,7 @@ export default class GetAll extends Base {
 							SELECT COUNT(*)
 							FROM LikesPosts
 							WHERE
-								LikesPosts.userId = "${decode?.id}"
+								LikesPosts.userId = "${context.userId}"
 								AND
 								LikesPosts.postId = Posts.id
 								AND
@@ -75,7 +73,7 @@ export default class GetAll extends Base {
 							SELECT COUNT(*)
 							FROM LikesPosts
 							WHERE
-								LikesPosts.userId = "${decode?.id}"
+								LikesPosts.userId = "${context.userId}"
 								AND
 								LikesPosts.postId = Posts.id
 								AND

@@ -69,7 +69,7 @@ export const sendDeleteComment = createAsyncThunk(
     'posts/sendDeleteComment',
     async (id, thunkAPI) => {
         try {
-            await axios.delete(`${config.url}/api/comments/${id}`);
+            await axios.delete(`/comments/${id}`);
             return {id: id};
         } catch (err) {
             return {error: err.response.data.error};
@@ -97,7 +97,7 @@ export const sendSetLikeToComment = createAsyncThunk(
         try {
             let header = { headers: { Authorization: `Bearer ${param.token}` }}
             let type = {type: param.type}
-            const res = await axios.post(`${config.url}/comments/${param.id}/like`, type, header);
+            const res = await axios.post(`/comments/${param.id}/like`, type, header);
             return res.data;
         } catch (err) {
             return {error: err.response.data.error};
@@ -110,7 +110,7 @@ export const sendGetPostById = createAsyncThunk(
     async (param, thunkAPI) => {
         try {
             let header = { headers: { Authorization: `Bearer ${param.token}` }}
-            const res = await axios.get(`${config.url}/api/posts/${param.id}`, header);
+            const res = await axios.get(`/posts/${param.id}`, header);
             convertDate(res.data);
             return res.data;
         } catch (err) {

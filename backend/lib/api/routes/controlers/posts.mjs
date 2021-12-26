@@ -8,10 +8,10 @@ import like from "../../../use-case/posts/like.mjs";
 import Runner from "../../utils/use-case-runner.mjs";
 
 export default {
-	create: Runner.makeRunner(create),
-	get: Runner.makeRunner(get),
-	getAll: Runner.makeRunner(getAll),
+	create: Runner.makeRunnerToken(create),
+	get: Runner.makeRunnerToken(get),
+	getAll: Runner.makeRunnerToken(getAll),
 	update: Runner.makeRunner(update),
 	delete: Runner.makeRunner(Delete),
-	like: Runner.makeRunner(like)
+	like: Runner.makeRunnerToken(like)
 };
