@@ -4,12 +4,22 @@ import PostsCategories from "../../models/posts-categories.mjs";
 import PostsImages from "../../models/posts-images.mjs";
 
 export default class Create extends Base {
+
+	async livrValidate(data = {}) {
+		const rules = {
+			title   : [ 'required', 'string'],
+			content	: [	'required', 'string']
+		};
+
+		return this.doValidation(data, rules);
+	}
+
 	async execute({data, context}){
 		const post = await Posts.create({
 			title: data.title,
 			status: "live",
 			content: data.content,
-			userId: context.id
+			userId: context.userId
 		});
 
 		data?.images?.map(async i => {
