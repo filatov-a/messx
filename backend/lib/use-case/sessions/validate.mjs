@@ -19,7 +19,7 @@ async function validateJwt(req, res, next) {
 			userInstance: isValid
 		};
 
-		await next()
+		await next();
 	} catch (e) {
 		res.status(400).send({
 			error: "WRONG_TOKEN"

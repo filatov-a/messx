@@ -2,8 +2,6 @@ import React from "react";
 import "./App.css"
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 
-import AlertAction from "./components/utils/alert";
-
 import Login from "./components/auth/login";
 import Register from "./components/auth/register";
 import RegisterVerify from "./components/auth/registerVerify";
@@ -19,7 +17,7 @@ import Name from "./components/users/name";
 import FullName from "./components/users/fullname";
 import Password from "./components/users/password";
 import Email from "./components/users/email";
-// import CreatePost from "./components/posts/createPost";
+import CreatePost from "./components/posts/createPost";
 // import Categories from "./components/categories/categories";
 // import SpecCategory from "./components/categories/specCategory";
 // import CreateCategory from "./components/categories/createCategory";
@@ -34,7 +32,7 @@ function App(){
                   </Routes>
                   <Routes>
                       {/*<RouteClient exact path="/createuser" element={CreateUser}/>*/}
-                      {/*<RouteClient exact path="/createpost" element={CreatePost}/>*/}
+                      <Route exact path="/createpost" element={<CreatePost/>}/>
                       {/*<RouteClient exact path="/createcategory" element={CreateCategory}/>*/}
                       <Route exact path="/name" element={<Name/>}/>
                       <Route exact path="/fullname" element={<FullName/>}/>

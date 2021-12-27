@@ -2,7 +2,7 @@ import React from "react";
 import {Button, TextField, TextareaAutosize} from "@mui/material";
 import Autocomplete from '@mui/material/Autocomplete';
 import {Alert} from "@mui/material";
-import {UseStyles} from "../../styles/login";
+import {styleAuth} from "../../styles/main";
 import {sendCreatePost, sendGetPostById} from "../../redux/modules/posts";
 import {sendGetAllCategories} from "../../redux/modules/categories";
 import * as rr from "react-redux";
@@ -11,7 +11,6 @@ import * as r from "react";
 import {parseToken} from "../../utils/parseToken";
 
 function createPost() {
-    const classes = UseStyles();
     const dispatch = rr.useDispatch();
     const users = rr.useSelector(state => state.users);
     const categories = rr.useSelector(state => state.categories);
@@ -42,15 +41,10 @@ function createPost() {
     const onChangeTitle = (e) => setTitle(e.target.value);
     const onChangeCategories = (event, newValues) => {setCategories(newValues)};
     return (
-        <div className={classes.main} style={{width: '50%'}}>
+        <div style={styleAuth.Div}>
             <h2>Create post</h2>
             <form onSubmit={handleSubmit}>
-                {users.error &&
-                <Alert className={classes.error} severity="error">
-                    {users.error}
-                </Alert>
-                }
-                <TextField onChange={onChangeTitle} className={classes.input} required label='title'/>
+                <TextField onChange={onChangeTitle} style={styleAuth.TextField} required label='title'/>
                 <Autocomplete
                     multiple
                     id="tags-outlined"
@@ -62,14 +56,14 @@ function createPost() {
                         <TextField
                             {...params}
                             variant="outlined"
-                            label="filterSelectedOptions"
+                            label="categories"
                             placeholder="category"
-                            className={classes.input}
+                            style={styleAuth.TextField}
                         />
                     )}
                 />
-                <TextareaAutosize rowsMax={15} rowsMin={3} onChange={onChangeContent} className={classes.input} required placeholder='some text'/>
-                <Button className={classes.button} type="submit" variant='contained' color='primary'>Send</Button>
+                <TextareaAutosize rowsMax={15} rowsMin={3} onChange={onChangeContent} style={styleAuth.TextareaAutosize} required placeholder='some text'/>
+                <Button style={styleAuth.Button} type="submit" variant='contained' color='primary'>Send</Button>
             </form>
         </div>
     )

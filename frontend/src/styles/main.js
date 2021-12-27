@@ -14,6 +14,13 @@ export const styleAuth = {
     TextField: {
         width: '100%',
         marginBottom: '10px',
+    },
+    TextareaAutosize: {
+        width: '98%',
+        margin: "auto",
+        marginBottom: '5px',
+        minHeight: 80,
+        maxWidth: "98%"
     }
 };
 

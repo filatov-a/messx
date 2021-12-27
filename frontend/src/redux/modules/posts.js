@@ -124,8 +124,8 @@ export const sendCreatePost = createAsyncThunk(
     async (param, thunkAPI) => {
         try {
             let header = { headers: { Authorization: `Bearer ${param.token}` }}
-            const res = await axios.post(`${config.url}/api/posts/`, param.user, header);
-            param.history.push(`/posts/${res.data.id}`)
+            const res = await axios.post(`/posts/`, param.user, header);
+            param.navigate(`/posts/${res.data.id}`)
             return {error: null};
         } catch (err) {
             return {error: err.response.data.error};

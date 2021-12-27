@@ -1,28 +1,35 @@
 export default function addLike(posts, like){
     if (!posts || !like) return;
 
+    if (!posts.length){
+        setLike(posts, like)
+        return;
+    }
+
     for (let i = 0; i < posts.length; i++){
-        if (posts[i].id === like.like?.postId){
-            posts[i].LikesPosts.push(like.like)
-            if (like.like.type === 'like'){
-                posts[i].likesCount++;
-                posts[i].isLiked = true;
-            }
-            else {
-                posts[i].dislikesCount++;
-                posts[i].isDisliked = true;
-            }
+        setLike(posts[i], like)
+    }
+}
+
+function setLike(post, like){
+    if (post.id === like.like?.postId){
+        if (like.like.type === 'like'){
+            post.likesCount++;
+            post.isLiked = true;
         }
-        if (posts[i].id === like.dLike?.postId){
-            posts[i].LikesPosts.splice(i, 1);
-            if (like.dLike.type === 'like') {
-                posts[i].likesCount--;
-                posts[i].isLiked = false;
-            }
-            else {
-                posts[i].dislikesCount--;
-                posts[i].isDisliked = false;
-            }
+        else {
+            post.dislikesCount++;
+            post.isDisliked = true;
+        }
+    }
+    if (post.id === like.dLike?.postId){
+        if (like.dLike.type === 'like') {
+            post.likesCount--;
+            post.isLiked = false;
+        }
+        else {
+            post.dislikesCount--;
+            post.isDisliked = false;
         }
     }
 }

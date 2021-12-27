@@ -4,12 +4,18 @@ import Users from "../../models/users.mjs";
 import jwt from "jsonwebtoken";
 import mail from "../../utils/email.mjs";
 import argon2  from "argon2";
-import schemas from "../../utils/schemas.mjs";
 
 export default class register extends Base {
-	constructor() {
-		super();
-		this.validateSchema = schemas.user_schema;
+	async livrValidate(data = {}) {
+		const rules = {
+			username   : [ "required", "string"],
+			password	: [	"required", "string"],
+			full_name	: [	"required", "string"],
+			email	: [	"required", "string"],
+			gender	: [	"required", "string"],
+		};
+
+		return this.doValidation(data, rules);
 	}
 
 	async execute({data}){
@@ -18,10 +24,11 @@ export default class register extends Base {
 		const usr = {
 			username: data.usersname,
 			password: data.password,
+			full_name: data.full_name,
 			email: data.email,
 			gender: data.gender
 		};
-		const usrDb = await Users.createUser(usr);
+		const usrDb = await Users.createUser({...usr});
 		const token = await jwt.sign({id: usrDb.id}, this.config.token.accessToken, {expiresIn: "1h"});
 		const url = `http://localhost:3000/verify-email/${token}`;
 

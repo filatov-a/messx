@@ -22,27 +22,43 @@ import Alert from "../utils/alert";
 import PropTypes from 'prop-types';
 import {useEffect} from "react";
 import {sendGetUser} from "../../redux/modules/users";
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import Zoom from '@mui/material/Zoom';
 const Tr = useTranslation;
 
-function HideOnScroll(props) {
+export function ScrollTop(props) {
     const { children, window } = props;
     const trigger = useScrollTrigger({
-        target: window ? window() : undefined,
+        disableHysteresis: true,
+        threshold: 100,
     });
 
+    const handleClick = (event) => {
+        event.view.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
     return (
-        <Slide appear={false} direction="down" in={!trigger}>
-            {children}
-        </Slide>
+        <Zoom in={trigger}>
+            <Box
+                onClick={handleClick}
+                role="presentation"
+                sx={{ position: 'fixed', bottom: 16, right: 16 }}
+            >
+                {children}
+            </Box>
+        </Zoom>
     );
 }
 
-HideOnScroll.propTypes = {
+ScrollTop.propTypes = {
     children: PropTypes.element.isRequired,
     window: PropTypes.func,
 };
 
-export default function HideAppBar(props) {
+export default function ToolbarMain(props) {
     const {t} = Tr();
     const users = rr.useSelector(state => state.users);
     const posts = rr.useSelector(state => state.posts);
@@ -60,7 +76,6 @@ export default function HideAppBar(props) {
 
     return (
         <div>
-            <HideOnScroll {...props}>
                 <AppBar>
                     <Toolbar style={styleToolbar.toolbar}>
                         <div style={{flexGrow: 7, textAlign: 'left'}}>
@@ -128,7 +143,6 @@ export default function HideAppBar(props) {
                         }
                     </Toolbar>
                 </AppBar>
-            </HideOnScroll>
             <Toolbar />
             <Box style={{width: 250, margin: 15, right: 15, position: "absolute"}}>
                 {users.error &&
@@ -168,6 +182,11 @@ export default function HideAppBar(props) {
                     </div>
                 }
             </Box>
+            <ScrollTop {...props}>
+                <Fab color="secondary" size="small" aria-label="scroll back to top">
+                    <KeyboardArrowUpIcon />
+                </Fab>
+            </ScrollTop>
         </div>
     );
 }
