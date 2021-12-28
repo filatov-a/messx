@@ -3,12 +3,13 @@ import Posts from "../../models/posts.mjs";
 import PostsCategories from "../../models/posts-categories.mjs";
 import PostsToCategories from "../../models/posts-to-categories.mjs";
 import PostsImages from "../../models/posts-images.mjs";
+import { v4 as uuidv4 } from "uuid";
 
 export default class Create extends Base {
 	async livrValidate(data = {}) {
 		const rules = {
 			title   : [ "required", "string"],
-			content	: [	"required", "string"]
+			content	: [	"required", "string"],
 		};
 
 		return this.doValidation(data, rules);
@@ -21,20 +22,23 @@ export default class Create extends Base {
 			content: data.content,
 			userId: context.userId
 		});
-
 		// data?.images?.map(async i => {
 		// 	const image = await PostsImages.findOne({where: {id: i.id}});
 		// 	await PostsImages.create()
 		// 	await post.addPostsImages(image);
 		// });
-
 		data.categories?.map(async i => {
-			const category = await PostsCategories.findOne({where: {id: i.id}});
-			await PostsToCategories.create({
-				postId: post.id,
-				categoryId: category.id
-			});
+			const category = await PostsCategories.findOne({where: {id: i}});
+			await post.addPostsCategories([category, uuidv4()]);
+			// console.log(category);
+			// if (category){
+			// 	await PostsToCategories.create({
+			// 		postId: post.id
+			// 		categoryId: category.id
+			// 	});
+			// }
 		});
+
 
 		return post;
 	}

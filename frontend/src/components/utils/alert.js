@@ -1,14 +1,48 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Alert from '@mui/material/Alert';
+import {Alert, AlertTitle} from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Slide from '@mui/material/Slide';
 import CloseIcon from '@mui/icons-material/Close';
 import * as r from "react";
 import {clearMess} from "../../redux/modules/users";
+import * as rr from "react-redux";
 
-export default function TransitionAlerts(props) {
+function getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+}
+
+export function AlertMessage(props){
+    let errors = props.error
+    const success = props.success
+
+    if (success){
+        return (
+            <TransitionAlerts
+                text={success}
+                severity={"success"}
+            />
+        )
+    }
+    else if (errors){
+        const arr = Object.entries(errors);
+        return (arr.map(i=>(
+                <TransitionAlerts
+                    title={i[0]}
+                    text={i[1]}
+                    severity={"error"}
+                />
+            ))
+        )
+    }
+    else {
+        return (<div> </div>)
+    }
+}
+
+export function TransitionAlerts(props) {
     const [open, setOpen] = React.useState(true);
+    const dispatch = rr.useDispatch();
 
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
@@ -17,11 +51,11 @@ export default function TransitionAlerts(props) {
     async function off(){
         setOpen(false);
         await sleep(500)
-        props.dispatch(clearMess());
+        dispatch(clearMess());
     }
 
     r.useEffect(() => {
-        const timer = setTimeout( off, 3.5 * 1000 );
+        const timer = setTimeout( off, 6 * 1000 );
         return () => clearTimeout(timer);
     },[])
 
@@ -43,6 +77,7 @@ export default function TransitionAlerts(props) {
                     }
                     sx={{ mb: 2 }}
                 >
+                    {props.title && <AlertTitle>{props.title}</AlertTitle>}
                     {props.text}
                 </Alert>
             </Slide>

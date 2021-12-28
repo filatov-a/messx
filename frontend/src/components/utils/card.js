@@ -97,7 +97,6 @@ export const CustomCard = (props) => {
 
     const onDelete = () => {
         dispatch(sendDeletePost(props.post.id));
-        navigate('/posts');
     }
 
     const ButtonDiv = (prp) => {

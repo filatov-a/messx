@@ -18,7 +18,7 @@ import config from "../../config/config";
 import {parseToken} from '../../utils/parseToken';
 import Lg from './lgSelector'
 import {useTranslation} from 'react-i18next'
-import Alert from "../utils/alert";
+import {AlertMessage} from "../utils/alert";
 import PropTypes from 'prop-types';
 import {useEffect} from "react";
 import {sendGetUser} from "../../redux/modules/users";
@@ -27,7 +27,7 @@ import Zoom from '@mui/material/Zoom';
 const Tr = useTranslation;
 
 export function ScrollTop(props) {
-    const { children, window } = props;
+    const { children } = props;
     const trigger = useScrollTrigger({
         disableHysteresis: true,
         threshold: 100,
@@ -144,43 +144,9 @@ export default function ToolbarMain(props) {
                     </Toolbar>
                 </AppBar>
             <Toolbar />
-            <Box style={{width: 250, margin: 15, right: 15, position: "absolute"}}>
-                {users.error &&
-                    <div>
-                        <Alert
-                            dispatch={dispatch}
-                            text={users.error}
-                            severity={"error"}
-                        />
-                    </div>
-                }
-                {users.success &&
-                    <div>
-                        <Alert
-                            dispatch={dispatch}
-                            text={users.success}
-                            severity={"success"}
-                        />
-                    </div>
-                }
-                {posts.error &&
-                    <div>
-                        <Alert
-                            dispatch={dispatch}
-                            text={posts.error}
-                            severity={"error"}
-                        />
-                    </div>
-                }
-                {posts.success &&
-                    <div>
-                        <Alert
-                            dispatch={dispatch}
-                            text={posts.success}
-                            severity={"success"}
-                        />
-                    </div>
-                }
+            <Box display={'block'} style={{width: 250, margin: 15, right: 15, position: "absolute"}}>
+                <AlertMessage error={users.error} success={users.success}/>
+                <AlertMessage error={posts.error} success={posts.success}/>
             </Box>
             <ScrollTop {...props}>
                 <Fab color="secondary" size="small" aria-label="scroll back to top">

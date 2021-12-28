@@ -42,39 +42,45 @@ export default class Users extends Base {
 		});
 	}
 	static async createUser(params){
+		let errors = {};
 		const username = await this.findOne({ where: { username: params.username } });
 		const email = await this.findOne({ where: { email: params.email } });
 		if (username) {
-			throw new Error("username is busy");
+			errors.username = "username is busy";
 		}
 		if (email) {
-			throw new Error("email is busy");
+			errors.email = "email is busy";
+		}
+		if (Object.keys(errors).length){
+			throw errors;
 		}
 		return this.create({...params});
 	}
+
 	static async updateUser({id, params}){
 		const user = await this.findOne({ where: { id: id } });
+		let errors = {};
 		if (params.username){
 			const username = await this.findOne({ where: { username: params.username } });
 			if (username !== null) {
-				throw new Error("login is busy");
-			}
-		}
-		if (params.password){
-			params.password = await argon2.hash(params.password);
-		}
-		if (params.phone){
-			const phone = await this.findOne({ where: { phone: params.phone } });
-			if (phone) {
-				throw new Error("phone is busy");
+				errors.username = "username is busy";
 			}
 		}
 		if (params.email){
 			const email = await this.findOne({ where: { email: params.email } });
 			if (email) {
-				throw new Error("email is busy");
+				errors.email = "email is busy";
 			}
 		}
+
+		if (params.password){
+			params.password = await argon2.hash(params.password);
+		}
+
+		if (Object.keys(errors).length){
+			throw errors
+		}
+
 		return user.update({...params});
 	}
 }

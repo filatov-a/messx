@@ -56,8 +56,7 @@ export const sendDeletePost = createAsyncThunk(
     'posts/sendDeletePost',
     async (id, thunkAPI) => {
         try {
-            const res = await axios.delete(`${config.url}/api/posts/${id}`);
-            console.log(res.data);
+            const res = await axios.delete(`/posts/${id}`);
             return res.data;
         } catch (err) {
             return {error: err.response.data.error};
@@ -112,6 +111,7 @@ export const sendGetPostById = createAsyncThunk(
             let header = { headers: { Authorization: `Bearer ${param.token}` }}
             const res = await axios.get(`/posts/${param.id}`, header);
             convertDate(res.data);
+            console.log(res.data)
             return res.data;
         } catch (err) {
             return {error: err.response.data.error};
@@ -124,9 +124,9 @@ export const sendCreatePost = createAsyncThunk(
     async (param, thunkAPI) => {
         try {
             let header = { headers: { Authorization: `Bearer ${param.token}` }}
-            const res = await axios.post(`/posts/`, param.user, header);
+            const res = await axios.post(`/posts/`, param.post, header);
             param.navigate(`/posts/${res.data.id}`)
-            return {error: null};
+            return {success: "post created"};
         } catch (err) {
             return {error: err.response.data.error};
         }
@@ -160,10 +160,9 @@ const initialState = {
     posts: [],
     page: 1,
     specPost: null,
-    user: null,
-    categories: [],
     comments: [],
     error: null,
+    success: null,
     status: 'idle',
     count: 1,
     search: '',

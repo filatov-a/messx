@@ -8,11 +8,12 @@ import * as r from "react";
 function verify() {
     const dispatch = rr.useDispatch();
     const users = rr.useSelector(state => state.users);
+    const navigate = rd.useNavigate();
     const { token } = rd.useParams();
 
     r.useEffect(() => {
         if (users.status === 'idle'){
-            dispatch(sendVerifyEmail(token))
+            dispatch(sendVerifyEmail({token, navigate}))
         }
     },[dispatch])
 

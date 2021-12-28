@@ -32,14 +32,21 @@ function createPost() {
             content: content,
             categories: Categories,
         };
+        console.log(param)
         if (users.status === 'idle'){
-            dispatch(sendCreatePost({user: param, token: users.token, navigate}));
+            dispatch(sendCreatePost({post: param, token: users.token, navigate}));
         }
     };
 
     const onChangeContent = (e) => setContent(e.target.value);
     const onChangeTitle = (e) => setTitle(e.target.value);
-    const onChangeCategories = (event, newValues) => {setCategories(newValues)};
+    const onChangeCategories = (event, newValues) => {
+        let arr = []
+        if (!newValues.length) arr.push(newValues)
+        for (const i in newValues) arr.push(newValues[i].id)
+        setCategories(arr)
+    };
+
     return (
         <div style={styleAuth.Div}>
             <h2>Create post</h2>

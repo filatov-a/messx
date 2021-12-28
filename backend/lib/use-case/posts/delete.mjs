@@ -3,11 +3,16 @@ import Posts from "../../models/posts.mjs";
 
 export default class Delete extends Base {
 	async execute({data}){
-		const post = await Posts.destroy({
+		const post = await Posts.findOne({
 			where: {
 				id: data.id
 			},
 		});
-		return {post};
+		await Posts.destroy({
+			where: {
+				id: data.id
+			},
+		});
+		return post;
 	}
 }

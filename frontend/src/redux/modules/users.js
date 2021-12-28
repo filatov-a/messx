@@ -106,6 +106,7 @@ export const sendLogin = createAsyncThunk(
                 success: "login"
             };
         } catch (err) {
+            console.log(err.response.data.error)
             return {error: err.response.data.error};
         }
     }
@@ -126,9 +127,10 @@ export const sendRegister = createAsyncThunk(
 
 export const sendVerifyEmail = createAsyncThunk(
     'users/sendVerifyEmail',
-    async (token, thunkAPI) => {
+    async (params, thunkAPI) => {
         try {
-            await axios.get(`/verify-email/${token}`);
+            await axios.get(`/verify-email/${params.token}`);
+            params.navigate("/login")
             return {success: "email is verified"};
         } catch (err) {
             return {error: err.response.data.error};

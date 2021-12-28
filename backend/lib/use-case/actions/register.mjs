@@ -8,11 +8,11 @@ import argon2  from "argon2";
 export default class register extends Base {
 	async livrValidate(data = {}) {
 		const rules = {
-			username   : [ "required", "string"],
-			password	: [	"required", "string"],
-			full_name	: [	"required", "string"],
-			email	: [	"required", "string"],
-			gender	: [	"required", "string"],
+			username   : [ "required", "string", { min_length: 3, max_length: 12}],
+			password	: [	"required", "string", { min_length: 8, max_length: 20}],
+			full_name	: [	"required", "string", { min_length: 1, max_length: 20}],
+			email	: [	"required", "email"],
+			gender: { one_of: ["male", "female"] },
 		};
 
 		return this.doValidation(data, rules);
@@ -22,7 +22,7 @@ export default class register extends Base {
 		data.password = await argon2.hash(data.password);
 		data.profile_picture = `defaultUser-${data.gender}.png`;
 		const usr = {
-			username: data.usersname,
+			username: data.username,
 			password: data.password,
 			full_name: data.full_name,
 			email: data.email,
