@@ -1,8 +1,7 @@
 import React from "react";
-import {Button, TextField, TextareaAutosize} from "@mui/material";
+import {Button, TextareaAutosize} from "@mui/material";
 import Autocomplete from '@mui/material/Autocomplete';
-import {Alert} from "@mui/material";
-import {styleAuth} from "../../styles/main";
+import {styleAuth, CustomTextField} from "../../styles/main";
 import {sendCreatePost, sendGetPostById} from "../../redux/modules/posts";
 import {sendGetAllCategories} from "../../redux/modules/categories";
 import * as rr from "react-redux";
@@ -49,9 +48,14 @@ function createPost() {
 
     return (
         <div style={styleAuth.Div}>
-            <h2>Create post</h2>
+            <h2 style={styleAuth.Title}>Create post</h2>
             <form onSubmit={handleSubmit}>
-                <TextField onChange={onChangeTitle} style={styleAuth.TextField} required label='title'/>
+                <CustomTextField onChange={onChangeTitle}
+                                 required
+                                 variant="outlined"
+                                 label="title"
+                                 placeholder="title"
+                />
                 <Autocomplete
                     multiple
                     id="tags-outlined"
@@ -60,12 +64,11 @@ function createPost() {
                     getOptionLabel={(option) => option.title}
                     filterSelectedOptions
                     renderInput={(params) => (
-                        <TextField
+                        <CustomTextField
                             {...params}
                             variant="outlined"
                             label="categories"
                             placeholder="category"
-                            style={styleAuth.TextField}
                         />
                     )}
                 />

@@ -24,19 +24,21 @@ import * as rr from "react-redux";
 const styles = {
     root: {
         margin: '20px',
-        boxShadow: "2px 3px 10px black, 0 0 40px #9f8274 inset",
-        background: "#fffef0",
-        // borderRadius: 10
+        boxShadow: "2px 3px 10px black, 0 0 5px #a2a2a2 inset",
+        background: 'rgb(0, 30, 60)',
+        border: "1px solid #a2a2a2",
+        borderRadius: 10
     },
     link: {
         textDecoration: 'none',
-        color: 'black',
+        color: 'a2a2a2',
         width: "100%",
         height: "100%",
         textTransform: "none"
     },
     text: {
-        // fontFamily: "'Shadows Into Light', cursive",
+        color: '#a2a2a2',
+        fontFamily: "'Shadows Into Light', cursive",
         textAlign: "justify",
         lineHeight: "25px",
         outline: 0,
@@ -73,7 +75,7 @@ export const CustomCard = (props) => {
             <Button  style={styles.link} onClick={onClick}>
                 <CardMedia
                     component="img"
-                    height="140"
+                    height="190"
                     image={`${config.url}/images/${props.user.profile_picture}`}
                     alt="green iguana"
                 />

@@ -24,22 +24,21 @@ import * as rr from "react-redux";
 const styles = {
     root: {
         margin: '20px',
-        boxShadow: "2px 3px 10px black, 0 0 40px #9f8274 inset",
-        background: "#fffef0",
+        boxShadow: "2px 3px 10px black, 0 0 10px #a2a2a2 inset",
+        background: 'rgb(0, 30, 60)',
+        border: "1px solid #a2a2a2",
         borderRadius: 10
-    },
-    media: {
-        height: 130,
     },
     link: {
         textDecoration: 'none',
-        color: 'black',
+        color: 'white',
         width: "100%",
         height: "100%",
         textTransform: "none"
     },
     text: {
         // fontFamily: "'Shadows Into Light', cursive",
+        color: "#a2a2a2",
         textAlign: "justify",
         lineHeight: "25px",
         outline: 0,
@@ -49,11 +48,12 @@ const styles = {
     cardActions: {
         width: '100%',
         margin: "auto",
-        // borderBottom: "1px solid black",
-        borderTop: "3px dashed gray",
-        boxShadow: "0px 5px 5px gray",
+        borderTop: "2px dashed #a2a2a2",
+        // border: "1px solid #a2a2a2",
+        boxShadow: "0px 5px 5px rgb(51, 153, 255)",
     },
     titleText: {
+        color: "#a2a2a2",
         fontSize: 25,
         fontFamily: "blud"
     }

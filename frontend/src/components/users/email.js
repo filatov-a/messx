@@ -1,7 +1,7 @@
 import React from "react";
-import {Button, TextField, Alert} from "@mui/material";
+import {Button} from "@mui/material";
 import {sendUpdate} from "../../redux/modules/users";
-import {styleAuth} from "../../styles/main";
+import {styleAuth, CustomTextField} from "../../styles/main";
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
 import * as r from "react";
@@ -29,10 +29,10 @@ function email() {
 
     return (
         <div style={styleAuth.Div}>
-            <h2>Change your email</h2>
-            <p>current email: <b>{users.user.email}</b></p>
+            <h2 style={styleAuth.Title}>Change your email</h2>
+            <p style={styleAuth.Title}>current email: <b>{users.user.email}</b></p>
             <form onSubmit={handleSubmit}>
-                <TextField onChange={onChangeEmail} style={styleAuth.TextField} required label='email' type='email' placeholder='my@gmail.com'/>
+                <CustomTextField onChange={onChangeEmail} required type='email' placeholder='my@gmail.com'/>
                 <Button style={styleAuth.Button} type="submit" variant='contained' color='primary'>Send</Button>
             </form>
         </div>

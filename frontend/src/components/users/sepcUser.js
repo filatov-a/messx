@@ -68,6 +68,7 @@ let styles = {
         height: 50,
         borderRadius: 100,
         margin: 20,
+        color: "rgb(51, 153, 255)"
     },
     avatarBig: {
         width: '300px',
@@ -86,10 +87,12 @@ let styles = {
         font: "italic small-caps bold 24px/2 cursive"
     },
     headText: {
+        color: "rgb(51, 153, 255)",
         marginTop: 5,
         fontSize: 30,
     },
     handleText: {
+        color: "rgb(51, 153, 255)",
         margin: 20,
         fontSize: 20,
         borderRadius: 100,
@@ -99,7 +102,7 @@ let styles = {
     line: {
         width: "100%",
         height: 10,
-        borderBottom: "1px solid #a2a2a2"
+        borderBottom: "0.1px solid #a2a2a2"
     },
 }
 

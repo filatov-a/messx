@@ -18,8 +18,9 @@ export default function lg() {
 
     return (
         <div className="container">
-            <FormControl variant="standard" sx={{ m: 1}}>
+            <FormControl variant="standard" sx={{ m: 1}} >
                 <Select
+                    style={{color: "#a2a2a2"}}
                     value={lg}
                     onChange={handleChange}
                     displayEmpty

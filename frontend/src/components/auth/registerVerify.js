@@ -4,6 +4,7 @@ import * as rr from "react-redux";
 import * as rd from "react-router-dom";
 import {Navigate} from "react-router-dom";
 import * as r from "react";
+import {styleAuth} from "../../styles/main";
 
 function verify() {
     const dispatch = rr.useDispatch();
@@ -19,7 +20,7 @@ function verify() {
 
     const ok = (
         <div>
-            <h2>Verify account</h2>
+            <h2 style={styleAuth.Title}>Verify account</h2>
         </div>
     );
 

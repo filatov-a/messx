@@ -45,7 +45,7 @@ function App(){
                       <Route exact path="/posts_top" element={<PostsDay/>} />
                       {/*<Route exact path="/categories/:id" element={SpecCategory} />*/}
                       {/*<Route exact path="/categories" element={Categories} />*/}
-                      <Route exact path="/users" element={<Users/>} />
+                      <Route exact path="/search" element={<Users/>} />
                       <Route exact path="/login" element={<Login/>}/>
                       <Route exact path="/register" element={<Register/>}/>
                       <Route exact path="/verify-email/:token" element={<RegisterVerify/>}/>

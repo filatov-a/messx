@@ -3,10 +3,12 @@ import React from "react";
 function NotFound() {
     const style = {
         err: {
-            font: 'italic small-caps bold 30px/5 cursive'
+            font: 'italic small-caps bold 30px/5 cursive',
+            color: "#a2a2a2"
         },
         text: {
-            font: 'italic small-caps bold 20px/2 cursive'
+            font: 'italic small-caps bold 20px/2 cursive',
+            color: "#a2a2a2"
         },
         emoji: {
             fontSize: '30px'

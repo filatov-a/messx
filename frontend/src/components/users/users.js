@@ -25,7 +25,7 @@ function users() {
 
     return (
         <div style={{width: '100%'}}>
-            <h1>Users</h1>
+            <h1 style={{color: "#a2a2a2"}}>Users</h1>
             {users.user && (users.user.role === 'admin') &&
             <Tooltip title="create user" aria-label="add">
                 <Link to={'/createuser'}>

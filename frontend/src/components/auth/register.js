@@ -3,8 +3,8 @@ import {sendRegister} from "../../redux/modules/users";
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
 import * as r from "react";
-import {Button, TextField, Tabs, Tab} from "@mui/material";
-import {styleAuth} from "../../styles/main"
+import {Button, Tabs, Tab} from "@mui/material";
+import {styleAuth, CustomTextField} from "../../styles/main"
 import {useTranslation} from 'react-i18next'
 const Tr = useTranslation;
 
@@ -36,22 +36,21 @@ function register() {
 
     return (
         <div style={styleAuth.Div}>
-            <h2>{t('register')}</h2>
+            <h2 style={styleAuth.Title}>{t('register')}</h2>
             <form onSubmit={handleSubmit}>
-                <TextField style={styleAuth.TextField} onChange={onChangeUsername} required label={t('username')}/>
-                <TextField style={styleAuth.TextField} onChange={onChangeName} required label={t('full name')}/>
-                <TextField style={styleAuth.TextField} onChange={onChangeEmail} required label={t('email')} type='email' placeholder='my@gmail.com'/>
-                <TextField style={styleAuth.TextField} onChange={onChangePassword} required label={t('password')} type='password'/>
+                <CustomTextField onChange={onChangeUsername} required placeholder={t('username')}/>
+                <CustomTextField onChange={onChangeName} required placeholder={t('full name')}/>
+                <CustomTextField onChange={onChangeEmail} required placeholder={t('email')} type='email'/>
+                <CustomTextField onChange={onChangePassword} required placeholder={t('password')} type='password'/>
                 <Tabs
                     value={gender}
                     onChange={onChangeGender}
-                    style={styleAuth.TextField}
                     textColor="secondary"
                     indicatorColor="secondary"
                     aria-label="secondary tabs example"
                 >
-                    <Tab value="male" label={t("male")} />
-                    <Tab value="female" label={t("female")} />
+                    <Tab style={styleAuth.Title} value="male" label={t("male")} />
+                    <Tab style={styleAuth.Title} value="female" label={t("female")} />
                 </Tabs>
                 <Button style={styleAuth.Button} type="submit" variant='contained' color='primary'>{t("send")}</Button>
             </form>

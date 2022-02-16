@@ -16,7 +16,6 @@ const styles = {
         minWidth: '400px',
         margin: 'auto',
         marginTop: 40,
-        // border: '1px solid gray',
         borderRadius: 4,
         paddingLeft: 10,
         paddingRight: 10,
@@ -47,6 +46,9 @@ const styles = {
         width: '200px',
         height: '200px',
         boxShadow: '0 0 0 0px black, 0 0 4px #333',
+    },
+    text: {
+        color: '#a2a2a2',
     }
 }
 
@@ -91,13 +93,13 @@ function accountInfo() {
         <div>
             {users.specUser &&
             <div style={styles.personalInformation}>
-                <h2>Language</h2>
+                <h2 style={styles.text}>Language</h2>
                 {(clientId === id) &&
                 <div style={{margin: 10}}>
                     <Lg/>
                 </div>
                 }
-                <h2>Personal information</h2>
+                <h2 style={styles.text}>Personal information</h2>
                 <Button style={styles.base} onClick={handleName} variant='outlined'>
                     <div style={styles.type}>Username</div>
                     <div style={styles.value}>{users.specUser.username}</div>

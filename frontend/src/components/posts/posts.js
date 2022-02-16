@@ -30,7 +30,7 @@ function posts() {
 
     return (
         <Box>
-            <h1>Follow posts</h1>
+            <h1 style={{color: "#a2a2a2"}}>Follow posts</h1>
             {users.user &&
             <Tooltip title="create post" aria-label="add">
                 <Link to={'/createpost'}>
