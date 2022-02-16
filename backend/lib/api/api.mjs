@@ -2,6 +2,7 @@ import cors from "cors";
 import express from "express";
 import bodyParser from "body-parser";
 import routes from "./routes/main.mjs";
+// import minio from "./minio/main.mjs";
 // import websockets from './ws/index.mjs';
 
 export default class api {
@@ -16,6 +17,7 @@ export default class api {
         this.app.use(bodyParser.json());
         this.app.use(function (req, res, next) {
             req.sequelize = sequelize;
+            // req.minio = minio();
             next();
         });
         this.app.use("/", routes);

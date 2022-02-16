@@ -12,9 +12,9 @@ export default class App {
 
     constructor() {
         this.config = config;
-        this.db = new db(this.config);
+        this.db = new db(config);
         this.sequelize = this.db.init();
-        this.api = new api(this.config, sequelize);
+        this.api = new api(config, sequelize);
     }
 
     appStart = () => {

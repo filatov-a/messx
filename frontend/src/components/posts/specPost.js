@@ -32,7 +32,6 @@ function post() {
     const [isWrite, setIsWrite] = r.useState(false);
 
     r.useEffect(() => {
-        console.log(id)
         const param = {id: id, token: users.token, decode: decode}
         dispatch(sendGetPostById(param));
     },[]);

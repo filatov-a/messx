@@ -34,7 +34,8 @@ export default class DataBase {
 
 	constructor(config) {
 		this.config = config;
-		this.type = this.config.projectType ? this.config.projectType : "development";
+		this.type = config.projectType;
+		console.log(this.type)
 		this.configSeq = cnfgSeq[this.type]
 		this.Sequelize = Sequelize;
 
@@ -43,6 +44,7 @@ export default class DataBase {
 	}
 
 	init(){
+		console.log("init db")
 		this.initSequelize();
 		this.include();
 		this.initAndAssociateModels();

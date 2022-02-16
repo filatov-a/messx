@@ -1,13 +1,13 @@
 import React from "react";
 import {Avatar, Box, Tooltip, Pagination, Fab} from '@mui/material';
-import {CustomCard} from '../utils/card';
+import {CustomCard} from '../utils/cardUser';
 import {sendGetAllUsers} from '../../redux/modules/users'
 import * as rr from "react-redux";
 import * as r from "react";
 import config from "../../config/config";
 import {Link} from "react-router-dom";
 
-import AddIcon from "@material-ui/icons/Add";
+import AddIcon from "@mui/icons-material/Add";
 
 function users() {
     const users = rr.useSelector(state => state.users);
@@ -20,7 +20,6 @@ function users() {
     },[dispatch])
 
     const handleChange = (event, value) => {
-
         dispatch(sendGetAllUsers({page: value}));
     }
 
@@ -31,7 +30,7 @@ function users() {
             <Tooltip title="create user" aria-label="add">
                 <Link to={'/createuser'}>
                     <Fab color="primary" size="small">
-                        <AddIcon />
+                        <AddIcon/>
                     </Fab>
                 </Link>
             </Tooltip>
@@ -40,10 +39,7 @@ function users() {
                 <Box display='flex' style={{flexWrap: 'wrap'}}>
                     {users.users.map(i => (
                         <div key={i.id} >
-                            <CustomCard title={i.login} content={i.email}
-                                to={`/users/${i.id}`}
-                                image={`${config.url}/${i.profile_picture}`}
-                                width={'240px'}/>
+                            <CustomCard user={i} me={users.user}/>
                         </div>
                     ))}
                 </Box>

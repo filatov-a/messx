@@ -11,7 +11,7 @@ import {
     useScrollTrigger,
     Slide
 } from "@mui/material";
-import {Add, Send, Whatshot, Stars, Home} from "@mui/icons-material"
+import {Add, Send, Whatshot, Stars, Search} from "@mui/icons-material"
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
 import config from "../../config/config";
@@ -80,24 +80,24 @@ export default function ToolbarMain(props) {
                     <Toolbar style={styleToolbar.toolbar}>
                         <div style={{flexGrow: 7, textAlign: 'left'}}>
                             <Box display={'flex'}>
-                                <Tooltip title="home" arrow style={{marginLeft: 10}}>
-                                    <Link to={'/'}>
-                                        <Fab color="primary" size="small">
-                                            <Home/>
-                                        </Fab>
-                                    </Link>
-                                </Tooltip>
                                 <Tooltip title="posts from starts" arrow style={{marginLeft: 10}}>
-                                    <Link to={'/chats'}>
+                                    <Link to={'/'}>
                                         <Fab color="primary" size="small">
                                             <Stars/>
                                         </Fab>
                                     </Link>
                                 </Tooltip>
                                 <Tooltip title="daily top" arrow style={{marginLeft: 10}}>
-                                    <Link to={'/posts'}>
+                                    <Link to={'/posts_top'}>
                                         <Fab color="secondary" size="small">
                                             <Whatshot/>
+                                        </Fab>
+                                    </Link>
+                                </Tooltip>
+                                <Tooltip title="search" arrow style={{marginLeft: 10}}>
+                                    <Link to={'/search'}>
+                                        <Fab color="primary" size="small">
+                                            <Search/>
                                         </Fab>
                                     </Link>
                                 </Tooltip>

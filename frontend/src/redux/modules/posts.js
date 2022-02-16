@@ -22,6 +22,24 @@ export const sendGetAllPosts = createAsyncThunk(
     }
 )
 
+export const sendGetAllDayPosts = createAsyncThunk(
+    'posts/sendGetAllDayPosts',
+    async (param) => {
+        try {
+            const lim = 10;
+            const url = `/posts-day?limit=${lim}&offset=${lim*(param.page-1)}`;
+            const header = { headers: { Authorization: `Bearer ${param.token}` }}
+            const res = await axios.get(url, header);
+
+            convertDate(res.data);
+
+            return {posts: res.data.posts, page: param.page, count: res.data.count};
+        } catch (err) {
+            return {error: err.response.data.error};
+        }
+    }
+)
+
 export const sendGetUserPosts = createAsyncThunk(
     'posts/sendGetUserPosts',
     async (param) => {
@@ -111,7 +129,6 @@ export const sendGetPostById = createAsyncThunk(
             let header = { headers: { Authorization: `Bearer ${param.token}` }}
             const res = await axios.get(`/posts/${param.id}`, header);
             convertDate(res.data);
-            console.log(res.data)
             return res.data;
         } catch (err) {
             return {error: err.response.data.error};
@@ -203,6 +220,11 @@ const slice = createSlice({
             state.posts = tmp;
         })
         builder.addCase(sendGetAllPosts.fulfilled, (state, action) => {
+            state.posts = action.payload.posts;
+            if (action.payload.page) state.page = action.payload.page;
+            state.count = action.payload.count;
+        })
+        builder.addCase(sendGetAllDayPosts.fulfilled, (state, action) => {
             state.posts = action.payload.posts;
             if (action.payload.page) state.page = action.payload.page;
             state.count = action.payload.count;

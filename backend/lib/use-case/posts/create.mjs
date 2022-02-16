@@ -27,17 +27,18 @@ export default class Create extends Base {
 		// 	await PostsImages.create()
 		// 	await post.addPostsImages(image);
 		// });
-		data.categories?.map(async i => {
-			const category = await PostsCategories.findOne({where: {id: i}});
-			await post.addPostsCategories([category, uuidv4()]);
-			// console.log(category);
-			// if (category){
-			// 	await PostsToCategories.create({
-			// 		postId: post.id
-			// 		categoryId: category.id
-			// 	});
-			// }
-		});
+		// await PostsToCategories.create({
+		// 	id: uuidv4(),
+		// 	postId: post.id,
+		// 	categoryId: data.categories[0]
+		// });
+		// data.categories?.map(async i => {
+		// 	await PostsToCategories.create({
+		// 		id: uuidv4(),
+		// 		postId: post.id,
+		// 		categoryId: i
+		// 	});
+		// });
 
 
 		return post;

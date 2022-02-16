@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:16.13.1
 
 # create root application folder
 WORKDIR /app
@@ -10,4 +10,4 @@ COPY lib /app/lib
 
 RUN npm install
 
-EXPOSE 5000
+EXPOSE 5001

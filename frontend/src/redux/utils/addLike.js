@@ -12,7 +12,7 @@ export default function addLike(posts, like){
 }
 
 function setLike(post, like){
-    if (post.id === like.like?.postId){
+    if (like.like && post.id === like.like?.postId){
         if (like.like.type === 'like'){
             post.likesCount++;
             post.isLiked = true;
@@ -22,8 +22,8 @@ function setLike(post, like){
             post.isDisliked = true;
         }
     }
-    if (post.id === like.dLike?.postId){
-        if (like.dLike.type === 'like') {
+    if (like.dLike && post.id === like.dLike?.postId){
+        if (like.dLike?.type === 'like') {
             post.likesCount--;
             post.isLiked = false;
         }

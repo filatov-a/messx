@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-undef
 module.exports = {
+	projectType: "development", // development production test
 	app: {
 		port: 5001,
 		email: "philatov06@gmail.com",
@@ -10,8 +11,11 @@ module.exports = {
 		accessToken: "cjsbrdkjcnrkcbje",
 		verifyResetPasswordToken: "ckfjksc23764hdh",
 	},
-	projectType: "development",
+	minio: {
+		MINIO_ACCESS_KEY: "minio_access_key",
+		MINIO_SECRET_KEY: "minio_secret_key",
+		MINIO_HOSTNAME: "s3",
+		MINIO_PORT: 9000
+	}
 
-	MINIO_ACCESS_KEY: "minio_access_key",
-	MINIO_SECRET_KEY: "minio_secret_key"
 };

@@ -45,6 +45,7 @@ router.patch("/chats-categories/:id", controllerChatsCategories.update);
 router.delete("/chats-categories/:id", controllerChatsCategories.delete);
 
 router.get("/posts", controllerPosts.getAll);
+router.get("/posts-day", controllerPosts.getAllDay);
 router.get("/posts/:id", controllerPosts.get);
 router.post("/posts/", controllerPosts.create);
 router.post("/posts/:id/like", controllerPosts.like);
