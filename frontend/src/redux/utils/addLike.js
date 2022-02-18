@@ -1,18 +1,19 @@
-export default function addLike(posts, like){
-    if (!posts || !like) return;
+export default function addLike(arr, like, f){
+    if (!arr || !like) return;
 
-    if (!posts.length){
-        setLike(posts, like)
+    if (!arr.length){
+        setLike(arr, like, f)
         return;
     }
 
-    for (let i = 0; i < posts.length; i++){
-        setLike(posts[i], like)
+    for (let i = 0; i < arr.length; i++){
+        setLike(arr[i], like, f)
     }
 }
 
-function setLike(post, like){
-    if (like.like && post.id === like.like?.postId){
+function setLike(post, like, f){
+    if (like.like && post.id === like.like[`${f}Id`]){
+        console.log(111)
         if (like.like.type === 'like'){
             post.likesCount++;
             post.isLiked = true;
@@ -22,7 +23,8 @@ function setLike(post, like){
             post.isDisliked = true;
         }
     }
-    if (like.dLike && post.id === like.dLike?.postId){
+    if (like.dLike && post.id === like.dLike[`${f}Id`]){
+        console.log(222)
         if (like.dLike?.type === 'like') {
             post.likesCount--;
             post.isLiked = false;

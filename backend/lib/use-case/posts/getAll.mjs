@@ -1,6 +1,7 @@
 import Base from "../base.mjs";
 import Posts from "../../models/posts.mjs";
 import Users from "../../models/users.mjs";
+import Comments from "../../models/comments.mjs";
 import LikesPosts from "../../models/likes-posts.mjs";
 import pkg from "sequelize";
 import moment from "moment";
@@ -33,7 +34,7 @@ export default class GetAll extends Base {
 								}
 
 							},
-							include: [LikesPosts, Users, PostsCategories],
+							include: [LikesPosts, Users, PostsCategories, Comments],
 							attributes: {
 								include: [
 									[

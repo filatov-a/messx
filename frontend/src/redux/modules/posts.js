@@ -115,7 +115,7 @@ export const sendSetLikeToComment = createAsyncThunk(
             let header = { headers: { Authorization: `Bearer ${param.token}` }}
             let type = {type: param.type}
             const res = await axios.post(`/comments/${param.id}/like`, type, header);
-            return res.data;
+            return {like: res.data}
         } catch (err) {
             return {error: err.response.data.error};
         }
@@ -193,6 +193,7 @@ const slice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(sendGetPostById.fulfilled, (state, action) => {
             state.specPost = action.payload;
+            state.posts = [];
         })
         builder.addCase(sendGetUserPosts.fulfilled, (state, action) => {
             state.posts = action.payload;
@@ -235,14 +236,14 @@ const slice = createSlice({
             if (action.payload.page) state.page = action.payload.page;
         })
         builder.addCase(sendSetLike.fulfilled, (state, action) => {
-            addLike(state.posts, action.payload.like);
-            addLike(state.specPost, action.payload.like);
+            addLike(state.posts, action.payload.like, "post");
+            addLike(state.specPost, action.payload.like, "post");
         })
         builder.addCase(sendSetLikeToComment.fulfilled, (state, action) => {
-            state.comments = action.payload;
+            addLike(state.specPost.Comments, action.payload.like, "comment");
         })
         builder.addCase(sendCreateComment.fulfilled, (state, action) => {
-            state.comments.push(action.payload.comment);
+            state.specPost.Comments.push(action.payload.comment);
             state.error = action.payload.error;
         })
     }

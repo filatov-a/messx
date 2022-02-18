@@ -50,7 +50,7 @@ const styles = {
         margin: "auto",
         // borderBottom: "1px solid black",
         borderTop: "3px dashed gray",
-        boxShadow: "0px 5px 5px gray",
+        boxShadow: "0px 5px 5px rgb(51, 153, 255)",
     },
     titleText: {
         fontSize: 25,

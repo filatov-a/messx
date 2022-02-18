@@ -11,5 +11,5 @@ export default {
 	get: Runner.makeRunner(get),
 	update: Runner.makeRunner(update),
 	delete: Runner.makeRunner(Delete),
-	like: Runner.makeRunner(like)
+	like: Runner.makeRunnerToken(like)
 };

@@ -27,10 +27,10 @@ router.patch("/users/:id", controllerUser.update);
 router.delete("/users/:id", controllerUser.delete);
 router.post("/users/avatar", controllerUser.setAvatar);
 
-router.get("/api/comments/:id", controllerComments.get);
-router.post("/api/comments/:id/like", controllerComments.like);
-router.patch("/api/comments/:id", controllerComments.update);
-router.delete("/api/comments/:id", controllerComments.delete);
+router.get("/comments/:id", controllerComments.get);
+router.post("/comments/:id/like", controllerComments.like);
+router.patch("/comments/:id", controllerComments.update);
+router.delete("/comments/:id", controllerComments.delete);
 
 router.get("/posts-categories", controllerPostsCategories.getAll);
 router.get("/posts-categories/:id", controllerPostsCategories.get);

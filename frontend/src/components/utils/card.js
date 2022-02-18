@@ -14,7 +14,8 @@ import {
     Favorite,
     HeartBrokenOutlined,
     HeartBroken,
-    Delete
+    Delete,
+    AddComment
 } from '@mui/icons-material'
 import config from "../../config/config";
 import * as rd from "react-router-dom";
@@ -23,7 +24,9 @@ import * as rr from "react-redux";
 
 const styles = {
     root: {
-        margin: '20px',
+        marginTop: '40px',
+        marginLeft: '20px',
+        marginRight: '20px',
         boxShadow: "2px 3px 10px black, 0 0 10px #a2a2a2 inset",
         background: 'rgb(0, 30, 60)',
         border: "1px solid #a2a2a2",
@@ -55,6 +58,12 @@ const styles = {
     titleText: {
         color: "#a2a2a2",
         fontSize: 25,
+        fontFamily: "blud"
+    },
+    comment: {
+        margin: "auto",
+        color: "#a2a2a2",
+        fontSize: 20,
         fontFamily: "blud"
     }
 };
@@ -158,6 +167,14 @@ export const CustomCard = (props) => {
                             {props.post?.dislikesCount ? props.post?.dislikesCount : ''}
                         </Button>
                     </Box>
+                    {props.post?.Comments &&
+                        <div>
+                            <Button style={styles.link} onClick={onClick}>
+                                <AddComment/>
+                                <div style={styles.comment}> {props.post.Comments.length}</div>
+                            </Button>
+                        </div>
+                    }
                     {props.post.User &&
                     <Box display={"flex"}>
                         <ButtonBase onClick={onClickAvatar} style={{borderRadius:'100%', padding:10}}>
@@ -166,7 +183,7 @@ export const CustomCard = (props) => {
                         {
                             (props.users?.user?.role === "admin" ||
                             props.users?.user?.role === "superAdmin" ||
-                            props.users?.user?.id === props.users?.specUser?.id) &&
+                            props.users?.user?.id === props.post?.User?.id) &&
                             <Button onClick={onDelete} size="small" color="secondary">
                                 <Delete/>
                             </Button>
