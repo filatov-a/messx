@@ -29,6 +29,7 @@ router.post("/users/avatar", controllerUser.setAvatar);
 
 router.get("/comments/:id", controllerComments.get);
 router.post("/comments/:id/like", controllerComments.like);
+router.post("/comments/:id", controllerComments.create);
 router.patch("/comments/:id", controllerComments.update);
 router.delete("/comments/:id", controllerComments.delete);
 

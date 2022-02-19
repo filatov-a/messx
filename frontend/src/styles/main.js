@@ -10,7 +10,6 @@ export const CustomTextField = styled(InputBase)(({ theme }) => ({
         color: "#a2a2a2",
         borderRadius: 4,
         position: 'relative',
-        marginBottom: 10,
         backgroundColor: "rgba(255,255,255,0)",
         border: '1px solid #a2a2a2',
         fontSize: 16,
@@ -54,7 +53,6 @@ export const styleAuth = {
     Button: {
         width: '100%',
         height: '40px',
-        marginTop: '10px'
     },
     TextField: {
         width: '100%',
@@ -69,6 +67,10 @@ export const styleAuth = {
         marginBottom: '5px',
         minHeight: 80,
         maxWidth: "98%"
+    },
+    Form: {
+        display: "grid",
+        gridRowGap: 8
     }
 };
 

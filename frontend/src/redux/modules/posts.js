@@ -155,18 +155,9 @@ export const sendCreateComment = createAsyncThunk(
     async (param, thunkAPI) => {
         try {
             let header = { headers: { Authorization: `Bearer ${param.token}` }}
-            const res = await axios.post(`${config.url}/api/posts/${param.id}/comments`, param.user, header);
-            const user = await axios.get(`${config.url}/api/users/${res.data.userId}`, param.user, header);
+            const res = await axios.post(`/comments/${param.id}`, {content: param.content}, header);
             convertDate(res.data);
-            const obj = {
-                comment: res.data,
-                likes: [],
-                dislikes: [],
-                isLiked: false,
-                isDisliked: false,
-                user: user.data,
-            }
-            return {comment: obj, error: null};
+            return {comment: res.data, error: null};
         } catch (err) {
             return {error: err.response.data.error};
         }
@@ -202,17 +193,17 @@ const slice = createSlice({
             state.error = action.payload.error
         })
         builder.addCase(sendDeleteComment.fulfilled, (state, action) => {
-            const tmp = [];
-            state.comments.map(i=>{
-                if (i.comment.id !== action.payload.id){
+            let tmp = [];
+            state.specPost.Comments.map(i=>{
+                if (i.id !== action.payload.id){
                     tmp.push(i);
                 }
             });
-            state.comments = tmp;
+            state.specPost.Comments = tmp;
         })
         builder.addCase(sendDeletePost.fulfilled, (state, action) => {
             state.specPost = null;
-            const tmp = [];
+            let tmp = [];
             state.posts.map(i=>{
                 if (i.id !== action.payload.id){
                     tmp.push(i);
@@ -243,7 +234,7 @@ const slice = createSlice({
             addLike(state.specPost.Comments, action.payload.like, "comment");
         })
         builder.addCase(sendCreateComment.fulfilled, (state, action) => {
-            state.specPost.Comments.push(action.payload.comment);
+            state.specPost.Comments.unshift(action.payload.comment)
             state.error = action.payload.error;
         })
     }

@@ -29,7 +29,7 @@ function login() {
     return (
         <div style={styleAuth.Div}>
             <h2 style={styleAuth.Title}>{t('sing in')}</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} style={styleAuth.Form}>
                 <CustomTextField onChange={onChangeUsername} required placeholder={t('username')}/>
                 <CustomTextField onChange={onChangePassword} required placeholder={t('password')} type='password'/>
                 <Button style={styleAuth.Button} type="submit" variant='contained' color='primary'>{t("send")}</Button>

@@ -18,8 +18,11 @@ import {
 } from '@mui/icons-material'
 import config from "../../config/config";
 import * as rd from "react-router-dom";
-import {sendDeleteComment, sendSetLikeToComment} from "../../redux/modules/posts";
+import {sendCreateComment, sendDeleteComment, sendSetLikeToComment} from "../../redux/modules/posts";
 import * as rr from "react-redux";
+import {CustomTextField} from "../../styles/main";
+import context from "react-redux/lib/components/Context";
+import * as r from "react";
 
 const styles = {
     root: {
@@ -70,6 +73,8 @@ export const CustomCardComment = (props) => {
     const navigate = rd.useNavigate();
     const dispatch = rr.useDispatch();
 
+    const [content, setContent] = r.useState('');
+
     const onClick = () => {
         navigate(`/comment/${props.comment.id}`)
     }
@@ -102,6 +107,15 @@ export const CustomCardComment = (props) => {
         dispatch(sendDeleteComment(props.comment.id));
     }
 
+    const createComment = () => {
+        dispatch(sendCreateComment({
+            token: props.users.token,
+            content: content,
+            id: props.postId,
+        }));
+    }
+    const onChangeContent = (e) => setContent(e.target.value);
+
     const ButtonDiv = (prp) => {
         if (props.single) {
             return (
@@ -116,6 +130,20 @@ export const CustomCardComment = (props) => {
                 </Button>
             )
         }
+    }
+
+    if (props.create){
+        return (
+            <div>
+                <div style={styles.up}> </div>
+                <div style={styles.root}>
+                    <div style={{width: "98%", margin: "auto", marginBottom: 0}}>
+                        <CustomTextField onChange={onChangeContent} multiline maxRows={3} placeholder="some text"/>
+                    </div>
+                    <Button onClick={createComment} style={{width: "100%", marginTop: 0}}>Comment</Button>
+                </div>
+            </div>
+        )
     }
 
     return (

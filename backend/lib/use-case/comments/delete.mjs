@@ -5,7 +5,7 @@ export default class Delete extends Base {
 	async execute({data}){
 		const comment = await Comments.destroy({
 			where: {
-				id: data.params.id
+				id: data.id
 			},
 		});
 

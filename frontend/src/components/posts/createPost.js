@@ -49,7 +49,7 @@ function createPost() {
     return (
         <div style={styleAuth.Div}>
             <h2 style={styleAuth.Title}>Create post</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} style={styleAuth.Form}>
                 <CustomTextField onChange={onChangeTitle}
                                  required
                                  variant="outlined"
@@ -72,7 +72,7 @@ function createPost() {
                         />
                     )}
                 />
-                <TextareaAutosize rowsMax={15} rowsMin={3} onChange={onChangeContent} style={styleAuth.TextareaAutosize} required placeholder='some text'/>
+                <CustomTextField multiline maxRows={5} onChange={onChangeContent} required placeholder='some text'/>
                 <Button style={styleAuth.Button} type="submit" variant='contained' color='primary'>Send</Button>
             </form>
         </div>

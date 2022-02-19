@@ -37,7 +37,7 @@ function register() {
     return (
         <div style={styleAuth.Div}>
             <h2 style={styleAuth.Title}>{t('register')}</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} style={styleAuth.Form}>
                 <CustomTextField onChange={onChangeUsername} required placeholder={t('username')}/>
                 <CustomTextField onChange={onChangeName} required placeholder={t('full name')}/>
                 <CustomTextField onChange={onChangeEmail} required placeholder={t('email')} type='email'/>

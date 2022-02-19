@@ -3,6 +3,7 @@ import Users from "../../models/users.mjs";
 import Posts from "../../models/posts.mjs";
 import LikesPosts from "../../models/likes-posts.mjs";
 import PostsCategories from "../../models/posts-categories.mjs";
+import Comments from "../../models/comments.mjs";
 
 export default class Get extends Base {
 	async execute({data, context}){
@@ -12,7 +13,7 @@ export default class Get extends Base {
 			include: [
 				{
 					model: Posts,
-					include: [LikesPosts, Users, PostsCategories],
+					include: [LikesPosts, Users, PostsCategories, Comments],
 					attributes: {
 						include: [
 							[

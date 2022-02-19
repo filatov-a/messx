@@ -6,21 +6,13 @@ import {
 } from '../../redux/modules/posts';
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
-import {Avatar, ButtonBase, Box, Button} from '@mui/material';
-import {
-    FavoriteBorder,
-    Favorite,
-    HeartBrokenOutlined,
-    HeartBroken,
-    RateReviewOutlined,
-} from '@mui/icons-material'
-import config from '../../config/config';
 import * as r from "react";
 import {parseToken} from '../../utils/parseToken';
 // import Comment from "./comment";
 // import CreateComment from "./createComment";
 import {CustomCard} from '../utils/card'
 import {CustomCardComment} from '../utils/cardComment'
+
 
 function post() {
     const users = rr.useSelector(state => state.users);
@@ -51,6 +43,9 @@ function post() {
                     single={true}
                 />
             }
+            <div style={{width: "60%", margin: "auto"}}>
+                <CustomCardComment create={true} users={users} postId={id}/>
+            </div>
             {posts.specPost?.Comments && posts.specPost.Comments.length !== 0 &&
                 <div style={{width: "60%", margin: "auto"}}>
                     {posts.specPost.Comments.map(i => (
