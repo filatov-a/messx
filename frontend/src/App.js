@@ -40,7 +40,7 @@ function App(){
                       <Route exact path="/password" element={<Password/>}/>
                       <Route exact path="/email" element={<Email/>}/>
                       <Route exact path="/users/:id/info" element={<SepcUserInfo/>} />
-                      <Route exact path="/users/:id" element={<SepcUser/>} />
+                      <Route path="/users/:id" element={<SepcUser/>} />
                       <Route exact path="/posts/:id" element={<SpecPost/>} />
                       <Route exact path="/posts_top" element={<PostsDay/>} />
                       {/*<Route exact path="/categories/:id" element={SpecCategory} />*/}

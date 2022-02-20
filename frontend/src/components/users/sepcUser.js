@@ -10,6 +10,7 @@ import config from "../../config/config";
 import {Settings, StarOutline} from "@mui/icons-material";
 import {CustomCard} from "../utils/card";
 import UseMediaQuery from '@mui/material/useMediaQuery';
+import FollowDialog from "../utils/followDialog"
 
 let styles = {
     personalInformationBig: {
@@ -115,6 +116,8 @@ function account() {
     const matches = UseMediaQuery('(min-width:1200px)');
 
     const [decode, setDecode] = r.useState(null);
+    const [openFollow, setOpenFollow] = r.useState(false);
+    const [openFollowers, setOpenFollowers] = r.useState(false);
 
     r.useEffect(() => {
         dispatch(sendGetUserById({id}));
@@ -129,6 +132,14 @@ function account() {
         if (decode.id === id) {
             navigate(`/users/${users.specUser.id}/info`)
         }
+    }
+
+    const handleFollow = () => {
+        setOpenFollow(true);
+    }
+
+    const handleFollowers = () => {
+        setOpenFollowers(true);
     }
 
     if (!matches) {
@@ -162,12 +173,12 @@ function account() {
                         <div>
                             <Box style={styles.box}>
                                 { users.specUser.followers &&
-                                <ButtonBase style={styles.handleText}>
+                                <ButtonBase style={styles.handleText} onClick={handleFollowers}>
                                     {`stars ${users.specUser.followers.length}`}
                                 </ButtonBase>
                                 }
                                 {users.specUser.follow &&
-                                <ButtonBase style={styles.handleText}>
+                                <ButtonBase style={styles.handleText} onClick={handleFollow}>
                                     {`stared ${users.specUser.follow.length}`}
                                 </ButtonBase>
                                 }
@@ -175,7 +186,7 @@ function account() {
                                     {`rating ${users.specUser.rating}`}
                                 </ButtonBase>
                             </Box>
-                            <Box style={styles.box}>
+                            <Box>
                                 {decode && decode.id!==users.specUser.id &&
                                 <Button style={styles.button} variant='outlined'>
                                     <StarOutline/>
@@ -214,6 +225,8 @@ function account() {
                     ))}
                 </div>
                 }
+                <FollowDialog title={"Followers"} follow={users.specUser.followers} setOpen={setOpenFollowers} open={openFollowers}/>
+                <FollowDialog title={"Follow"} follow={users.specUser.follow} setOpen={setOpenFollow} open={openFollow}/>
             </div>
             }
         </div>
