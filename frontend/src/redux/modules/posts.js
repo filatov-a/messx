@@ -129,6 +129,8 @@ export const sendGetPostById = createAsyncThunk(
             let header = { headers: { Authorization: `Bearer ${param.token}` }}
             const res = await axios.get(`/posts/${param.id}`, header);
             convertDate(res.data);
+            // convertDate(res.data.answers);
+            // convertDate(res.data.questions);
             return res.data;
         } catch (err) {
             return {error: err.response.data.error};
@@ -168,13 +170,11 @@ const initialState = {
     posts: [],
     page: 1,
     specPost: null,
-    comments: [],
     error: null,
     success: null,
     status: 'idle',
     count: 1,
     search: '',
-    newLike: null
 };
 
 const slice = createSlice({

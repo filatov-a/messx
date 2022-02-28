@@ -48,11 +48,13 @@ export const styleAuth = {
         textAlign: 'center',
         marginLeft: 'auto',
         marginRight: 'auto',
-        marginTop: '5%',
+        marginTop: 10,
     },
     Button: {
         width: '100%',
         height: '40px',
+        marginBottom: 10,
+        marginTop: 0,
     },
     TextField: {
         width: '100%',
@@ -76,7 +78,7 @@ export const styleAuth = {
 
 export const styleToolbar = {
     toolbar: {
-        background: 'rgb(0, 30, 60)',
+        background: '#0E082CFF',
         // boxShadow: '0 0 0 0px black, 0 0 0px #333',
         borderBottom: "0.1px solid #a2a2a2"
     },

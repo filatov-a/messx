@@ -1,37 +1,38 @@
-"use strict";
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		await queryInterface.createTable("UsersToFollowers", {
+		await queryInterface.createTable("MessagesToMessages", {
 			id: {
 				type: Sequelize.UUID,
 				defaultValue: Sequelize.UUIDV4,
 				primaryKey: true,
 			},
-			userId: {
+			messageId: {
 				type: Sequelize.UUID,
-				references: {model: "Users", key: "id"},
+				references: {model: "Messages", key: "id"},
 				onUpdate: "CASCADE",
-				onDelete: "SET NULL",
+        		onDelete: "SET NULL",
 				defaultValue: null,
 			},
-			followerId: {
+			answerId: {
 				type: Sequelize.UUID,
-				references: {model: "Users", key: "id"},
+				references: {model: "Messages", key: "id"},
 				onUpdate: "CASCADE",
-				onDelete: "SET NULL",
+        		onDelete: "SET NULL",
 				defaultValue: null,
 			},
 			createdAt: {
 				allowNull: false,
-				type: Sequelize.DATE
+				type: Sequelize.DATE,
+				defaultValue: new Date(),
 			},
 			updatedAt: {
 				allowNull: false,
-				type: Sequelize.DATE
-			}
+				type: Sequelize.DATE,
+				defaultValue: new Date(),
+			},
 		});
 	},
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.dropTable("UsersToFollowers");
-	}
+		await queryInterface.dropTable("MessagesToMessages");
+	},
 };

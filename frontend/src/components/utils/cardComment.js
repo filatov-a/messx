@@ -14,21 +14,21 @@ import {
     Favorite,
     HeartBrokenOutlined,
     HeartBroken,
-    Delete,
+    Delete, AddComment, QuestionAnswer,
 } from '@mui/icons-material'
 import config from "../../config/config";
 import * as rd from "react-router-dom";
 import {sendCreateComment, sendDeleteComment, sendSetLikeToComment} from "../../redux/modules/posts";
 import * as rr from "react-redux";
 import {CustomTextField} from "../../styles/main";
-import context from "react-redux/lib/components/Context";
 import * as r from "react";
 
 const styles = {
     root: {
-        // margin: '20px',
-        // boxShadow: "2px 3px 10px black, 0 0 10px #a2a2a2 inset",
-        background: 'rgb(0, 30, 60)',
+        marginLeft: '20px',
+        marginRight: '20px',
+        boxShadow: "2px 3px 10px black, 0 0 10px rgb(51, 153, 255) inset",
+        background: 'rgba(0,30,60,0)',
         border: "1px solid rgb(51, 153, 255)",
         borderRadius: 10
     },
@@ -48,12 +48,22 @@ const styles = {
         fontSize: 18,
         textOverflow: 'ellipsis',
     },
+    textBlue: {
+        fontFamily: "'Shadows Into Light', cursive",
+        color: "rgb(51, 153, 255)",
+        textAlign: "justify",
+        lineHeight: "25px",
+        outline: 0,
+        fontSize: 18,
+        textOverflow: 'ellipsis',
+        margin: 0,
+    },
     cardActions: {
         width: '100%',
         margin: "auto",
-        borderTop: "2px dashed rgb(51, 153, 255)",
-        // border: "1px solid #a2a2a2",
-        // boxShadow: "0px 5px 5px rgb(51, 153, 255)",
+        border: "1px solid #a2a2a2",
+        boxShadow: "2px 3px 10px black, 0 0 10px #a2a2a2 inset",
+        borderRadius: 10
     },
     titleText: {
         color: "#a2a2a2",
@@ -76,7 +86,7 @@ export const CustomCardComment = (props) => {
     const [content, setContent] = r.useState('');
 
     const onClick = () => {
-        navigate(`/comment/${props.comment.id}`)
+        navigate(`/comments/${props.comment.id}`)
     }
 
     const onClickAvatar = () => {
@@ -84,22 +94,16 @@ export const CustomCardComment = (props) => {
     }
 
     const onLike = async () => {
-        // if (props.decode.id !== id) {
-        await dispatch(sendSetLikeToComment({
-            type: "like",
-            token: props.users.token,
-            id: props.comment.id
-        }));
-        // }
+
     }
 
     const onDislike = async () => {
         // if (props.decode.id === id) {
-        await dispatch(sendSetLikeToComment({
-            type: "dislike",
-            token: props.users.token,
-            id: props.comment.id,
-        }));
+            await dispatch(sendSetLikeToComment({
+                type: "dislike",
+                token: props.users.token,
+                id: props.comment.id,
+            }));
         // }
     }
 
@@ -108,7 +112,7 @@ export const CustomCardComment = (props) => {
     }
 
     const createComment = () => {
-        dispatch(sendCreateComment({
+            dispatch(sendCreateComment({
             token: props.users.token,
             content: content,
             id: props.postId,
@@ -161,6 +165,10 @@ export const CustomCardComment = (props) => {
                 </ButtonDiv>
                 {props.cardActions &&
                     <CardActions style={{display: "block"}}>
+                        <Box display={'flex'} style={styles.textBlue}>
+                            <div style={{flexGrow: 2}}>{props.comment.createdAt}</div>
+                            <div >{props.comment.User.full_name}</div>
+                        </Box>
                         <Box display='flex' style={styles.cardActions}>
                             <Box display={"flex"} style={{flexGrow: 7}}>
                                 <Button onClick={onLike} size="small" color="primary">
@@ -172,6 +180,14 @@ export const CustomCardComment = (props) => {
                                     {props.comment?.isDisliked ? <HeartBroken/> : <div/>}
                                     {!props.comment?.isDisliked ? <HeartBrokenOutlined/> : <div/>}
                                     {props.comment?.dislikesCount ? props.comment?.dislikesCount : ''}
+                                </Button>
+                                <Button onClick={onClick}>
+                                    <AddComment/>
+                                    {props.comment?.answers?.length ? props.comment?.answers?.length : ''}
+                                </Button>
+                                <Button>
+                                    <QuestionAnswer/>
+                                    {props.comments?.questions?.length ? props.comments?.questions?.length : ''}
                                 </Button>
                             </Box>
                             {props.comment?.User &&

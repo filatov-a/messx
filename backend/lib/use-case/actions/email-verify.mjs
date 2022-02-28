@@ -4,7 +4,7 @@ import Users from "../../models/users.mjs";
 export default class emailVerify extends Base {
 	async execute({body, context}){
 		const usrDb = await Users.findOne({where: {id: context.userId}});
-		await usrDb.update({isVerified: true});
+		await usrDb.update({status: "verified"});
 	}
 }
 

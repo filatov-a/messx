@@ -36,7 +36,6 @@ let styles = {
         minWidth: '400px',
         margin: 'auto',
         // border: "1px solid black",
-        marginTop: 40,
         paddingLeft: 10,
         paddingRight: 10,
         textAlign: 'left',
@@ -46,7 +45,6 @@ let styles = {
         minWidth: '400px',
         margin: 'auto',
         // border: "1px solid black",
-        marginTop: 40,
         paddingLeft: 10,
         paddingRight: 10,
         textAlign: 'left',
@@ -212,7 +210,7 @@ function account() {
                 </div>
                 <div style={styles.line}> </div>
                 <div style={styles.headText}>Posts:</div>
-                { posts.posts &&
+                { posts.posts.length &&
                 <div style={styles.divPosts}>
                     {posts.posts.map( (i) => (
                         <CustomCard

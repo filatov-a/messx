@@ -8,10 +8,7 @@ import * as rr from "react-redux";
 import * as rd from "react-router-dom";
 import * as r from "react";
 import {parseToken} from '../../utils/parseToken';
-// import Comment from "./comment";
-// import CreateComment from "./createComment";
 import {CustomCard} from '../utils/card'
-import {CustomCardComment} from '../utils/cardComment'
 
 
 function post() {
@@ -31,6 +28,7 @@ function post() {
 
     const handleWrite = () => {setIsWrite(!isWrite)}
 
+
     return (
         <div>
             {posts.specPost &&
@@ -43,17 +41,18 @@ function post() {
                     single={true}
                 />
             }
-            <div style={{width: "60%", margin: "auto"}}>
-                <CustomCardComment create={true} users={users} postId={id}/>
+            <div style={{width: 380, margin: "auto"}}>
+                <CustomCard create={true} users={users} postId={id}/>
             </div>
-            {posts.specPost?.Comments && posts.specPost.Comments.length !== 0 &&
-                <div style={{width: "60%", margin: "auto"}}>
-                    {posts.specPost.Comments.map(i => (
-                        <CustomCardComment
-                            key={i.id}
+            {posts.specPost?.answers && posts.specPost.answers.length !== 0 &&
+                <div style={{width: "85%", margin: "auto"}}>
+                    {posts.specPost.answers.map(i => (
+                        <CustomCard
                             cardActions={true}
-                            comment={i}
+                            post={i}
                             users={users}
+                            posts={posts}
+                            decode={decode}
                         />
                     ))}
                 </div>

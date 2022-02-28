@@ -5,7 +5,6 @@ const router = express.Router();
 import controllerActions from "./controlers/action.mjs";
 import controllerUser from "./controlers/users.mjs";
 import controllerChats from "./controlers/chats.mjs";
-import controllerComments from "./controlers/comments.mjs";
 import controllerPostsCategories from "./controlers/posts-categories.mjs";
 import controllerChatsCategories from "./controlers/chats-categories.mjs";
 import controllerPosts from "./controlers/posts.mjs";
@@ -26,12 +25,6 @@ router.post("/users", controllerUser.create);
 router.patch("/users/:id", controllerUser.update);
 router.delete("/users/:id", controllerUser.delete);
 router.post("/users/avatar", controllerUser.setAvatar);
-
-router.get("/comments/:id", controllerComments.get);
-router.post("/comments/:id/like", controllerComments.like);
-router.post("/comments/:id", controllerComments.create);
-router.patch("/comments/:id", controllerComments.update);
-router.delete("/comments/:id", controllerComments.delete);
 
 router.get("/posts-categories", controllerPostsCategories.getAll);
 router.get("/posts-categories/:id", controllerPostsCategories.get);

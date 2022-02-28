@@ -9,7 +9,7 @@ import * as rd from "react-router-dom";
 import * as r from "react";
 import {parseToken} from "../../utils/parseToken";
 
-function createPost() {
+function createPost(props) {
     const dispatch = rr.useDispatch();
     const users = rr.useSelector(state => state.users);
     const categories = rr.useSelector(state => state.categories);
@@ -48,7 +48,7 @@ function createPost() {
 
     return (
         <div style={styleAuth.Div}>
-            <h2 style={styleAuth.Title}>Create post</h2>
+            {!props.withoutTitle && <h2 style={styleAuth.Title}>Create post</h2>}
             <form onSubmit={handleSubmit} style={styleAuth.Form}>
                 <CustomTextField onChange={onChangeTitle}
                                  required
@@ -73,7 +73,7 @@ function createPost() {
                     )}
                 />
                 <CustomTextField multiline maxRows={5} onChange={onChangeContent} required placeholder='some text'/>
-                <Button style={styleAuth.Button} type="submit" variant='contained' color='primary'>Send</Button>
+                <Button style={styleAuth.Button} type="submit" variant='outlined' color='primary'>Send</Button>
             </form>
         </div>
     )

@@ -1,7 +1,6 @@
 import Base from "../base.mjs";
 import Posts from "../../models/posts.mjs";
 import Users from "../../models/users.mjs";
-import Comments from "../../models/comments.mjs";
 import LikesPosts from "../../models/likes-posts.mjs";
 import pkg from "sequelize";
 import moment from "moment";
@@ -21,72 +20,48 @@ export default class GetAllDay extends Base {
 		// if (title === "undefined") title = "";
 		// console.log(this.sequelize);
 
-		const all = await Posts.findAndCountAll({
-			where: {
-				createdAt: {
-					[Op.gte]: moment().subtract(interval, "days").toDate()
-				}
-			},
-			include: [LikesPosts, Users, PostsCategories, Comments],
+		const attributes = {
 			attributes: {
 				include: [
-					[
-						this.sequelize.literal(`(
-			        		SELECT COUNT(*)
-			        		FROM LikesPosts
-			       			WHERE
-			            		LikesPosts.postId = Posts.id
-			    			)`), "ratingCount"
-					],
 					[
 						this.sequelize.literal(`(
 							SELECT COUNT(*)
 							FROM LikesPosts
 							WHERE
 							LikesPosts.postId = Posts.id
-							AND
-							LikesPosts.type = "like"
 						)`), "likesCount"
 					],
 					[
 						this.sequelize.literal(`(
-							SELECT COUNT(*)
+							SELECT
 							FROM LikesPosts
 							WHERE
-								LikesPosts.postId = Posts.id
-								AND
-								LikesPosts.type = "dislike"
-						)`), "dislikesCount"
-					],
-					[
-						this.sequelize.literal(`(
-							SELECT COUNT(*)
-							FROM LikesPosts
-							WHERE
-								LikesPosts.userId = "${context.userId}"
-								AND
-								LikesPosts.postId = Posts.id
-								AND
-								LikesPosts.type = "like"
-						)`), "isLiked"
-					],
-					[
-						this.sequelize.literal(`(
-							SELECT COUNT(*)
-							FROM LikesPosts
-							WHERE
-								LikesPosts.userId = "${context.userId}"
-								AND
-								LikesPosts.postId = Posts.id
-								AND
-								LikesPosts.type = "dislike"
-						)`), "isDisliked"
+							LikesPosts.userId = "${context.userId}"
+							AND
+							LikesPosts.postId = Posts.id
+						)`), "userLike"
 					],
 				]
 			},
+		};
+
+		const all = await Posts.findAndCountAll({
+			where: {
+				createdAt: {
+					[Op.gte]: moment().subtract(interval, "days").toDate()
+				}
+			},
+			include: [
+				{model: PostsCategories},
+				{model: LikesPosts},
+				{model: Users},
+				{association: "questions"},
+				{association: "answers"},
+			],
+			attributes,
 			limit: limitInt,
 			offset: offsetInt,
-			order: [[this.sequelize.literal("ratingCount"), "DESC"], ["createdAt", "DESC"]]
+			order: [[this.sequelize.literal("likesCount"), "DESC"], ["createdAt", "DESC"]]
 		});
 
 		return {posts: all.rows, count: all.count};

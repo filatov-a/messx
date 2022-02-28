@@ -6,14 +6,14 @@ import argon2  from "argon2";
 
 export default class login extends Base {
 	async execute({data}){
-		const user = await Users.findOne({where: {username: data.username}});
+		const user = await Users.findOne({where: {id: data.id}});
 		let errors = {};
 
-		if (user === null) throw ({username: "username is wrong"});
+		if (user === null) throw ({id: "id is wrong"});
 		const ok = await argon2.verify(user.password, data.password);
 		if (!ok) errors.password = "wrong account password";
-		if (!user.isVerified) errors.error = "u must to verify account";
-
+		if (user.status === "unverified") errors.error = "u must verify account";
+		console.log(errors);
 		if (Object.keys(errors).length){
 			throw errors;
 		}

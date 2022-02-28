@@ -1,7 +1,6 @@
 import Base from "../base.mjs";
 import Posts from "../../models/posts.mjs";
 import Users from "../../models/users.mjs";
-import Comments from "../../models/comments.mjs";
 import LikesPosts from "../../models/likes-posts.mjs";
 import pkg from "sequelize";
 import moment from "moment";
@@ -20,6 +19,31 @@ export default class GetAll extends Base {
 		const limitInt = parseInt(limit);
 		const offsetInt = parseInt(offset);
 
+		const attributes = {
+			attributes: {
+				include: [
+					[
+						this.sequelize.literal(`(
+							SELECT COUNT(*)
+							FROM LikesPosts
+							WHERE
+							LikesPosts.postId = Posts.id
+						)`), "likesCount"
+					],
+					[
+						this.sequelize.literal(`(
+							SELECT
+							FROM LikesPosts
+							WHERE
+							LikesPosts.userId = "${context.userId}"
+							AND
+							LikesPosts.postId = Posts.id
+						)`), "userLike"
+					],
+				]
+			},
+		};
+
 		const user = await Users.findOne({
 			where: {id: context.userId},
 			include: [
@@ -34,66 +58,17 @@ export default class GetAll extends Base {
 								}
 
 							},
-							include: [LikesPosts, Users, PostsCategories, Comments],
-							attributes: {
-								include: [
-									[
-										this.sequelize.literal(`(
-			        		SELECT COUNT(*)
-			        		FROM LikesPosts
-			       			WHERE
-			            		LikesPosts.postId = Posts.id
-			    			)`), "ratingCount"
-									],
-									[
-										this.sequelize.literal(`(
-							SELECT COUNT(*)
-							FROM LikesPosts
-							WHERE
-							LikesPosts.postId = Posts.id
-							AND
-							LikesPosts.type = "like"
-						)`), "likesCount"
-									],
-									[
-										this.sequelize.literal(`(
-							SELECT COUNT(*)
-							FROM LikesPosts
-							WHERE
-								LikesPosts.postId = Posts.id
-								AND
-								LikesPosts.type = "dislike"
-						)`), "dislikesCount"
-									],
-									[
-										this.sequelize.literal(`(
-							SELECT COUNT(*)
-							FROM LikesPosts
-							WHERE
-								LikesPosts.userId = "${context.userId}"
-								AND
-								LikesPosts.postId = Posts.id
-								AND
-								LikesPosts.type = "like"
-						)`), "isLiked"
-									],
-									[
-										this.sequelize.literal(`(
-							SELECT COUNT(*)
-							FROM LikesPosts
-							WHERE
-								LikesPosts.userId = "${context.userId}"
-								AND
-								LikesPosts.postId = Posts.id
-								AND
-								LikesPosts.type = "dislike"
-						)`), "isDisliked"
-									],
-								]
-							},
+							include: [
+								{model: PostsCategories},
+								{model: LikesPosts},
+								{model: Users},
+								{association: "questions"},
+								{association: "answers"},
+							],
+							attributes,
 							limit: limitInt,
 							offset: offsetInt,
-							order: [[this.sequelize.literal("ratingCount"), "DESC"], ["createdAt", "DESC"]]
+							order: [["createdAt", "DESC"]]
 						},
 					]
 				},

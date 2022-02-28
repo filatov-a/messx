@@ -14,7 +14,7 @@ function register() {
     const users = rr.useSelector(state => state.users);
 
     const [full_name, setFullName] = r.useState('');
-    const [username, setUsername] = r.useState('');
+    const [id, setId] = r.useState('');
     const [email, setEmail] = r.useState('');
     const [password, setPassword] = r.useState('');
     const [gender, setGender] = r.useState('male');
@@ -22,13 +22,12 @@ function register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const User = { full_name, username, email, password, gender };
-        if (users.status === 'idle'){
-            dispatch(sendRegister({user: User, navigate: navigate}));
-        }
+        const User = { full_name, id, email, password, gender };
+        dispatch(sendRegister({user: User, navigate: navigate}));
+
     }
 
-    const onChangeUsername = (e) => setUsername(e.target.value);
+    const onChangeId = (e) => setId(e.target.value);
     const onChangeName = (e) => setFullName(e.target.value);
     const onChangePassword = (e) => setPassword(e.target.value);
     const onChangeEmail = (e) => setEmail(e.target.value);
@@ -38,7 +37,7 @@ function register() {
         <div style={styleAuth.Div}>
             <h2 style={styleAuth.Title}>{t('register')}</h2>
             <form onSubmit={handleSubmit} style={styleAuth.Form}>
-                <CustomTextField onChange={onChangeUsername} required placeholder={t('username')}/>
+                <CustomTextField onChange={onChangeId} required placeholder={t('id')}/>
                 <CustomTextField onChange={onChangeName} required placeholder={t('full name')}/>
                 <CustomTextField onChange={onChangeEmail} required placeholder={t('email')} type='email'/>
                 <CustomTextField onChange={onChangePassword} required placeholder={t('password')} type='password'/>

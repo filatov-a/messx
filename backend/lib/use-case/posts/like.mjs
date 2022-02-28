@@ -1,5 +1,4 @@
 import Base from "../base.mjs";
-import LikesToComments from "../../models/likes-comments.mjs";
 import jwt from "jsonwebtoken";
 import Posts from "../../models/posts.mjs";
 import Users from "../../models/users.mjs";

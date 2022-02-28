@@ -1,12 +1,11 @@
 import Base from "./base.mjs";
 
-export default class PostsToCategories extends Base {
+export default class UsersToPosts extends Base {
 	static modelSchema = {
 		id: { type: this.DT.UUID, defaultValue: this.DT.UUIDV4, primaryKey: true },
+		userId: this.DT.UUID,
 		postId: this.DT.UUID,
-		categoryId: this.DT.UUID,
 	}
-	static modelName = "PostsToCategories";
-
+	static modelName = "UsersToPosts";
 	static associate(models) {}
 }

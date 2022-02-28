@@ -6,11 +6,6 @@ module.exports = {
 				defaultValue: Sequelize.UUIDV4,
 				primaryKey: true,
 			},
-			username: {
-				type: Sequelize.STRING,
-				allowNull: false,
-				unique: true,
-			},
 			password: {
 				type: Sequelize.STRING,
 				allowNull: false,
@@ -40,14 +35,9 @@ module.exports = {
 				type: Sequelize.ENUM(["user", "admin", "superAdmin"]),
 				defaultValue: "user",
 			},
-			isVerified: {
-				type: Sequelize.BOOLEAN,
-				defaultValue: false,
-			},
-			isActive: {
-				type: Sequelize.BOOLEAN,
-				allowNull: false,
-				defaultValue: true,
+			status: {
+				type: Sequelize.STRING,
+				defaultValue: "unverified",
 			},
 			createdAt: {
 				allowNull: false,

@@ -4,16 +4,15 @@ import Users from "./users.mjs";
 import Chats from "./chats.mjs";
 import Messages from "./messages.mjs";
 import MessagesImages from "./messages-images.mjs";
-import MessagesToAnswers from "./messages-to-answers.mjs";
+import MessagesToMessages from "./messages-to-messages.mjs";
 import Posts from "./posts.mjs";
 import LikesPosts from "./likes-posts.mjs";
-import Comments from "./comments.mjs";
-import LikesComments from "./likes-comments.mjs";
 import PostsCategories from "./posts-categories.mjs";
 import UsersToChats from "./users-to-chats.mjs";
-import UsersToFollowers from "./users-to-followers.mjs";
+import UsersToUsers from "./users-to-users.mjs";
+import UsersToPosts from "./users-to-posts.mjs";
 import PostsImages from "./posts-images.mjs";
-import CommentsToAnswers from "./comments-to-answers.mjs";
+import PostsToPosts from "./posts-to-posts.mjs";
 import ChatsToCategories from "./chats-to-categories.mjs";
 
 import cnfgSeq from "../config/configSeq.cjs";
@@ -67,17 +66,16 @@ export default class DataBase {
 			Chats,
 			Messages,
 			MessagesImages,
-			MessagesToAnswers,
+			MessagesToMessages,
 			LikesPosts,
-			Comments,
-			LikesComments,
-			CommentsToAnswers,
+			PostsToPosts,
 			PostsCategories,
 			UsersToChats,
-			UsersToFollowers,
+			UsersToUsers,
+			UsersToPosts,
 			PostsImages,
 			ChatsCategories,
-			ChatsToCategories
+			ChatsToCategories,
 		};
 	}
 

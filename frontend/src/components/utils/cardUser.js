@@ -25,7 +25,7 @@ const styles = {
     root: {
         margin: '20px',
         boxShadow: "2px 3px 10px black, 0 0 5px #a2a2a2 inset",
-        background: 'rgb(0, 30, 60)',
+        background: 'rgba(0,30,60,0)',
         border: "1px solid #a2a2a2",
         borderRadius: 10
     },

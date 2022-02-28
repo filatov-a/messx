@@ -1,23 +1,23 @@
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		await queryInterface.createTable("CommentsToAnswers", {
+		await queryInterface.createTable("PostsToPosts", {
 			id: {
 				type: Sequelize.UUID,
 				defaultValue: Sequelize.UUIDV4,
 				primaryKey: true,
 			},
-			commentId: {
+			postId: {
 				type: Sequelize.UUID,
-				references: {model: "Comments", key: "id"},
+				references: {model: "Posts", key: "id"},
 				onUpdate: "CASCADE",
-				onDelete: "SET NULL",
+				onDelete: "CASCADE",
 				defaultValue: null,
 			},
-			commentAnswerId: {
+			questionId: {
 				type: Sequelize.UUID,
-				references: {model: "Comments", key: "id"},
+				references: {model: "Posts", key: "id"},
 				onUpdate: "CASCADE",
-				onDelete: "SET NULL",
+				onDelete: "CASCADE",
 				defaultValue: null,
 			},
 			createdAt: {
@@ -33,6 +33,6 @@ module.exports = {
 		});
 	},
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.dropTable("CommentsToAnswers");
+		await queryInterface.dropTable("PostsToPosts");
 	},
 };

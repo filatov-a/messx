@@ -4,7 +4,6 @@ import argon2 from "argon2";
 export default class Users extends Base {
 	static modelSchema = {
 		id: { type: this.DT.UUID, defaultValue: this.DT.UUIDV4, primaryKey: true },
-		username: this.DT.STRING,
 		password: this.DT.STRING,
 		full_name: this.DT.STRING,
 		gender: this.DT.ENUM(["male", "female"]),
@@ -12,8 +11,7 @@ export default class Users extends Base {
 		profile_picture: this.DT.STRING,
 		rating: this.DT.INTEGER,
 		role: this.DT.ENUM(["user", "admin", "superAdmin"]),
-		isVerified: this.DT.BOOLEAN,
-		isActive: this.DT.BOOLEAN,
+		status: this.DT.STRING,
 	}
 
 	static modelName = "Users";
@@ -21,7 +19,6 @@ export default class Users extends Base {
 	static associate(models) {
 		Users.hasMany(models.Posts, { foreignKey: "userId", onDelete: "cascade"});
 		Users.hasMany(models.Messages, { foreignKey: "userId", onDelete: "cascade"});
-		Users.hasMany(models.LikesComments, { foreignKey: "userId", onDelete: "cascade"});
 		Users.hasMany(models.LikesPosts, { foreignKey: "userId", onDelete: "cascade"});
 		Users.belongsToMany(models.Chats, {
 			through: "UsersToChats",
@@ -29,24 +26,30 @@ export default class Users extends Base {
 			onDelete: "cascade",
 		});
 		Users.belongsToMany(Users, {
-			through: "UsersToFollowers",
+			through: "UsersToUsers",
 			as: "followers",
 			foreignKey: "userId",
 			onDelete: "set null",
 		});
 		Users.belongsToMany(Users, {
-			through: "UsersToFollowers",
+			through: "UsersToUsers",
 			as: "follow",
 			foreignKey: "followerId",
 			onDelete: "set null",
 		});
+		Users.belongsToMany(models.Posts, {
+			through: "UsersToPosts",
+			as: "repost",
+			foreignKey: "userId",
+			onDelete: "cascade",
+		});
 	}
 	static async createUser(params){
 		let errors = {};
-		const username = await this.findOne({ where: { username: params.username } });
+		const username = await this.findOne({ where: { id: params.id } });
 		const email = await this.findOne({ where: { email: params.email } });
 		if (username) {
-			errors.username = "username is busy";
+			errors.id = "id is busy";
 		}
 		if (email) {
 			errors.email = "email is busy";
@@ -60,10 +63,10 @@ export default class Users extends Base {
 	static async updateUser({id, params}){
 		const user = await this.findOne({ where: { id: id } });
 		let errors = {};
-		if (params.username){
-			const username = await this.findOne({ where: { username: params.username } });
+		if (params.id){
+			const username = await this.findOne({ where: { id: params.id } });
 			if (username !== null) {
-				errors.username = "username is busy";
+				errors.id = "username is busy";
 			}
 		}
 		if (params.email){

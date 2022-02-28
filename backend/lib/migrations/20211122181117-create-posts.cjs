@@ -11,10 +11,10 @@ module.exports = {
 				type: Sequelize.STRING,
 				allowNull: false
 			},
-			isActive: {
-				type: Sequelize.BOOLEAN,
+			status: {
+				type: Sequelize.STRING,
 				allowNull: false,
-				defaultValue: true,
+				defaultValue: "active",
 			},
 			content: {
 				type: Sequelize.STRING,
@@ -25,7 +25,7 @@ module.exports = {
 				allowNull: false,
 				references: { model: "Users", key: "id" },
 				onUpdate: "CASCADE",
-        		onDelete: "CASCADE",
+				onDelete: "CASCADE",
 			},
 			createdAt: {
 				allowNull: false,
