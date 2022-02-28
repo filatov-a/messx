@@ -103,3 +103,68 @@ export const styleToolbar = {
         }
     }
 }
+
+export const stylesCart = {
+    root: {
+        marginLeft: '20px',
+        marginRight: '20px',
+        boxShadow: "2px 3px 10px black, 0 0 10px #a2a2a2 inset",
+        background: 'rgba(0,30,60,0)',
+        border: "1px solid #a2a2a2",
+        borderRadius: 10
+    },
+    link: {
+        textDecoration: 'none',
+        color: 'white',
+        width: "100%",
+        height: "100%",
+        textTransform: "none"
+    },
+    text: {
+        color: "#a2a2a2",
+        textAlign: "justify",
+        lineHeight: "25px",
+        outline: 0,
+        fontSize: 18,
+        textOverflow: 'ellipsis',
+    },
+    textBlue: {
+        fontFamily: "'Shadows Into Light', cursive",
+        color: "rgb(51, 153, 255)",
+        textAlign: "justify",
+        lineHeight: "25px",
+        outline: 0,
+        fontSize: 18,
+        textOverflow: 'ellipsis',
+        margin: 0,
+    },
+    cardActions: {
+        width: '100%',
+        margin: "auto",
+        // marginLeft: 3,
+        // marginRight: 3,
+        border: "1px solid rgb(51, 153, 255)",
+        boxShadow: "2px 3px 10px black, 0 0 10px rgb(51, 153, 255) inset",
+        borderRadius: 10
+    },
+    titleText: {
+        color: "#a2a2a2",
+        fontSize: 25,
+        fontFamily: "blud"
+    },
+    up: {
+        margin: "auto",
+        width: "300px",
+        borderRight: "0.1px solid yellow",
+        borderLeft: "0.1px solid yellow",
+        height: 40
+    },
+    menu: {
+        color: "#a2a2a2",
+        background: "rgba(0,0,0,0)",
+        maxHeight: 20 * 4.5,
+        // border: "0.1px solid yellow",
+        boxShadow: "2px 3px 10px black, 0 0 10px rgb(51, 153, 255) inset",
+        // width: 100,
+    }
+};

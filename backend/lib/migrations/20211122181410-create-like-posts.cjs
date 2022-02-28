@@ -8,7 +8,7 @@ module.exports = {
 				primaryKey: true,
 			},
 			type: {
-				type: Sequelize.ENUM(["like", "dislike"]),
+				type: Sequelize.STRING,
 				allowNull: false
 			},
 			userId: {

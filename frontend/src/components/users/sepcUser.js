@@ -209,7 +209,6 @@ function account() {
                     </Box>
                 </div>
                 <div style={styles.line}> </div>
-                <div style={styles.headText}>Posts:</div>
                 { posts.posts.length &&
                 <div style={styles.divPosts}>
                     {posts.posts.map( (i) => (

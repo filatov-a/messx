@@ -8,86 +8,49 @@ import {
     CardMedia,
     CardActions,
     CardContent,
+    IconButton,
+    Menu,
+    MenuItem
 } from '@mui/material';
 import {
-    Delete,
     AddComment,
     Source,
     AddReactionOutlined,
     AddReaction,
+    Autorenew,
+    MoreVert,
 } from '@mui/icons-material'
-import config from "../../config/config";
 import * as rd from "react-router-dom";
 import {sendCreateComment, sendDeletePost, sendSetLike} from "../../redux/modules/posts";
 import * as rr from "react-redux";
 // import {CustomTextField} from "../../styles/main";
 import * as r from "react";
 import CreatePost from "../posts/createPost";
-
-const styles = {
-    root: {
-        marginLeft: '20px',
-        marginRight: '20px',
-        boxShadow: "2px 3px 10px black, 0 0 10px #a2a2a2 inset",
-        background: 'rgba(0,30,60,0)',
-        border: "1px solid #a2a2a2",
-        borderRadius: 10
-    },
-    link: {
-        textDecoration: 'none',
-        color: 'white',
-        width: "100%",
-        height: "100%",
-        textTransform: "none"
-    },
-    text: {
-        color: "#a2a2a2",
-        textAlign: "justify",
-        lineHeight: "25px",
-        outline: 0,
-        fontSize: 18,
-        textOverflow: 'ellipsis',
-    },
-    textBlue: {
-        fontFamily: "'Shadows Into Light', cursive",
-        color: "rgb(51, 153, 255)",
-        textAlign: "justify",
-        lineHeight: "25px",
-        outline: 0,
-        fontSize: 18,
-        textOverflow: 'ellipsis',
-        margin: 0,
-    },
-    cardActions: {
-        width: '100%',
-        margin: "auto",
-        // marginLeft: 3,
-        // marginRight: 3,
-        border: "1px solid rgb(51, 153, 255)",
-        boxShadow: "2px 3px 10px black, 0 0 10px rgb(51, 153, 255) inset",
-        borderRadius: 10
-    },
-    titleText: {
-        color: "#a2a2a2",
-        fontSize: 25,
-        fontFamily: "blud"
-    },
-    up: {
-        margin: "auto",
-        width: "300px",
-        borderRight: "0.1px solid yellow",
-        borderLeft: "0.1px solid yellow",
-        height: 40
-    }
-};
+import config from "../../config/config";
+import {stylesCart} from "../../styles/main";
+import EmojiDialog from "./emojiDialog";
 
 export const CustomCard = (props) => {
     const navigate = rd.useNavigate();
     const dispatch = rr.useDispatch();
 
-    const [content, setContent] = r.useState('');
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [chosenEmoji, setChosenEmoji] = r.useState(null);
+    const [chosenEmojiOpen, setChosenEmojiOpen] = r.useState(false);
 
-    const onChangeContent = (e) => setContent(e.target.value);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+        if (anchorEl === 'delete') dispatch(sendDeletePost(props.post.id));
+    };
+
+    const options = []
+    if (props.users?.user?.role === "admin" ||
+        props.users?.user?.role === "superAdmin" ||
+        props.users?.user?.id === props.post?.User?.id) options.unshift('delete')
 
     const onClick = () => {
         navigate(`/posts/${props.post.id}`)
@@ -101,38 +64,26 @@ export const CustomCard = (props) => {
         navigate(`/users/${props.post.userId}`)
     }
 
-    const createPost = () => {
-        dispatch(sendCreateComment({
-            token: props.users.token,
-            content: content,
-            id: props.postId,
-        }));
-    }
-
-    const onLike = async () => {
+    const onLike = async (emoji) => {
         // if (props.decode.id !== id) {
         await dispatch(sendSetLike({
-            type: "like",
+            type: emoji,
             token: props.users.token,
             id: props.post.id
         }));
         // }
     }
 
-    const onDelete = () => {
-        dispatch(sendDeletePost(props.post.id));
-    }
-
     const ButtonDiv = (prp) => {
         if (props.single) {
             return (
-                <div style={styles.link} >
+                <div style={stylesCart.link} >
                     {prp.children}
                 </div>
             )
         } else {
             return (
-                <Button style={styles.link} onClick={onClick}>
+                <Button style={stylesCart.link} onClick={onClick}>
                     {prp.children}
                 </Button>
             )
@@ -142,8 +93,8 @@ export const CustomCard = (props) => {
     if (props.create){
         return (
             <div>
-                <div style={styles.up}> </div>
-                <div style={styles.root}>
+                <div style={stylesCart.up}> </div>
+                <div style={stylesCart.root}>
                     <CreatePost withoutTitle={true}/>
                 </div>
             </div>
@@ -152,22 +103,22 @@ export const CustomCard = (props) => {
 
     return (
         <div>
-            <div style={styles.up}> </div>
-            <Card style={styles.root}>
+            <div style={stylesCart.up}> </div>
+            <Card style={stylesCart.root}>
                 <ButtonDiv>
                     {props.image &&
                         <CardMedia
-                            style={styles.media}
+                            style={stylesCart.media}
                             image={props.image}
                             title="Contemplative Reptile"
                         />
                     }
                     <CardContent>
-                        <div style={styles.titleText}>
+                        <div style={stylesCart.titleText}>
                             {props.post.title}
                         </div>
                         <div>
-                            <div style={styles.text} contentEditable="true">
+                            <div style={stylesCart.text} contentEditable="true">
                                 {props.post.content}
                             </div>
                         </div>
@@ -182,15 +133,17 @@ export const CustomCard = (props) => {
                                 </Button>
                             ))}
                         </div>
-                        <Box display={'flex'} style={styles.textBlue}>
+                        <Box display={'flex'} style={stylesCart.textBlue}>
                             <div style={{flexGrow: 2}}>{props.post.createdAt}</div>
                             <div >{props.post.User.full_name}</div>
                         </Box>
-                        <Box display='flex' style={styles.cardActions}>
+                        <Box display='flex' style={stylesCart.cardActions}>
                             <Box display={"flex"} style={{flexGrow: 9}}>
-                                <Button onClick={onLike} size="small" color="primary">
-                                    {props.post?.isLiked ? <AddReaction/> : <div/>}
-                                    {!props.post?.isLiked ? <AddReactionOutlined/> : <div/>}
+                                <Button onClick={()=>{setChosenEmojiOpen(!chosenEmojiOpen)}}>
+                                    {chosenEmoji ?
+                                        <div style={{fontSize: 30, position: "absolute"}}>
+                                            {chosenEmoji}
+                                        </div> : <AddReactionOutlined/>}
                                     {props.post?.likesCount ? props.post?.likesCount : ''}
                                 </Button>
                                 <Button onClick={onClick}>
@@ -201,26 +154,43 @@ export const CustomCard = (props) => {
                                     <Source/>
                                     {props.post?.questions?.length ? props.post?.questions?.length : ''}
                                 </Button>
+                                <Button><Autorenew/></Button>
                             </Box>
                             {props.post.User &&
                                 <Box display={"flex"}>
                                     <ButtonBase onClick={onClickAvatar} style={{borderRadius:'100%', padding:10}}>
                                         <Avatar alt="Remy Sharp" src={`${config.url}/images/${props.post.User.profile_picture}`} style={{width: 30, height:30}}/>
                                     </ButtonBase>
-                                    {
-                                        (props.users?.user?.role === "admin" ||
-                                            props.users?.user?.role === "superAdmin" ||
-                                            props.users?.user?.id === props.post?.User?.id) &&
-                                        <Button onClick={onDelete} size="small" color="secondary">
-                                            <Delete/>
-                                        </Button>
-                                    }
+                                    <Button onClick={handleClick}>
+                                        <MoreVert style={{color: "#a2a2a2"}}/>
+                                    </Button>
+                                    <Menu
+                                        anchorEl={anchorEl}
+                                        open={open}
+                                        onClose={handleClose}
+                                        PaperProps={{
+                                            style:stylesCart.menu
+                                        }}
+                                    >
+                                        {options.map((option) => (
+                                            <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
+                                                {option}
+                                            </MenuItem>
+                                        ))}
+                                    </Menu>
                                 </Box>
                             }
                         </Box>
                     </CardActions>
                 }
             </Card>
+            <EmojiDialog
+                open={chosenEmojiOpen}
+                setOpen={setChosenEmojiOpen}
+                chosenEmoji={chosenEmoji}
+                setChosenEmoji={setChosenEmoji}
+                onLike={onLike}
+            />
         </div>
     );
 }
