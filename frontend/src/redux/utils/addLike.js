@@ -13,25 +13,17 @@ export default function addLike(arr, like, f){
 
 function setLike(post, like, f){
     if (like.like && post.id === like.like[`${f}Id`]){
-
-        if (like.like.type === 'like'){
-
-            post.likesCount++;
-            post.isLiked = true;
-        }
-        else {
-            post.dislikesCount++;
-            post.isDisliked = true;
-        }
+        post.LikesPosts.unshift(like.like)
+        post.userLike = like.like;
+        post.isLiked = true;
     }
     if (like.dLike && post.id === like.dLike[`${f}Id`]){
-        if (like.dLike?.type === 'like') {
-            post.likesCount--;
-            post.isLiked = false;
-        }
-        else {
-            post.dislikesCount--;
-            post.isDisliked = false;
-        }
+        let newL = [];
+        post.LikesPosts.map(i => {
+            if (i.id !== like.dLike.id)
+                newL.push(i);
+        })
+        post.LikesPosts = newL;
+        post.userLike = undefined;
     }
 }

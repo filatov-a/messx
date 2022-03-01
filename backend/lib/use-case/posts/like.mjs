@@ -10,24 +10,14 @@ export default class Like extends Base {
 		const prevLike = await LikesPosts.findOne({where: {
 			userId: context.userId, postId: post.id
 		}});
-
 		const one = await Users.findOne({ where: { id: post.userId } });
 
 		if (prevLike !== null) {
 			const dLike = await this.#deleteLike({data, context});
-			let l = null;
-			if (prevLike.type !== data.type){
-				l = await this.execute({data, context});
-				if (data.type === "like") await one.update({rating: one.rating+2});
-				else await one.update({rating: one.rating-2});
-			} else {
-				if (data.type === "like") await one.update({rating: one.rating-1});
-				else await one.update({rating: one.rating+1});
-			}
-			return {dLike, like: l?.like};
+			await one.update({rating: one.rating-1});
+			return {dLike};
 		} else {
-			if (data.type === "like") await one.update({rating: one.rating+1});
-			else await one.update({rating: one.rating-1});
+			await one.update({rating: one.rating+1});
 		}
 		const like = await LikesPosts.create({
 			publish_date: new Date(),
@@ -35,6 +25,7 @@ export default class Like extends Base {
 			userId: context.userId,
 			postId: post.id
 		});
+		like.dataValues.User = context.userInstance;
 		return {like}
 	}
 
@@ -51,6 +42,7 @@ export default class Like extends Base {
 				userId: context.userId
 			},
 		});
+		like.dataValues.User = context.userInstance;
 		return like
 	}
 }

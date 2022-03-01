@@ -7,6 +7,7 @@ import moment from "moment";
 import PostsCategories from "../../models/posts-categories.mjs";
 import Chats from "../../models/chats.mjs";
 import Messages from "../../models/messages.mjs";
+import {addUserLike} from "../utils/addUserLike.mjs";
 // import users from "../../api/routes/controlers/users.mjs";
 
 const { Op } = pkg;
@@ -18,31 +19,6 @@ export default class GetAll extends Base {
 
 		const limitInt = parseInt(limit);
 		const offsetInt = parseInt(offset);
-
-		const attributes = {
-			attributes: {
-				include: [
-					[
-						this.sequelize.literal(`(
-							SELECT COUNT(*)
-							FROM LikesPosts
-							WHERE
-							LikesPosts.postId = Posts.id
-						)`), "likesCount"
-					],
-					[
-						this.sequelize.literal(`(
-							SELECT
-							FROM LikesPosts
-							WHERE
-							LikesPosts.userId = "${context.userId}"
-							AND
-							LikesPosts.postId = Posts.id
-						)`), "userLike"
-					],
-				]
-			},
-		};
 
 		const user = await Users.findOne({
 			where: {id: context.userId},
@@ -60,12 +36,14 @@ export default class GetAll extends Base {
 							},
 							include: [
 								{model: PostsCategories},
-								{model: LikesPosts},
+								{
+									model: LikesPosts,
+									include: [{model: Users}]
+								},
 								{model: Users},
 								{association: "questions"},
 								{association: "answers"},
 							],
-							attributes,
 							limit: limitInt,
 							offset: offsetInt,
 							order: [["createdAt", "DESC"]]
@@ -83,6 +61,8 @@ export default class GetAll extends Base {
 				cnt++;
 			}
 		}
+
+		addUserLike(posts, context);
 
 		return {posts: posts, count: cnt};
 	}

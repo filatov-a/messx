@@ -5,6 +5,7 @@ import LikesPosts from "../../models/likes-posts.mjs";
 import pkg from "sequelize";
 import moment from "moment";
 import PostsCategories from "../../models/posts-categories.mjs";
+import {addUserLike} from "../utils/addUserLike.mjs";
 
 const { Op } = pkg;
 
@@ -20,31 +21,6 @@ export default class GetAllDay extends Base {
 		// if (title === "undefined") title = "";
 		// console.log(this.sequelize);
 
-		const attributes = {
-			attributes: {
-				include: [
-					[
-						this.sequelize.literal(`(
-							SELECT COUNT(*)
-							FROM LikesPosts
-							WHERE
-							LikesPosts.postId = Posts.id
-						)`), "likesCount"
-					],
-					[
-						this.sequelize.literal(`(
-							SELECT
-							FROM LikesPosts
-							WHERE
-							LikesPosts.userId = "${context.userId}"
-							AND
-							LikesPosts.postId = Posts.id
-						)`), "userLike"
-					],
-				]
-			},
-		};
-
 		const all = await Posts.findAndCountAll({
 			where: {
 				createdAt: {
@@ -53,16 +29,20 @@ export default class GetAllDay extends Base {
 			},
 			include: [
 				{model: PostsCategories},
-				{model: LikesPosts},
+				{
+					model: LikesPosts,
+					include: [{model: Users}]
+				},
 				{model: Users},
 				{association: "questions"},
 				{association: "answers"},
 			],
-			attributes,
 			limit: limitInt,
 			offset: offsetInt,
 			order: [[this.sequelize.literal("likesCount"), "DESC"], ["createdAt", "DESC"]]
 		});
+
+		addUserLike(all.rows, context);
 
 		return {posts: all.rows, count: all.count};
 	}

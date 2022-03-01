@@ -35,7 +35,6 @@ export const CustomCard = (props) => {
     const dispatch = rr.useDispatch();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [chosenEmoji, setChosenEmoji] = r.useState(null);
     const [chosenEmojiOpen, setChosenEmojiOpen] = r.useState(false);
 
     const open = Boolean(anchorEl);
@@ -140,11 +139,11 @@ export const CustomCard = (props) => {
                         <Box display='flex' style={stylesCart.cardActions}>
                             <Box display={"flex"} style={{flexGrow: 9}}>
                                 <Button onClick={()=>{setChosenEmojiOpen(!chosenEmojiOpen)}}>
-                                    {chosenEmoji ?
-                                        <div style={{fontSize: 30, position: "absolute"}}>
-                                            {chosenEmoji}
+                                    {props.post?.userLike ?
+                                        <div style={{fontSize: 25, position: "absolute"}}>
+                                            {props.post?.userLike.type}
                                         </div> : <AddReactionOutlined/>}
-                                    {props.post?.likesCount ? props.post?.likesCount : ''}
+                                    {props.post?.LikesPosts?.length ? props.post?.LikesPosts?.length : ''}
                                 </Button>
                                 <Button onClick={onClick}>
                                     <AddComment/>
@@ -187,9 +186,8 @@ export const CustomCard = (props) => {
             <EmojiDialog
                 open={chosenEmojiOpen}
                 setOpen={setChosenEmojiOpen}
-                chosenEmoji={chosenEmoji}
-                setChosenEmoji={setChosenEmoji}
                 onLike={onLike}
+                post={props.post}
             />
         </div>
     );
