@@ -4,7 +4,7 @@ import * as rr from "react-redux";
 import * as rd from "react-router-dom";
 import * as r from "react";
 import {Button, Tabs, Tab} from "@mui/material";
-import {styleAuth, CustomTextField} from "../../styles/main"
+import {styleAuth, CustomInput} from "../../styles/main"
 import {useTranslation} from 'react-i18next'
 const Tr = useTranslation;
 
@@ -37,10 +37,10 @@ function register() {
         <div style={styleAuth.Div}>
             <h2 style={styleAuth.Title}>{t('register')}</h2>
             <form onSubmit={handleSubmit} style={styleAuth.Form}>
-                <CustomTextField onChange={onChangeId} required placeholder={t('id')}/>
-                <CustomTextField onChange={onChangeName} required placeholder={t('full name')}/>
-                <CustomTextField onChange={onChangeEmail} required placeholder={t('email')} type='email'/>
-                <CustomTextField onChange={onChangePassword} required placeholder={t('password')} type='password'/>
+                <CustomInput onChange={onChangeId} required placeholder={t('id')}/>
+                <CustomInput onChange={onChangeName} required placeholder={t('full name')}/>
+                <CustomInput onChange={onChangeEmail} required placeholder={t('email')} type='email'/>
+                <CustomInput onChange={onChangePassword} required placeholder={t('password')} type='password'/>
                 <Tabs
                     value={gender}
                     onChange={onChangeGender}

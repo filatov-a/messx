@@ -1,6 +1,6 @@
 import React from "react";
 import {Button} from "@mui/material";
-import {styleAuth, CustomTextField} from "../../styles/main";
+import {styleAuth, CustomInput} from "../../styles/main";
 import {sendUpdate} from "../../redux/modules/users";
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
@@ -32,7 +32,7 @@ function fullname() {
             <h2 style={styleAuth.Title}>Change full name</h2>
             <p style={styleAuth.Title}>current full name: <b>{users.user.full_name}</b></p>
             <form onSubmit={handleSubmit}>
-                <CustomTextField onChange={onChangeLogin} required placeholder='full name'/>
+                <CustomInput onChange={onChangeLogin} required placeholder='full name'/>
                 <Button style={styleAuth.Button} type="submit" variant='contained' color='primary'>Send</Button>
             </form>
         </div>

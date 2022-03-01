@@ -10,6 +10,8 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 
 import {store} from "./redux/store";
 import options from "./config/trOptions";
+import {createTheme} from "@mui/material";
+import {ThemeProvider} from "@emotion/react";
 
 i18next
     .use(HttpApi)
@@ -22,6 +24,8 @@ const loadingMarkup = (
         <h3>Loading..</h3>
     </div>
 )
+
+
 
 const render = () => {
     ReactDOM.render(

@@ -15,7 +15,6 @@ function setLike(post, like, f){
     if (like.like && post.id === like.like[`${f}Id`]){
         post.LikesPosts.unshift(like.like)
         post.userLike = like.like;
-        post.isLiked = true;
     }
     if (like.dLike && post.id === like.dLike[`${f}Id`]){
         let newL = [];

@@ -1,6 +1,6 @@
 export function addUserLike(posts, context){
 	if (!posts) return;
-	if (!posts.length){
+	if (!posts.length && posts.length !== 0){
 		addToPost(posts, context);
 	}
 	else for (let i = 0; i < posts.length; i++){

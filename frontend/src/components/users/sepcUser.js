@@ -5,7 +5,7 @@ import * as rr from "react-redux";
 import * as rd from "react-router-dom";
 import * as r from "react";
 import {parseToken} from '../../utils/parseToken';
-import {Avatar, Box, Button, ButtonBase} from "@mui/material";
+import {Avatar, Box, Button, ButtonBase, Collapse, Slide} from "@mui/material";
 import config from "../../config/config";
 import {Settings, StarOutline} from "@mui/icons-material";
 import {CustomCard} from "../utils/card";
@@ -212,13 +212,13 @@ function account() {
                 { posts.posts.length &&
                 <div style={styles.divPosts}>
                     {posts.posts.map( (i) => (
-                        <CustomCard
-                            key={i.id}
-                            cardActions={true}
-                            post={i}
-                            users={users}
-                            decode={decode}
-                        />
+                        <Box key={i.id}>
+                            <CustomCard
+                                cardActions={true}
+                                post={i}
+                                users={users}
+                            />
+                        </Box>
                     ))}
                 </div>
                 }

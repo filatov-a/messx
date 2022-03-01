@@ -1,19 +1,17 @@
 import React from "react";
-import {Button, TextareaAutosize} from "@mui/material";
+import {Button, TextField} from "@mui/material";
 import Autocomplete from '@mui/material/Autocomplete';
-import {styleAuth, CustomTextField} from "../../styles/main";
-import {sendCreatePost, sendGetPostById} from "../../redux/modules/posts";
+import {styleAuth, CustomInput} from "../../styles/main";
+import {sendCreatePost} from "../../redux/modules/posts";
 import {sendGetAllCategories} from "../../redux/modules/categories";
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
 import * as r from "react";
-import {parseToken} from "../../utils/parseToken";
 
 function createPost(props) {
     const dispatch = rr.useDispatch();
     const users = rr.useSelector(state => state.users);
     const categories = rr.useSelector(state => state.categories);
-    const decode = parseToken(users.token)
 
     const [title, setTitle] = r.useState('');
     const [content, setContent] = r.useState('');
@@ -50,11 +48,11 @@ function createPost(props) {
         <div style={styleAuth.Div}>
             {!props.withoutTitle && <h2 style={styleAuth.Title}>Create post</h2>}
             <form onSubmit={handleSubmit} style={styleAuth.Form}>
-                <CustomTextField onChange={onChangeTitle}
-                                 required
-                                 variant="outlined"
-                                 label="title"
-                                 placeholder="title"
+                <CustomInput onChange={onChangeTitle}
+                             required
+                             variant="outlined"
+                             label="title"
+                             placeholder="title"
                 />
                 <Autocomplete
                     multiple
@@ -64,7 +62,7 @@ function createPost(props) {
                     getOptionLabel={(option) => option.title}
                     filterSelectedOptions
                     renderInput={(params) => (
-                        <CustomTextField
+                        <TextField
                             {...params}
                             variant="outlined"
                             label="categories"
@@ -72,7 +70,7 @@ function createPost(props) {
                         />
                     )}
                 />
-                <CustomTextField multiline maxRows={5} onChange={onChangeContent} required placeholder='some text'/>
+                <CustomInput multiline maxRows={5} onChange={onChangeContent} required placeholder='some text'/>
                 <Button style={styleAuth.Button} type="submit" variant='outlined' color='primary'>Send</Button>
             </form>
         </div>

@@ -1,7 +1,11 @@
 import { styled, alpha } from '@mui/material/styles';
-import {InputBase} from '@mui/material';
+import {InputBase, InputUnstyled, TextField} from '@mui/material';
+import PropTypes from 'prop-types';
+import { useAutocomplete } from '@mui/base/AutocompleteUnstyled';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 
-export const CustomTextField = styled(InputBase)(({ theme }) => ({
+export const CustomInput = styled(InputBase)(({ theme }) => ({
     width: '100%',
     'label + &': {
         marginTop: theme.spacing(3),
@@ -38,6 +42,7 @@ export const CustomTextField = styled(InputBase)(({ theme }) => ({
         },
     },
 }));
+
 
 export const styleAuth = {
     Title: {

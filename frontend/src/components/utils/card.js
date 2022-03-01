@@ -8,20 +8,18 @@ import {
     CardMedia,
     CardActions,
     CardContent,
-    IconButton,
     Menu,
     MenuItem
 } from '@mui/material';
 import {
-    AddComment,
-    Source,
     AddReactionOutlined,
-    AddReaction,
+    ArrowDownward,
+    ArrowUpward,
     Autorenew,
     MoreVert,
 } from '@mui/icons-material'
 import * as rd from "react-router-dom";
-import {sendCreateComment, sendDeletePost, sendSetLike} from "../../redux/modules/posts";
+import {sendDeletePost, sendSetLike} from "../../redux/modules/posts";
 import * as rr from "react-redux";
 // import {CustomTextField} from "../../styles/main";
 import * as r from "react";
@@ -29,6 +27,7 @@ import CreatePost from "../posts/createPost";
 import config from "../../config/config";
 import {stylesCart} from "../../styles/main";
 import EmojiDialog from "./emojiDialog";
+import Slide from '@mui/material/Slide';
 
 export const CustomCard = (props) => {
     const navigate = rd.useNavigate();
@@ -43,13 +42,11 @@ export const CustomCard = (props) => {
     };
     const handleClose = () => {
         setAnchorEl(null);
-        if (anchorEl === 'delete') dispatch(sendDeletePost(props.post.id));
     };
 
-    const options = []
-    if (props.users?.user?.role === "admin" ||
-        props.users?.user?.role === "superAdmin" ||
-        props.users?.user?.id === props.post?.User?.id) options.unshift('delete')
+    const onDelete = () => {
+        dispatch(sendDeletePost(props.post.id));
+    };
 
     const onClick = () => {
         navigate(`/posts/${props.post.id}`)
@@ -63,14 +60,16 @@ export const CustomCard = (props) => {
         navigate(`/users/${props.post.userId}`)
     }
 
+    const onClickEmoji = () => {
+        setChosenEmojiOpen(!chosenEmojiOpen)
+    }
+
     const onLike = async (emoji) => {
-        // if (props.decode.id !== id) {
         await dispatch(sendSetLike({
             type: emoji,
             token: props.users.token,
             id: props.post.id
         }));
-        // }
     }
 
     const ButtonDiv = (prp) => {
@@ -138,19 +137,24 @@ export const CustomCard = (props) => {
                         </Box>
                         <Box display='flex' style={stylesCart.cardActions}>
                             <Box display={"flex"} style={{flexGrow: 9}}>
-                                <Button onClick={()=>{setChosenEmojiOpen(!chosenEmojiOpen)}}>
-                                    {props.post?.userLike ?
-                                        <div style={{fontSize: 25, position: "absolute"}}>
-                                            {props.post?.userLike.type}
-                                        </div> : <AddReactionOutlined/>}
-                                    {props.post?.LikesPosts?.length ? props.post?.LikesPosts?.length : ''}
+                                <Button onClick={onClickEmoji}>
+                                    <Box display={'flex'} style={{position:'absolute', margin: 'auto'}}>
+                                        {props.post?.userLike ?
+                                            <div style={{fontSize: 25}}>
+                                                {props.post?.userLike.type}
+                                            </div> :
+                                            <AddReactionOutlined/>}
+                                        <div style={{marginLeft: 5}}>
+                                            {props.post.LikesPosts?.length ? props.post.LikesPosts?.length : ''}
+                                        </div>
+                                    </Box>
                                 </Button>
                                 <Button onClick={onClick}>
-                                    <AddComment/>
+                                    <ArrowDownward/>
                                     {props.post?.answers?.length ? props.post?.answers?.length : ''}
                                 </Button>
                                 <Button>
-                                    <Source/>
+                                    <ArrowUpward/>
                                     {props.post?.questions?.length ? props.post?.questions?.length : ''}
                                 </Button>
                                 <Button><Autorenew/></Button>
@@ -167,15 +171,20 @@ export const CustomCard = (props) => {
                                         anchorEl={anchorEl}
                                         open={open}
                                         onClose={handleClose}
-                                        PaperProps={{
-                                            style:stylesCart.menu
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'left',
+                                        }}
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'left',
                                         }}
                                     >
-                                        {options.map((option) => (
-                                            <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
-                                                {option}
-                                            </MenuItem>
-                                        ))}
+                                        {(props.users?.user?.role === "admin" ||
+                                                props.users?.user?.role === "superAdmin" ||
+                                                props.users?.user?.id === props.post?.User?.id)&&
+                                            <MenuItem onClick={onDelete}>Delete</MenuItem>
+                                        }
                                     </Menu>
                                 </Box>
                             }

@@ -39,7 +39,14 @@ export default class Create extends Base {
 		// 		categoryId: i
 		// 	});
 		// });
-
+		data?.categories?.map(async i => {
+			// const category = await PostsCategories.findOne({where: {id: i}});
+			await PostsToCategories.create({
+				id: uuidv4(),
+				postId: post.id,
+				categoryId: i
+			});
+		});
 
 		return post;
 	}

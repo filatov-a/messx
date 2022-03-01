@@ -19,14 +19,23 @@ import Password from "./components/users/password";
 import Email from "./components/users/email";
 import CreatePost from "./components/posts/createPost";
 import PostsDay from "./components/posts/postsDay";
+import {createTheme} from "@mui/material";
+import {ThemeProvider} from "@emotion/react";
 // import Categories from "./components/categories/categories";
 // import SpecCategory from "./components/categories/specCategory";
 // import CreateCategory from "./components/categories/createCategory";
 // import CreateUser from "./components/users/createUser";
 
+const darkTheme = createTheme({
+    palette: {
+        mode: 'dark',
+    },
+});
+
 function App(){
   return (
-          <div className="App">
+      <ThemeProvider theme={darkTheme}>
+            <div className="App">
               <BrowserRouter>
                   <Routes>
                       <Route path="*" element={<Toolbar/>}/>
@@ -55,6 +64,8 @@ function App(){
                   </Routes>
               </BrowserRouter>
           </div>
+      </ThemeProvider>
+
   );
 }
 

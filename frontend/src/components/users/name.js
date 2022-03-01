@@ -1,6 +1,6 @@
 import React from "react";
 import {Button} from "@mui/material";
-import {styleAuth, CustomTextField} from "../../styles/main";
+import {styleAuth, CustomInput} from "../../styles/main";
 import {sendUpdate} from "../../redux/modules/users";
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
@@ -32,7 +32,7 @@ function name() {
             <h2 style={styleAuth.Title}>Change your username</h2>
             <p style={styleAuth.Title}>current username: <b>{users.user.username}</b></p>
             <form onSubmit={handleSubmit}>
-                <CustomTextField onChange={onChangeLogin} required placeholder='login'/>
+                <CustomInput onChange={onChangeLogin} required placeholder='login'/>
                 <Button style={styleAuth.Button} type="submit" variant='contained' color='primary'>Send</Button>
             </form>
         </div>
