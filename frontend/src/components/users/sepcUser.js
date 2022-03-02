@@ -12,6 +12,7 @@ import {CustomCard} from "../utils/card";
 import UseMediaQuery from '@mui/material/useMediaQuery';
 import FollowDialog from "../utils/followDialog"
 import { Waypoint } from 'react-waypoint';
+import InfiniteScroll from "react-infinite-scroll-component";
 
 let styles = {
     personalInformationBig: {
@@ -226,9 +227,13 @@ function account() {
                     </Box>
                 </div>
                 <div style={styles.line}> </div>
-                <Suspense fallback={loadingMarkup}>
-                    { posts.posts.length && posts.status !== "loading" &&
-
+                <InfiniteScroll
+                    dataLength={posts.posts.length}
+                    next={trigger}
+                    hasMore={posts.hasMore}
+                    loader={<h4 style={{color: "#a2a2a2"}}>Loading...</h4>}
+                >
+                    { posts.posts.length &&
                         <Box style={styles.divPosts}>
                             {posts.posts.map( (i) => (
                                 <div key={i.id}>
@@ -239,12 +244,9 @@ function account() {
                                     />
                                 </div>
                             ))}
-                            <Waypoint
-                                onEnter={trigger}
-                            />
                         </Box>
                     }
-                </Suspense>
+                </InfiniteScroll>
                 <FollowDialog title={"Followers"} follow={users.specUser.followers} setOpen={setOpenFollowers} open={openFollowers}/>
                 <FollowDialog title={"Follow"} follow={users.specUser.follow} setOpen={setOpenFollow} open={openFollow}/>
             </div>

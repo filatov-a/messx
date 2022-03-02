@@ -101,7 +101,7 @@ const initialState = {
     error: null,
     success: null,
     status: 'idle',
-    count: 1,
+    hasMore: false,
     search: '',
 };
 
@@ -115,7 +115,8 @@ const slice = createSlice({
                 state.status = 'loading'
             })
             .addCase(sendGetUserPosts.fulfilled, (state, action) => {
-                state.posts = action.payload
+                state.posts = state.posts.concat(action.payload);
+                state.hasMore = action.payload.length !== 0;
                 state.status = 'succeeded'
             })
             .addCase(sendGetUserPosts.rejected, (state, action) => {

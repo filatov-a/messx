@@ -31,7 +31,7 @@ export default class Get extends Base {
 					offset: offsetInt,
 					order: [["updatedAt", "DESC"]]
 				},
-			]
+			],
 		});
 
 		addUserLike(user.Posts, context);
