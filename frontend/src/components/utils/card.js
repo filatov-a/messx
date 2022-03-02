@@ -93,7 +93,7 @@ export const CustomCard = (props) => {
             <div>
                 <div style={stylesCart.up}> </div>
                 <div style={stylesCart.root}>
-                    <CreatePost withoutTitle={true}/>
+                    <CreatePost withoutTitle={true} postId={props.postId}/>
                 </div>
             </div>
         )
@@ -151,11 +151,11 @@ export const CustomCard = (props) => {
                                 </Button>
                                 <Button onClick={onClick}>
                                     <ArrowDownward/>
-                                    {props.post?.answers?.length ? props.post?.answers?.length : ''}
+                                    {props.post?.questions?.length ? props.post?.questions?.length : ''}
                                 </Button>
                                 <Button>
                                     <ArrowUpward/>
-                                    {props.post?.questions?.length ? props.post?.questions?.length : ''}
+                                    {props.post?.answers?.length ? props.post?.answers?.length : ''}
                                 </Button>
                                 <Button><Autorenew/></Button>
                             </Box>

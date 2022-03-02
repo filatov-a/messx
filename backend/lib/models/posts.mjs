@@ -16,13 +16,13 @@ export default class Posts extends Base {
 		Posts.belongsTo(models.Users, {foreignKey: "userId", onDelete: "cascade"});
 		Posts.belongsToMany(models.Posts, {
 			through: "PostsToPosts",
-			as: "answers",
+			as: "questions",
 			foreignKey: "postId",
 			onDelete: "cascade",
 		});
 		Posts.belongsToMany(models.Posts, {
 			through: "PostsToPosts",
-			as: "questions",
+			as: "answers",
 			foreignKey: "questionId",
 			onDelete: "cascade",
 		});

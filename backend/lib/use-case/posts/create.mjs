@@ -4,6 +4,10 @@ import PostsCategories from "../../models/posts-categories.mjs";
 import PostsToCategories from "../../models/posts-to-categories.mjs";
 import PostsImages from "../../models/posts-images.mjs";
 import { v4 as uuidv4 } from "uuid";
+import PostsToPosts from "../../models/posts-to-posts.mjs";
+import moment from "moment";
+import LikesPosts from "../../models/likes-posts.mjs";
+import Users from "../../models/users.mjs";
 
 export default class Create extends Base {
 	async livrValidate(data = {}) {
@@ -22,32 +26,40 @@ export default class Create extends Base {
 			content: data.content,
 			userId: context.userId
 		});
-		// data?.images?.map(async i => {
-		// 	const image = await PostsImages.findOne({where: {id: i.id}});
-		// 	await PostsImages.create()
-		// 	await post.addPostsImages(image);
-		// });
-		// await PostsToCategories.create({
-		// 	id: uuidv4(),
-		// 	postId: post.id,
-		// 	categoryId: data.categories[0]
-		// });
-		// data.categories?.map(async i => {
-		// 	await PostsToCategories.create({
-		// 		id: uuidv4(),
-		// 		postId: post.id,
-		// 		categoryId: i
-		// 	});
-		// });
-		data?.categories?.map(async i => {
-			// const category = await PostsCategories.findOne({where: {id: i}});
+		if (data.postId){
+			await PostsToPosts.create({
+				postId: data.postId,
+				questionId: post.id
+			});
+		}
+		await data.categories?.map(async i => {
 			await PostsToCategories.create({
-				id: uuidv4(),
 				postId: post.id,
 				categoryId: i
 			});
 		});
 
-		return post;
+		const postN = Posts.findOne({
+			where: {
+				id: post.id
+			},
+			include: [
+				{model: PostsCategories},
+				{
+					model: LikesPosts,
+					include: [{model: Users}]
+				},
+				{model: Users},
+				{association: "questions"},
+				{association: "answers"},
+			],
+		});
+
+		// data?.images?.map(async i => {
+		// 	const image = await PostsImages.findOne({where: {id: i.id}});
+		// 	await PostsImages.create()
+		// 	await post.addPostsImages(image);
+		// });
+		return postN;
 	}
 }

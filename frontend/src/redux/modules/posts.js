@@ -118,8 +118,8 @@ export const sendCreatePost = createAsyncThunk(
         try {
             let header = { headers: { Authorization: `Bearer ${param.token}` }}
             const res = await axios.post(`/posts/`, param.post, header);
-            param.navigate(`/posts/${res.data.id}`)
-            return {success: "post created"};
+            if (!param.post.postId) param.navigate(`/posts/${res.data.id}`)
+            return {post: res.data, success: "post created"};
         } catch (err) {
             return {error: err.response.data.error};
         }
@@ -150,7 +150,10 @@ const slice = createSlice({
             state.posts = action.payload;
         })
         builder.addCase(sendCreatePost.fulfilled, (state, action) => {
+            if (action.payload.post)
+                state.specPost.questions.unshift(action.payload.post)
             state.error = action.payload.error
+            state.success = action.payload.success
         })
         builder.addCase(sendDeletePost.fulfilled, (state, action) => {
             state.specPost = null;
@@ -180,6 +183,8 @@ const slice = createSlice({
         builder.addCase(sendSetLike.fulfilled, (state, action) => {
             addLike(state.posts, action.payload.like, "post");
             addLike(state.specPost, action.payload.like, "post");
+            addLike(state.specPost.questions, action.payload.like, "post");
+            addLike(state.specPost.answers, action.payload.like, "post");
         })
     }
 })

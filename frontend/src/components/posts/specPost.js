@@ -26,9 +26,6 @@ function post() {
         dispatch(sendGetPostById(param));
     },[]);
 
-    const handleWrite = () => {setIsWrite(!isWrite)}
-
-
     return (
         <div>
             {posts.specPost &&
@@ -44,15 +41,14 @@ function post() {
             <div style={{width: 380, margin: "auto"}}>
                 <CustomCard create={true} users={users} postId={id}/>
             </div>
-            {posts.specPost?.answers && posts.specPost.answers.length !== 0 &&
+            {posts.specPost?.questions && posts.specPost.questions.length !== 0 &&
                 <div style={{width: "85%", margin: "auto"}}>
-                    {posts.specPost.answers.map(i => (
+                    {posts.specPost.questions.map(i => (
                         <CustomCard
                             cardActions={true}
                             post={i}
                             users={users}
                             posts={posts}
-                            decode={decode}
                         />
                     ))}
                 </div>

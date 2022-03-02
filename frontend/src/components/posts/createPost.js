@@ -28,11 +28,13 @@ function createPost(props) {
             title: title,
             content: content,
             categories: Categories,
+            postId: props.postId,
         };
-        console.log(param)
-        if (users.status === 'idle'){
-            dispatch(sendCreatePost({post: param, token: users.token, navigate}));
-        }
+        dispatch(sendCreatePost({
+            post: param,
+            token: users.token,
+            navigate
+        }));
     };
 
     const onChangeContent = (e) => setContent(e.target.value);
@@ -48,12 +50,15 @@ function createPost(props) {
         <div style={styleAuth.Div}>
             {!props.withoutTitle && <h2 style={styleAuth.Title}>Create post</h2>}
             <form onSubmit={handleSubmit} style={styleAuth.Form}>
-                <CustomInput onChange={onChangeTitle}
-                             required
-                             variant="outlined"
-                             label="title"
-                             placeholder="title"
+                <CustomInput
+                    onChange={onChangeTitle}
+                    required
+                    variant="outlined"
+                    label="title"
+                    placeholder="title"
+                    autoFocus
                 />
+                <CustomInput multiline maxRows={5} onChange={onChangeContent} required placeholder='some text'/>
                 <Autocomplete
                     multiple
                     id="tags-outlined"
@@ -70,7 +75,6 @@ function createPost(props) {
                         />
                     )}
                 />
-                <CustomInput multiline maxRows={5} onChange={onChangeContent} required placeholder='some text'/>
                 <Button style={styleAuth.Button} type="submit" variant='outlined' color='primary'>Send</Button>
             </form>
         </div>
