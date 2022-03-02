@@ -19,8 +19,6 @@ function post() {
     const {id} = rd.useParams();
     const decode = parseToken(users.token)
 
-    const [isWrite, setIsWrite] = r.useState(false);
-
     r.useEffect(() => {
         const param = {id: id, token: users.token, decode: decode}
         dispatch(sendGetPostById(param));

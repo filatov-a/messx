@@ -25,8 +25,6 @@ const loadingMarkup = (
     </div>
 )
 
-
-
 const render = () => {
     ReactDOM.render(
         <Suspense fallback={loadingMarkup}>

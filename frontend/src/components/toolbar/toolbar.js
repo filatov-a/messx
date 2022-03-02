@@ -28,10 +28,10 @@ const Tr = useTranslation;
 
 export function ScrollTop(props) {
     const { children } = props;
-    const trigger = useScrollTrigger({
-        disableHysteresis: true,
-        threshold: 100,
-    });
+        const trigger = useScrollTrigger({
+            disableHysteresis: true,
+            threshold: 100,
+        });
 
     const handleClick = (event) => {
         event.view.scrollTo({

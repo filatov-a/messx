@@ -1,16 +1,17 @@
-import React from "react";
+import React, {Suspense, Fragment} from "react";
 import {sendGetUserById} from '../../redux/modules/users';
 import {sendGetUserPosts} from '../../redux/modules/posts';
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
 import * as r from "react";
 import {parseToken} from '../../utils/parseToken';
-import {Avatar, Box, Button, ButtonBase, Collapse, Slide} from "@mui/material";
+import {Avatar, Box, Button, ButtonBase, Slide} from "@mui/material";
 import config from "../../config/config";
 import {Settings, StarOutline} from "@mui/icons-material";
 import {CustomCard} from "../utils/card";
 import UseMediaQuery from '@mui/material/useMediaQuery';
 import FollowDialog from "../utils/followDialog"
+import { Waypoint } from 'react-waypoint';
 
 let styles = {
     personalInformationBig: {
@@ -105,6 +106,13 @@ let styles = {
     },
 }
 
+const loadingMarkup = (
+    <div className="py-4 text-center">
+        <h3>Loading..</h3>
+    </div>
+)
+
+
 function account() {
     const users = rr.useSelector(state => state.users);
     const posts = rr.useSelector(state => state.posts);
@@ -114,17 +122,26 @@ function account() {
     const matches = UseMediaQuery('(min-width:1200px)');
 
     const [decode, setDecode] = r.useState(null);
+    const [page, setPage] = r.useState(1);
     const [openFollow, setOpenFollow] = r.useState(false);
     const [openFollowers, setOpenFollowers] = r.useState(false);
 
     r.useEffect(() => {
         dispatch(sendGetUserById({id}));
-        dispatch(sendGetUserPosts({id, token: users?.token}));
+        dispatch(sendGetUserPosts({id, token: users?.token, page: posts.page}));
     },[]);
 
     r.useEffect(() => {
         setDecode(parseToken(users.token))
     },[]);
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+
+    const trigger = () => {
+        console.log("trigger")
+        dispatch(sendGetUserPosts({id, token: users?.token, page: page}));
+        setPage(page+1);
+    }
 
     const handleInfo = () => {
         if (decode.id === id) {
@@ -209,19 +226,25 @@ function account() {
                     </Box>
                 </div>
                 <div style={styles.line}> </div>
-                { posts.posts.length &&
-                <div style={styles.divPosts}>
-                    {posts.posts.map( (i) => (
-                        <Box key={i.id}>
-                            <CustomCard
-                                cardActions={true}
-                                post={i}
-                                users={users}
+                <Suspense fallback={loadingMarkup}>
+                    { posts.posts.length && posts.status !== "loading" &&
+
+                        <Box style={styles.divPosts}>
+                            {posts.posts.map( (i) => (
+                                <div key={i.id}>
+                                    <CustomCard
+                                        cardActions={true}
+                                        post={i}
+                                        users={users}
+                                    />
+                                </div>
+                            ))}
+                            <Waypoint
+                                onEnter={trigger}
                             />
                         </Box>
-                    ))}
-                </div>
-                }
+                    }
+                </Suspense>
                 <FollowDialog title={"Followers"} follow={users.specUser.followers} setOpen={setOpenFollowers} open={openFollowers}/>
                 <FollowDialog title={"Follow"} follow={users.specUser.follow} setOpen={setOpenFollow} open={openFollow}/>
             </div>

@@ -7,7 +7,10 @@ import {addUserLike} from "../utils/addUserLike.mjs";
 
 export default class Get extends Base {
 	async execute({data, context}){
-		const {id} = data;
+		const {id, limit, offset} = data;
+
+		const limitInt = parseInt(limit);
+		const offsetInt = parseInt(offset);
 
 		const user = await Users.findOne({
 			where: {id: id},
@@ -24,7 +27,8 @@ export default class Get extends Base {
 						},
 						{model: Users},
 					],
-					// attributes,
+					limit: limitInt,
+					offset: offsetInt,
 					order: [["updatedAt", "DESC"]]
 				},
 			]

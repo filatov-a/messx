@@ -57,6 +57,7 @@ const initialState = {
     posts: [],
     specCategory: null,
     error: null,
+    status: 'idle',
 };
 
 const slice = createSlice({

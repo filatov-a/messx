@@ -3,9 +3,7 @@ import Posts from "../../models/posts.mjs";
 import PostsCategories from "../../models/posts-categories.mjs";
 import PostsToCategories from "../../models/posts-to-categories.mjs";
 import PostsImages from "../../models/posts-images.mjs";
-import { v4 as uuidv4 } from "uuid";
 import PostsToPosts from "../../models/posts-to-posts.mjs";
-import moment from "moment";
 import LikesPosts from "../../models/likes-posts.mjs";
 import Users from "../../models/users.mjs";
 
@@ -32,12 +30,19 @@ export default class Create extends Base {
 				questionId: post.id
 			});
 		}
-		await data.categories?.map(async i => {
+
+		for (const i of data.categories){
 			await PostsToCategories.create({
 				postId: post.id,
 				categoryId: i
 			});
-		});
+		}
+
+		// data?.images?.map(async i => {
+		// 	const image = await PostsImages.findOne({where: {id: i.id}});
+		// 	await PostsImages.create()
+		// 	await post.addPostsImages(image);
+		// });
 
 		const postN = Posts.findOne({
 			where: {
@@ -55,11 +60,6 @@ export default class Create extends Base {
 			],
 		});
 
-		// data?.images?.map(async i => {
-		// 	const image = await PostsImages.findOne({where: {id: i.id}});
-		// 	await PostsImages.create()
-		// 	await post.addPostsImages(image);
-		// });
 		return postN;
 	}
 }

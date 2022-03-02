@@ -8,6 +8,7 @@ import MessagesToMessages from "./messages-to-messages.mjs";
 import Posts from "./posts.mjs";
 import LikesPosts from "./likes-posts.mjs";
 import PostsCategories from "./posts-categories.mjs";
+import PostsToCategories from "./posts-to-categories.mjs";
 import UsersToChats from "./users-to-chats.mjs";
 import UsersToUsers from "./users-to-users.mjs";
 import UsersToPosts from "./users-to-posts.mjs";
@@ -70,6 +71,7 @@ export default class DataBase {
 			LikesPosts,
 			PostsToPosts,
 			PostsCategories,
+			PostsToCategories,
 			UsersToChats,
 			UsersToUsers,
 			UsersToPosts,
