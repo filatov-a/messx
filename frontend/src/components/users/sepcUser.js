@@ -1,17 +1,16 @@
-import React, {Suspense, Fragment} from "react";
-import {sendGetUserById} from '../../redux/modules/users';
+import React from "react";
+import {sendGetUserById, sendFollowUser} from '../../redux/modules/users';
 import {sendGetUserPosts} from '../../redux/modules/posts';
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
 import * as r from "react";
 import {parseToken} from '../../utils/parseToken';
-import {Avatar, Box, Button, ButtonBase, Slide} from "@mui/material";
+import {Avatar, Box, Button, ButtonBase} from "@mui/material";
 import config from "../../config/config";
-import {Settings, StarOutline} from "@mui/icons-material";
+import {Settings, Star, StarOutline} from "@mui/icons-material";
 import {CustomCard} from "../utils/card";
 import UseMediaQuery from '@mui/material/useMediaQuery';
 import FollowDialog from "../utils/followDialog"
-import { Waypoint } from 'react-waypoint';
 import InfiniteScroll from "react-infinite-scroll-component";
 
 let styles = {
@@ -105,6 +104,13 @@ let styles = {
         height: 10,
         borderBottom: "0.1px solid #a2a2a2"
     },
+    textBlue: {
+        fontFamily: "'Shadows Into Light', cursive",
+        color: "rgb(51, 153, 255)",
+        lineHeight: "25px",
+        fontSize: 18,
+        margin: "auto",
+    },
 }
 
 const loadingMarkup = (
@@ -123,31 +129,34 @@ function account() {
     const matches = UseMediaQuery('(min-width:1200px)');
 
     const [decode, setDecode] = r.useState(null);
-    const [page, setPage] = r.useState(1);
+    const [page, setPage] = r.useState(0);
     const [openFollow, setOpenFollow] = r.useState(false);
     const [openFollowers, setOpenFollowers] = r.useState(false);
 
     r.useEffect(() => {
-        dispatch(sendGetUserById({id}));
-        dispatch(sendGetUserPosts({id, token: users?.token, page: posts.page}));
+        dispatch(sendGetUserById({id, token: users?.token}));
+        dispatch(sendGetUserPosts({id, token: users?.token, page}));
+        setPage((prevPageNumber) => prevPageNumber + 1);
     },[]);
 
     r.useEffect(() => {
         setDecode(parseToken(users.token))
     },[]);
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
 
     const trigger = () => {
-        console.log("trigger")
         dispatch(sendGetUserPosts({id, token: users?.token, page: page}));
-        setPage(page+1);
+        setPage((prevPageNumber) => prevPageNumber + 1);
     }
 
     const handleInfo = () => {
         if (decode.id === id) {
             navigate(`/users/${users.specUser.id}/info`)
         }
+    }
+
+    const handleFollowToUser = () => {
+        dispatch(sendFollowUser({id, token: users?.token}));
     }
 
     const handleFollow = () => {
@@ -183,7 +192,7 @@ function account() {
                             />
                             <div>
                                 <div style={styles.headText}>{users.specUser.full_name}</div>
-                                <div style={styles.grayText}>{users.specUser.username}</div>
+                                <div style={styles.grayText}>{users.specUser.id}</div>
                             </div>
                         </Box>
                         <div>
@@ -193,9 +202,9 @@ function account() {
                                     {`stars ${users.specUser.followers.length}`}
                                 </ButtonBase>
                                 }
-                                {users.specUser.follow &&
+                                {users.specUser.follows &&
                                 <ButtonBase style={styles.handleText} onClick={handleFollow}>
-                                    {`stared ${users.specUser.follow.length}`}
+                                    {`stared ${users.specUser.follows.length}`}
                                 </ButtonBase>
                                 }
                                 <ButtonBase style={styles.handleText}>
@@ -204,8 +213,11 @@ function account() {
                             </Box>
                             <Box>
                                 {decode && decode.id!==users.specUser.id &&
-                                <Button style={styles.button} variant='outlined'>
-                                    <StarOutline/>
+                                <Button style={styles.button} onClick={handleFollowToUser} variant='outlined'>
+                                    { users.specUser.userFollower ?
+                                        <Star style={{color: "yellow"}}/> :
+                                        <StarOutline/>
+                                    }
                                 </Button>
                                 }
                                 {decode && decode.id!==users.specUser.id &&
@@ -225,6 +237,12 @@ function account() {
                             </Box>
                         </div>
                     </Box>
+                </div>
+                <div style={styles.textBlue}>
+                    { users.specUser.userFollow ?
+                        "your follower" :
+                        ""
+                    }
                 </div>
                 <div style={styles.line}> </div>
                 <InfiniteScroll
@@ -248,7 +266,7 @@ function account() {
                     }
                 </InfiniteScroll>
                 <FollowDialog title={"Followers"} follow={users.specUser.followers} setOpen={setOpenFollowers} open={openFollowers}/>
-                <FollowDialog title={"Follow"} follow={users.specUser.follow} setOpen={setOpenFollow} open={openFollow}/>
+                <FollowDialog title={"Follow"} follow={users.specUser.follows} setOpen={setOpenFollow} open={openFollow}/>
             </div>
             }
         </div>

@@ -15,7 +15,7 @@ async function validateJwt(req, res, next) {
 		}
 
 		req.userData = {
-			userId: userData.id,
+			userId: isValid.id,
 			userInstance: isValid
 		};
 

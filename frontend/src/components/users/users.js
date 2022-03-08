@@ -36,7 +36,7 @@ function users() {
             </Tooltip>
             }
             {users.users && users.users.length !== 0 &&
-                <Box display='flex' style={{flexWrap: 'wrap'}}>
+                <Box display={'flex'}>
                     {users.users.map(i => (
                         <div key={i.id} >
                             <CustomCard user={i} me={users.user}/>

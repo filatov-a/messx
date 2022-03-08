@@ -21,7 +21,7 @@ export default class GetAllDay extends Base {
 		// if (title === "undefined") title = "";
 		// console.log(this.sequelize);
 
-		const all = await Posts.findAndCountAll({
+		const all = await Posts.findAll({
 			where: {
 				createdAt: {
 					[Op.gte]: moment().subtract(interval, "days").toDate()
@@ -37,13 +37,25 @@ export default class GetAllDay extends Base {
 				{association: "questions"},
 				{association: "answers"},
 			],
+			attributes: {
+				include: [
+					[
+						this.sequelize.literal(`(
+			        		SELECT COUNT(*)
+			        		FROM LikesPosts
+			       			WHERE
+			            		LikesPosts.postId = Posts.id
+			    			)`), "likesCount"
+					],
+				]
+			},
 			limit: limitInt,
 			offset: offsetInt,
 			order: [[this.sequelize.literal("likesCount"), "DESC"], ["createdAt", "DESC"]]
 		});
 
-		addUserLike(all.rows, context);
+		addUserLike(all, context);
 
-		return {posts: all.rows, count: all.count};
+		return all;
 	}
 }

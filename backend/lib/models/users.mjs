@@ -33,15 +33,9 @@ export default class Users extends Base {
 		});
 		Users.belongsToMany(Users, {
 			through: "UsersToUsers",
-			as: "follow",
+			as: "follows",
 			foreignKey: "followerId",
 			onDelete: "set null",
-		});
-		Users.belongsToMany(models.Posts, {
-			through: "UsersToPosts",
-			as: "repost",
-			foreignKey: "userId",
-			onDelete: "cascade",
 		});
 	}
 	static async createUser(params){

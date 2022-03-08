@@ -11,7 +11,6 @@ import PostsCategories from "./posts-categories.mjs";
 import PostsToCategories from "./posts-to-categories.mjs";
 import UsersToChats from "./users-to-chats.mjs";
 import UsersToUsers from "./users-to-users.mjs";
-import UsersToPosts from "./users-to-posts.mjs";
 import PostsImages from "./posts-images.mjs";
 import PostsToPosts from "./posts-to-posts.mjs";
 import ChatsToCategories from "./chats-to-categories.mjs";
@@ -74,7 +73,6 @@ export default class DataBase {
 			PostsToCategories,
 			UsersToChats,
 			UsersToUsers,
-			UsersToPosts,
 			PostsImages,
 			ChatsCategories,
 			ChatsToCategories,

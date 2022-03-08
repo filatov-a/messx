@@ -24,7 +24,7 @@ export default class GetAll extends Base {
 			where: {id: context.userId},
 			include: [
 				{
-					association: "follow",
+					association: "follows",
 					include: [
 						{
 							model: Posts,
@@ -53,17 +53,15 @@ export default class GetAll extends Base {
 			]
 		});
 		
-		let cnt = 0;
 		let posts = [];
-		for (let i = 0; i < user.follow.length; i++){
-			for (let j = 0; j < user.follow[i]?.Posts.length; j++){
-				posts.push(user.follow[i].Posts[j]);
-				cnt++;
+		for (let i = 0; i < user.follows.length; i++){
+			for (let j = 0; j < user.follows[i]?.Posts.length; j++){
+				posts.push(user.follows[i].Posts[j]);
 			}
 		}
 
 		addUserLike(posts, context);
 
-		return {posts: posts, count: cnt};
+		return posts;
 	}
 }

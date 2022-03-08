@@ -6,7 +6,8 @@ export const sendGetUserById = createAsyncThunk(
     async (param, thunkAPI) => {
         try {
             if (!param.id) return null;
-            const res = await axios.get(`/users/${param.id}`);
+            let header = { headers: { Authorization: `Bearer ${param.token}` }}
+            const res = await axios.get(`/users/${param.id}`, header);
             return res.data;
         } catch (err) {
             return {error: err.response.data.error};
@@ -16,10 +17,11 @@ export const sendGetUserById = createAsyncThunk(
 
 export const sendGetUser = createAsyncThunk(
     'users/sendGetUser',
-    async (id, thunkAPI) => {
+    async (param, thunkAPI) => {
         try {
-            if (!id) return null;
-            const res = await axios.get(`/users/${id}`);
+            if (!param.id) return null;
+            let header = { headers: { Authorization: `Bearer ${param.token}` }}
+            const res = await axios.get(`/users/${param.id}`, header);
             return res.data;
         } catch (err) {
             return {error: err.response.data.error};
@@ -138,6 +140,15 @@ export const sendVerifyEmail = createAsyncThunk(
     }
 )
 
+export const sendFollowUser = createAsyncThunk(
+    'users/sendFollowUser',
+    async (param) => {
+        let header = { headers: { Authorization: `Bearer ${param.token}` }}
+        const follow = await axios.post(`/users/${param.id}/follow`, null, header);
+        return {follow: follow.data.follow, dFollow: follow.data.dFollow};
+    }
+)
+
 const initialState = {
     users: [],
     specUser: null,
@@ -214,6 +225,18 @@ const slice = createSlice({
         builder.addCase(sendVerifyEmail.fulfilled, (state, action) => {
             state.error = action.payload.error;
             state.success = action.payload.success;
+        })
+        builder.addCase(sendFollowUser.fulfilled, (state, action) => {
+            const {follow, dFollow} = action.payload;
+            if (follow){
+                state.specUser.followers.unshift(follow)
+                state.specUser.userFollower = true;
+            } else {
+                state.specUser.followers = state.specUser.followers.filter(x => {
+                    return x.id !== dFollow.id;
+                })
+                state.specUser.userFollower = false;
+            }
         })
     }
 })

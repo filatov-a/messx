@@ -23,7 +23,6 @@ export default function EmojiDialog(props) {
         post
     } = props;
 
-    const navigate = rd.useNavigate();
 
     const onEmojiClick = (event, emojiObject) => {
         onLike(emojiObject.emoji);
@@ -53,7 +52,8 @@ export default function EmojiDialog(props) {
                         <DialogTitle>Emoji</DialogTitle>
                         <DialogContent>
                             <DialogContentText>
-                                <Picker onEmojiClick={onEmojiClick}/>
+                                <Picker onEmojiClick={onEmojiClick} pickerStyle={{margin: "auto", marginBottom: 20}}/>
+                                <ListLikes post={post}/>
                             </DialogContentText>
                         </DialogContent>
                     </div>
@@ -72,22 +72,7 @@ export default function EmojiDialog(props) {
                         </DialogTitle>
                         <DialogContent>
                             <DialogContentText>
-                                {post.LikesPosts.map(i => (
-                                    <Box display={'flex'} style={{justifyContent:'space-between'}}>
-                                        <Button style={{fontSize: 30}}>{i.type}</Button>
-                                        <Button onClick={()=>{navigate(`/users/${i.User.id}`); navigate(0)}}>
-                                            <Box display={'flex'}>
-                                                <Box style={{margin: "auto", fontSize:15}}>
-                                                    {i.User?.full_name}
-                                                </Box>
-                                                <Avatar
-                                                    src={`${config.url}/images/${i.User?.profile_picture}`}
-                                                    style={{marginLeft: 50}}
-                                                />
-                                            </Box>
-                                        </Button>
-                                    </Box>
-                                ))}
+                                <ListLikes post={post}/>
                             </DialogContentText>
                         </DialogContent>
                     </div>
@@ -95,4 +80,35 @@ export default function EmojiDialog(props) {
             </Dialog>
         </div>
     );
+}
+
+function ListLikes(props){
+    const {post} = props
+    const navigate = rd.useNavigate();
+    return (
+        <div style={{width:300}}>
+            {post.LikesPosts.map(i => (
+                <Box key={i.id} display={'flex'} style={{justifyContent:'space-between'}}>
+                    <Button style={{fontSize: 30}}>{i.type}</Button>
+                    <Button
+                        onClick={()=>{navigate(`/users/${i.User.id}`);navigate(0)}}
+                        style={{width:"100%"}}
+                    >
+                        <Box display={'flex'}>
+                            <Box style={{margin: "auto", fontSize:15, width:100}}>
+                                {i.User?.full_name}
+                            </Box>
+                            <Box>
+                                <Avatar
+                                    src={`${config.url}/images/${i.User?.profile_picture}`}
+                                    style={{marginLeft: 50}}
+                                />
+                            </Box>
+
+                        </Box>
+                    </Button>
+                </Box>
+            ))}
+        </div>
+    )
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Button, Avatar} from "@mui/material";
+import {Button, Avatar, ButtonBase} from "@mui/material";
 import {styleToolbar} from "../../styles/main";
 import {Link} from "react-router-dom"
 import {
@@ -70,8 +70,13 @@ export default function ToolbarMain(props) {
         navigate('/register');
     }
 
+    const onAvatar = () => {
+        navigate(`/users/${decode.id}`)
+        navigate(0)
+    }
+
     useEffect(()=>{
-        if (decode?.id) dispatch(sendGetUser(decode?.id))
+        if (decode?.id) dispatch(sendGetUser({id: decode?.id, token: users.token}))
     }, [])
 
     return (
@@ -135,9 +140,9 @@ export default function ToolbarMain(props) {
                                 </Link>
                             </Tooltip>
                             <Tooltip title="account" placement="bottom-start" arrow style={{marginLeft: 10}}>
-                                <Link to={`/users/${decode.id}`}>
+                                <ButtonBase onClick={onAvatar} style={{borderRadius:100, marginLeft: 10}}>
                                     <Avatar style={styleToolbar.Avatar} alt="Remy Sharp" src={`${config.url}/images/${users.user.profile_picture}`}/>
-                                </Link>
+                                </ButtonBase>
                             </Tooltip>
                         </Box>
                         }

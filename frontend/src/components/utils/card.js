@@ -15,19 +15,16 @@ import {
     AddReactionOutlined,
     ArrowDownward,
     ArrowUpward,
-    Autorenew,
     MoreVert,
 } from '@mui/icons-material'
 import * as rd from "react-router-dom";
 import {sendDeletePost, sendSetLike} from "../../redux/modules/posts";
 import * as rr from "react-redux";
-// import {CustomTextField} from "../../styles/main";
 import * as r from "react";
 import CreatePost from "../posts/createPost";
 import config from "../../config/config";
 import {stylesCart} from "../../styles/main";
 import EmojiDialog from "./emojiDialog";
-import Slide from '@mui/material/Slide';
 
 export const CustomCard = (props) => {
     const navigate = rd.useNavigate();
@@ -48,12 +45,17 @@ export const CustomCard = (props) => {
         dispatch(sendDeletePost(props.post.id));
     };
 
-    const onClick = () => {
-        navigate(`/posts/${props.post.id}`)
+    const onClickArrowDownward = () => {
+        navigate(`/posts/${props.post.id}/questions`)
+    }
+
+    const onClickArrowUpward = () => {
+        navigate(`/posts/${props.post.id}/answers`)
     }
 
     const onClickAvatar = () => {
         navigate(`/users/${props.post.userId}`)
+        navigate(0)
     }
 
     const onClickCategory = () => {
@@ -81,7 +83,7 @@ export const CustomCard = (props) => {
             )
         } else {
             return (
-                <Button style={stylesCart.link} onClick={onClick}>
+                <Button style={stylesCart.link} onClick={onClickArrowDownward}>
                     {prp.children}
                 </Button>
             )
@@ -126,7 +128,7 @@ export const CustomCard = (props) => {
                     <CardActions style={{display: "block"}}>
                         <div style={{display: "flex", flexWrap: "wrap", marginBottom: 10}}>
                             {props.post.PostsCategories?.map(i=>(
-                                <Button style={{margin: 5, textAlign: "center"}} onClick={onClickCategory} variant={"outlined"} color="secondary">
+                                <Button key={i.id} suppressContentEditableWarning={true} style={{margin: 5, textAlign: "center"}} onClick={onClickCategory} variant={"outlined"} color="secondary">
                                     {i.title}
                                 </Button>
                             ))}
@@ -149,15 +151,14 @@ export const CustomCard = (props) => {
                                         </div>
                                     </Box>
                                 </Button>
-                                <Button onClick={onClick}>
+                                <Button onClick={onClickArrowDownward}>
                                     <ArrowDownward/>
                                     {props.post?.questions?.length ? props.post?.questions?.length : ''}
                                 </Button>
                                 <Button>
-                                    <ArrowUpward/>
+                                    <ArrowUpward onClick={onClickArrowUpward}/>
                                     {props.post?.answers?.length ? props.post?.answers?.length : ''}
                                 </Button>
-                                <Button><Autorenew/></Button>
                             </Box>
                             {props.post.User &&
                                 <Box display={"flex"}>

@@ -50,7 +50,8 @@ function App(){
                       <Route exact path="/email" element={<Email/>}/>
                       <Route exact path="/users/:id/info" element={<SepcUserInfo/>} />
                       <Route path="/users/:id" element={<SepcUser/>} />
-                      <Route exact path="/posts/:id" element={<SpecPost/>} />
+                      <Route exact path="/posts/:id/answers" element={<SpecPost isAnswers={true}/>} />
+                      <Route exact path="/posts/:id/questions" element={<SpecPost isQuestions={true}/>} />
                       <Route exact path="/posts_top" element={<PostsDay/>} />
                       {/*<Route exact path="/categories/:id" element={SpecCategory} />*/}
                       {/*<Route exact path="/categories" element={Categories} />*/}

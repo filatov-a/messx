@@ -31,11 +31,5 @@ export default class Posts extends Base {
 			foreignKey: "postId",
 			onDelete: "cascade",
 		});
-		Posts.belongsToMany(models.UsersToPosts, {
-			through: "PostsToUsers",
-			as: "reusers",
-			foreignKey: "postId",
-			onDelete: "cascade",
-		});
 	}
 }

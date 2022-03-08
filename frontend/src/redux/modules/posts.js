@@ -8,13 +8,13 @@ export const sendGetAllPosts = createAsyncThunk(
     'posts/sendGetAllPosts',
     async (param) => {
         const lim = 5;
-        const url = `/posts?limit=${lim}&offset=${lim*(param.page-1)}`;
+        const url = `/posts?limit=${lim}&offset=${lim*(param.page)}`;
         const header = { headers: { Authorization: `Bearer ${param.token}` }}
         const res = await axios.get(url, header);
 
         convertDate(res.data);
 
-        return {posts: res.data.posts, page: param.page, count: res.data.count};
+        return res.data;
     }
 )
 
@@ -22,13 +22,13 @@ export const sendGetAllDayPosts = createAsyncThunk(
     'posts/sendGetAllDayPosts',
     async (param) => {
         const lim = 5;
-        const url = `/posts-day?limit=${lim}&offset=${lim*(param.page-1)}`;
+        const url = `/posts-day?limit=${lim}&offset=${lim*(param.page)}`;
         const header = { headers: { Authorization: `Bearer ${param.token}` }}
         const res = await axios.get(url, header);
 
         convertDate(res.data);
 
-        return {posts: res.data.posts, page: param.page, count: res.data.count};
+        return res.data;
     }
 )
 
@@ -36,7 +36,7 @@ export const sendGetUserPosts = createAsyncThunk(
     'posts/sendGetUserPosts',
     async (param) => {
         const lim = 5;
-        const url = `/users/${param.id}/posts/?limit=${lim}&offset=${lim*(param.page-1)}`;
+        const url = `/users/${param.id}/posts/?limit=${lim}&offset=${lim*(param.page)}`;
         const header = { headers: { Authorization: `Bearer ${param.token}` }}
         const res = await axios.get(url, header);
 
@@ -89,7 +89,7 @@ export const sendCreatePost = createAsyncThunk(
     async (param, thunkAPI) => {
         let header = { headers: { Authorization: `Bearer ${param.token}` }}
         const res = await axios.post(`/posts/`, param.post, header);
-        if (!param.post.postId) param.navigate(`/posts/${res.data.id}`)
+        if (!param.post.postId) param.navigate(`/posts/${res.data.id}/questions`)
         return {post: res.data, depend: param.post.postId, success: "post created"};
     }
 )
@@ -125,6 +125,11 @@ const slice = createSlice({
             })
         builder.addCase(sendGetPostById.fulfilled, (state, action) => {
             state.specPost = action.payload;
+            state.hasMore = action.payload.questions.length !== 0;
+            // if (state.hasMore)
+            //     state.specPost.questions = state.posts.concat(action.payload);
+            // else
+            //     state.specPost.answers = state.posts.concat(action.payload);
             state.posts = [];
         })
         builder.addCase(sendCreatePost.fulfilled, (state, action) => {
@@ -135,23 +140,17 @@ const slice = createSlice({
         })
         builder.addCase(sendDeletePost.fulfilled, (state, action) => {
             state.specPost = null;
-            let tmp = [];
-            state.posts.map(i=>{
-                if (i.id !== action.payload.id){
-                    tmp.push(i);
-                }
-            });
-            state.posts = tmp;
+            state.posts = state.posts.filter(x => {
+                return x.id !== action.payload.id;
+            })
         })
         builder.addCase(sendGetAllPosts.fulfilled, (state, action) => {
-            state.posts = action.payload.posts;
-            if (action.payload.page) state.page = action.payload.page;
-            state.count = action.payload.count;
+            state.posts = state.posts.concat(action.payload);
+            state.hasMore = action.payload.length !== 0;
         })
         builder.addCase(sendGetAllDayPosts.fulfilled, (state, action) => {
-            state.posts = action.payload.posts;
-            if (action.payload.page) state.page = action.payload.page;
-            state.count = action.payload.count;
+            state.posts = state.posts.concat(action.payload);
+            state.hasMore = action.payload.length !== 0;
         })
         builder.addCase(sendGetAllPostsFromCategory.fulfilled, (state, action) => {
             state.posts = action.payload.posts;

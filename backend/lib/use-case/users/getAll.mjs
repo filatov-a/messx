@@ -14,9 +14,9 @@ export default class GetAll extends Base {
 					[
 						this.sequelize.literal(`(
 			        		SELECT COUNT(*)
-			        		FROM UsersToFollowers
+			        		FROM UsersToUsers
 			       			WHERE
-			            		UsersToFollowers.followerId = Users.id
+			            		UsersToUsers.followerId = Users.id
 			    			)`), "followersCount"
 					],
 				]

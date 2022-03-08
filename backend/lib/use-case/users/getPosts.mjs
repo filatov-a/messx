@@ -35,7 +35,6 @@ export default class Get extends Base {
 		});
 
 		addUserLike(user.Posts, context);
-
 		return user.Posts;
 	}
 }
