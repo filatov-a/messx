@@ -94,6 +94,15 @@ export const sendCreatePost = createAsyncThunk(
     }
 )
 
+export const sendUpdatePost = createAsyncThunk(
+    'posts/sendUpdatePost',
+    async (param, thunkAPI) => {
+        const res = await axios.patch(`/posts/${param.id}`, param.post);
+        param.navigate(`/posts/${res.data.id}/questions`)
+        return {post: res.data, success: "post created"};
+    }
+)
+
 const initialState = {
     posts: [],
     page: 1,
@@ -120,6 +129,15 @@ const slice = createSlice({
                 state.status = 'succeeded'
             })
             .addCase(sendGetUserPosts.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message //.response.data.error
+            })
+        builder
+            .addCase(sendUpdatePost.fulfilled, (state, action) => {
+                state.specPost = action.payload;
+                state.status = 'succeeded'
+            })
+            .addCase(sendUpdatePost.rejected, (state, action) => {
                 state.status = 'failed'
                 state.error = action.error.message //.response.data.error
             })

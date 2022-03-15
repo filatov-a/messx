@@ -34,8 +34,9 @@
     "path": "^0.12.7",
     "query-string": "^7.0.1",
     "sequelize": "^6.8.0",
+    "url": "^0.11.0",
     "uuid": "^8.3.2",
-    "ws": "^8.3.0"
+    "ws": "^8.5.0"
   },
   "imports": {
     "#messx-global-config": "./lib/config/config.cjs"

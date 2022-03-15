@@ -101,17 +101,17 @@ function accountInfo() {
                 }
                 <h2 style={styles.text}>Personal information</h2>
                 <Button style={styles.base} onClick={handleName} variant='outlined'>
-                    <div style={styles.type}>Username</div>
-                    <div style={styles.value}>{users.specUser.username}</div>
+                    <div style={styles.type}>id</div>
+                    <div style={styles.value}>{users.user.id}</div>
                 </Button>
                 <Button style={styles.base} onClick={handleFullName} variant='outlined'>
                     <div style={styles.type}>Full name</div>
-                    <div style={styles.value}>{users.specUser.full_name}</div>
+                    <div style={styles.value}>{users.user.full_name}</div>
                 </Button>
                 {(clientId === id) &&
                 <Button style={styles.base} onClick={handleEmail} variant='outlined'>
                     <div style={styles.type}>email</div>
-                    <div style={styles.value}>{users.specUser.email}</div>
+                    <div style={styles.value}>{users.user.email}</div>
                 </Button>
                 }
                 {(clientId === id) &&

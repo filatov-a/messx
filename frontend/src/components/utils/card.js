@@ -65,6 +65,11 @@ export const CustomCard = (props) => {
     const onClickEmoji = () => {
         setChosenEmojiOpen(!chosenEmojiOpen)
     }
+    const access = () => {
+        return (props.users?.user?.role === "admin" ||
+            props.users?.user?.role === "superAdmin" ||
+            props.users?.user?.id === props.post?.User?.id)
+    }
 
     const onLike = async (emoji) => {
         await dispatch(sendSetLike({
@@ -72,6 +77,10 @@ export const CustomCard = (props) => {
             token: props.users.token,
             id: props.post.id
         }));
+    }
+
+    const onEdit = async () => {
+        navigate(`/posts/${props.post.id}/update`)
     }
 
     const ButtonDiv = (prp) => {
@@ -134,7 +143,12 @@ export const CustomCard = (props) => {
                             ))}
                         </div>
                         <Box display={'flex'} style={stylesCart.textBlue}>
-                            <div style={{flexGrow: 2}}>{props.post.createdAt}</div>
+                            <Box display={'flex'} style={{flexGrow: 2}}>
+                                <div>{props.post.createdAt}</div>
+                                {props.post.createdAt !== props.post.updatedAt &&
+                                    <div style={{color: "#a2a2a2", marginLeft: 10}}>edited</div>
+                                }
+                            </Box>
                             <div >{props.post.User.full_name}</div>
                         </Box>
                         <Box display='flex' style={stylesCart.cardActions}>
@@ -155,10 +169,17 @@ export const CustomCard = (props) => {
                                     <ArrowDownward/>
                                     {props.post?.questions?.length ? props.post?.questions?.length : ''}
                                 </Button>
-                                <Button>
-                                    <ArrowUpward onClick={onClickArrowUpward}/>
-                                    {props.post?.answers?.length ? props.post?.answers?.length : ''}
-                                </Button>
+                                {(props.post?.answers?.length) ?
+                                    <Button onClick={onClickArrowUpward}>
+                                        <Box display={'flex'}>
+                                            <ArrowUpward style={{color: 'yellow'}}/>
+                                            <div style={{color: 'yellow'}}>{props.post?.answers?.length}</div>
+                                        </Box>
+                                    </Button> :
+                                    <Button disabled>
+                                        <ArrowUpward/>
+                                    </Button>
+                                }
                             </Box>
                             {props.post.User &&
                                 <Box display={"flex"}>
@@ -181,11 +202,13 @@ export const CustomCard = (props) => {
                                             horizontal: 'left',
                                         }}
                                     >
-                                        {(props.users?.user?.role === "admin" ||
-                                                props.users?.user?.role === "superAdmin" ||
-                                                props.users?.user?.id === props.post?.User?.id)&&
+                                        { access() &&
                                             <MenuItem onClick={onDelete}>Delete</MenuItem>
                                         }
+                                        { access() &&
+                                            <MenuItem onClick={onEdit}>Edit</MenuItem>
+                                        }
+                                        <MenuItem>Send</MenuItem>
                                     </Menu>
                                 </Box>
                             }

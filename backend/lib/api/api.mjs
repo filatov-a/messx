@@ -3,7 +3,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import routes from "./routes/main.mjs";
 // import minio from "./minio/main.mjs";
-// import websockets from './ws/index.mjs';
+import websockets from './ws/index.mjs';
 
 export default class api {
     app = null;
@@ -26,10 +26,6 @@ export default class api {
         const server = this.app.listen(this.config.app.port, () => {
             console.log(`App listening at http://localhost:${this.config.app.port}`);
         });
-        // websockets(server);
-
-        // process.on("message", (message) => {
-        //     console.log(message);
-        // });
+        websockets(server);
     }
 }

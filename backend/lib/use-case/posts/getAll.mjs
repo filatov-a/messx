@@ -24,7 +24,7 @@ export default class GetAll extends Base {
 			where: {id: context.userId},
 			include: [
 				{
-					association: "follows",
+					association: "following",
 					include: [
 						{
 							model: Posts,
@@ -54,9 +54,9 @@ export default class GetAll extends Base {
 		});
 		
 		let posts = [];
-		for (let i = 0; i < user.follows.length; i++){
-			for (let j = 0; j < user.follows[i]?.Posts.length; j++){
-				posts.push(user.follows[i].Posts[j]);
+		for (let i = 0; i < user.following.length; i++){
+			for (let j = 0; j < user.following[i]?.Posts.length; j++){
+				posts.push(user.following[i].Posts[j]);
 			}
 		}
 

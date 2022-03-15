@@ -11,17 +11,17 @@ export default class Get extends Base {
 			where: {id: id},
 			include: [
 				{association: "followers"},
-				{association: "follows"},
+				{association: "following"},
 				{model: Chats},
 				{model: Messages},
 			],
 		});
 
 		const arrKeysFollowers = users.followers.map(i => i.id);
-		const arrKeysFollows = users.follows.map(i => i.id);
+		const arrKeysFollowing = users.following.map(i => i.id);
 
 		users.dataValues.userFollower = arrKeysFollowers.includes(userId);
-		users.dataValues.userFollow = arrKeysFollows.includes(userId);
+		users.dataValues.userFollow = arrKeysFollowers.includes(userId);
 
 		return users;
 	}

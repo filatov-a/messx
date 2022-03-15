@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "../utils/axios";
+import {parseToken} from "../../utils/parseToken";
 
 export const sendGetUserById = createAsyncThunk(
     'users/sendGetUserById',
@@ -190,7 +191,16 @@ const slice = createSlice({
             state.specUser = action.payload;
         })
         builder.addCase(sendGetUser.fulfilled, (state, action) => {
-            state.user = action.payload;
+            const token = parseToken(state.token);
+            if (Date.now() >= token.exp * 1000){
+                state.user = null;
+                state.users = [];
+                state.specUser = null;
+                state.token = null;
+                localStorage.removeItem('token');
+            } else {
+                state.user = action.payload;
+            }
         })
         builder.addCase(sendDeleteUser.fulfilled, (state, action) => {
             state.specUser = null;

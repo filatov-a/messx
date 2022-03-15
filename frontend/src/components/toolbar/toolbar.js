@@ -81,37 +81,35 @@ export default function ToolbarMain(props) {
 
     return (
         <div>
-                <AppBar>
-                    <Toolbar style={styleToolbar.toolbar}>
-                        <div style={{flexGrow: 7, textAlign: 'left'}}>
-                            <Box display={'flex'}>
-                                <Tooltip title="posts from starts" arrow style={{marginLeft: 10}}>
-                                    <Link to={'/'}>
-                                        <Fab color="primary" size="small">
-                                            <Stars/>
-                                        </Fab>
-                                    </Link>
-                                </Tooltip>
-                                <Tooltip title="daily top" arrow style={{marginLeft: 10}}>
-                                    <Link to={'/posts_top'}>
-                                        <Fab color="secondary" size="small">
-                                            <Whatshot/>
-                                        </Fab>
-                                    </Link>
-                                </Tooltip>
-                                <Tooltip title="search" arrow style={{marginLeft: 10}}>
-                                    <Link to={'/search'}>
-                                        <Fab color="primary" size="small">
-                                            <Search/>
-                                        </Fab>
-                                    </Link>
-                                </Tooltip>
-                            </Box>
-                        </div>
-                        {!users.token &&
-                        <Lg/>
-                        }
-                        {!users.token &&
+            <AppBar style={styleToolbar.toolbar}>
+                <Toolbar >
+                    <div style={{flexGrow: 7, textAlign: 'left'}}>
+                        <Box display={'flex'}>
+                            <Tooltip title="posts from starts" arrow style={{marginLeft: 10}}>
+                                <Link to={'/'}>
+                                    <Fab color="primary" size="small">
+                                        <Stars/>
+                                    </Fab>
+                                </Link>
+                            </Tooltip>
+                            <Tooltip title="daily top" arrow style={{marginLeft: 10}}>
+                                <Link to={'/posts_top'}>
+                                    <Fab color="secondary" size="small">
+                                        <Whatshot/>
+                                    </Fab>
+                                </Link>
+                            </Tooltip>
+                            <Tooltip title="search" arrow style={{marginLeft: 10}}>
+                                <Link to={'/search'}>
+                                    <Fab color="primary" size="small">
+                                        <Search/>
+                                    </Fab>
+                                </Link>
+                            </Tooltip>
+                        </Box>
+                    </div>
+                    {!users.token && <Lg/>}
+                    {!users.token &&
                         <div>
                             <Link style={styleToolbar.Link} to="/login">{t("sing in")}</Link>
                             <Button
@@ -122,8 +120,8 @@ export default function ToolbarMain(props) {
                                 {t("register")}
                             </Button>
                         </div>
-                        }
-                        {users.token && decode && users.user &&
+                    }
+                    {users.token && decode && users.user &&
                         <Box display='flex'>
                             <Tooltip title="Add post" arrow style={{marginLeft: 10}}>
                                 <Link to={'/createpost'}>
@@ -145,7 +143,7 @@ export default function ToolbarMain(props) {
                                 </ButtonBase>
                             </Tooltip>
                         </Box>
-                        }
+                    }
                     </Toolbar>
                 </AppBar>
             <Toolbar />

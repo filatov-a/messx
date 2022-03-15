@@ -5,7 +5,7 @@ import * as rr from "react-redux";
 import * as rd from "react-router-dom";
 import * as r from "react";
 import {parseToken} from '../../utils/parseToken';
-import {Avatar, Box, Button, ButtonBase} from "@mui/material";
+import {Avatar, Box, Button, ButtonBase, Grid} from "@mui/material";
 import config from "../../config/config";
 import {Settings, Star, StarOutline} from "@mui/icons-material";
 import {CustomCard} from "../utils/card";
@@ -198,14 +198,14 @@ function account() {
                         <div>
                             <Box style={styles.box}>
                                 { users.specUser.followers &&
-                                <ButtonBase style={styles.handleText} onClick={handleFollowers}>
-                                    {`stars ${users.specUser.followers.length}`}
-                                </ButtonBase>
+                                    <ButtonBase style={styles.handleText} onClick={handleFollowers}>
+                                        {`stars ${users.specUser.followers.length}`}
+                                    </ButtonBase>
                                 }
-                                {users.specUser.follows &&
-                                <ButtonBase style={styles.handleText} onClick={handleFollow}>
-                                    {`stared ${users.specUser.follows.length}`}
-                                </ButtonBase>
+                                {users.specUser.following &&
+                                    <ButtonBase style={styles.handleText} onClick={handleFollow}>
+                                        {`stared ${users.specUser.following.length}`}
+                                    </ButtonBase>
                                 }
                                 <ButtonBase style={styles.handleText}>
                                     {`rating ${users.specUser.rating}`}
@@ -213,17 +213,17 @@ function account() {
                             </Box>
                             <Box>
                                 {decode && decode.id!==users.specUser.id &&
-                                <Button style={styles.button} onClick={handleFollowToUser} variant='outlined'>
-                                    { users.specUser.userFollower ?
-                                        <Star style={{color: "yellow"}}/> :
-                                        <StarOutline/>
-                                    }
-                                </Button>
+                                    <Button style={styles.button} onClick={handleFollowToUser} variant='outlined'>
+                                        { users.specUser.userFollower ?
+                                            <Star style={{color: "yellow"}}/> :
+                                            <StarOutline/>
+                                        }
+                                    </Button>
                                 }
                                 {decode && decode.id!==users.specUser.id &&
-                                <Button style={styles.button} variant='outlined'>
-                                    direct
-                                </Button>
+                                    <Button style={styles.button} variant='outlined'>
+                                        direct
+                                    </Button>
                                 }
                                 {
                                     users.user?.role === "admin" ||
@@ -266,7 +266,7 @@ function account() {
                     }
                 </InfiniteScroll>
                 <FollowDialog title={"Followers"} follow={users.specUser.followers} setOpen={setOpenFollowers} open={openFollowers}/>
-                <FollowDialog title={"Follow"} follow={users.specUser.follows} setOpen={setOpenFollow} open={openFollow}/>
+                <FollowDialog title={"Follow"} follow={users.specUser.following} setOpen={setOpenFollow} open={openFollow}/>
             </div>
             }
         </div>

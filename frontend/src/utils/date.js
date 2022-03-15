@@ -1,4 +1,14 @@
 export const convertDate = (posts) => {
+    if (!posts.length) {
+        updateDate(posts)
+    } else {
+        for (let i = 0; i < posts.length; i++) {
+            updateDate(posts[i])
+        }
+    }
+}
+
+function updateDate(post){
     const options = {
         year: 'numeric',
         month: 'numeric',
@@ -8,13 +18,8 @@ export const convertDate = (posts) => {
         minute: 'numeric',
     };
 
-    if (!posts.length) {
-        let date = new Date(posts.createdAt)
-        posts.createdAt = date.toLocaleString("en-US", options);
-    } else {
-        for (let i = 0; i < posts.length; i++) {
-            let date = new Date(posts[i].createdAt)
-            posts[i].createdAt = date.toLocaleString("en-US", options);
-        }
-    }
+    let date = new Date(post.createdAt)
+    let update = new Date(post.updatedAt)
+    post.createdAt = date.toLocaleString("en-US", options);
+    post.updatedAt = update.toLocaleString("en-US", options);
 }

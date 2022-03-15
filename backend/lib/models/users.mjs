@@ -33,7 +33,7 @@ export default class Users extends Base {
 		});
 		Users.belongsToMany(Users, {
 			through: "UsersToUsers",
-			as: "follows",
+			as: "following",
 			foreignKey: "followerId",
 			onDelete: "set null",
 		});

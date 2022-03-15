@@ -85,7 +85,7 @@ export const styleToolbar = {
     toolbar: {
         background: '#0E082CFF',
         // boxShadow: '0 0 0 0px black, 0 0 0px #333',
-        borderBottom: "0.1px solid #a2a2a2"
+        borderBottom: "0.1px solid #a2a2a2",
     },
     button: {
         fontSize: '15px',
@@ -106,6 +106,13 @@ export const styleToolbar = {
         '&:hover':{
             color: '#a22929'
         }
+    },
+    menuList: {
+        position: 'relative',
+        width: "15%",
+        height: "100%",
+        borderRight: "1px solid rgb(51, 153, 255)",
+        color: "rgb(51, 153, 255)"
     }
 }
 
