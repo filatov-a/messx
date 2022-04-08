@@ -2,8 +2,8 @@ import React from "react";
 import {Button, TextField, TextareaAutosize} from "@mui/material";
 import {Alert} from "@mui/material";
 import {UseStyles} from "../../styles/login";
-import {sendCreateCategory} from "../../redux/modules/categories";
-import {sendGetAllCategories} from "../../redux/modules/categories";
+import {sendCreateCategory} from "../../redux/modules/postsCategories";
+import {sendGetAllCategories} from "../../redux/modules/postsCategories";
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
 import * as r from "react";
@@ -12,7 +12,7 @@ function createCategory() {
     const classes = UseStyles();
     const dispatch = rr.useDispatch();
     const users = rr.useSelector(state => state.users);
-    const categories = rr.useSelector(state => state.categories);
+    const categories = rr.useSelector(state => state.chatsCategories);
 
     const [title, setTitle] = r.useState('');
     const [description, setDescription] = r.useState('');

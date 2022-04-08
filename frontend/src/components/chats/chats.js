@@ -1,6 +1,6 @@
 import React from "react";
-import {Box} from '@mui/material';
-import {sendGetAllPosts, sendGetUserPosts} from '../../redux/modules/posts'
+import {Box, Button} from '@mui/material';
+import {sendGetAllChats} from '../../redux/modules/chats'
 import * as rr from "react-redux";
 import * as r from "react";
 import {CustomCard} from '../utils/card'
@@ -24,61 +24,67 @@ const styles = {
 }
 
 function posts() {
-    const posts = rr.useSelector(state => state.posts);
+    const chats = rr.useSelector(state => state.chats);
     const users = rr.useSelector(state => state.users);
     const dispatch = rr.useDispatch();
     const [page, setPage] = r.useState(0);
 
     r.useEffect(() => {
-        if (posts.status === 'idle'){
-            dispatch(sendGetAllPosts({token: users?.token, page}));
+        if (chats.status === 'idle'){
+            dispatch(sendGetAllChats({token: users?.token, page}));
             setPage((prevPageNumber) => prevPageNumber + 1);
         }
     }, [dispatch])
 
     const trigger = () => {
-        dispatch(sendGetAllPosts({token: users?.token, page}));
-        setPage((prevPageNumber) => prevPageNumber + 1);
+        // dispatch(sendGetAllPosts({token: users?.token, page}));
+        // setPage((prevPageNumber) => prevPageNumber + 1);
     }
 
     return (
         <Box>
-            <h1 style={{color: "#a2a2a2"}}>Follow posts</h1>
+            <h1 style={{color: "#a2a2a2"}}>Chats</h1>
             {users.user &&
-            <Tooltip title="create post" arrow aria-label="add">
-                <Link to={'/createpost'}>
+            <Tooltip title="create chat" arrow aria-label="add">
+                <Link to={'/create-chat'}>
                     <Fab color="primary" size="small">
                         <AddIcon />
                     </Fab>
                 </Link>
             </Tooltip>
             }
-            {posts.posts &&
-            <div style={{width: "90%", margin: "auto"}}>
-                <InfiniteScroll
-                    dataLength={posts.posts.length}
-                    next={trigger}
-                    hasMore={posts.hasMore}
-                    loader={<h4 style={{color: "#a2a2a2"}}>Loading...</h4>}
-                >
-                    { posts.posts.length &&
+            <div style={{width: "90%", margin: "auto", marginTop: 40}}>
+                    { chats.chats.length !== 0 &&
                         <Box style={styles.divPosts}>
-                            {posts.posts.map( (i) => (
-                                <div key={i.id}>
-                                    <CustomCard
-                                        cardActions={true}
-                                        post={i}
-                                        users={users}
-                                    />
-                                </div>
+                            { chats.chats.map( (i) => (
+                                <Chat i={i}/>
                             ))}
                         </Box>
                     }
-                </InfiniteScroll>
             </div>
-            }
         </Box>
     );
+}
+
+function Chat(props) {
+    const {i} = props;
+    const navigate = rd.useNavigate();
+
+    const onClick = () => {
+        navigate(`/chats/${i.id}`)
+    }
+
+    return (
+        <Button
+            color="primary"
+            variant={'outlined'}
+            fullWidth id={i.id}
+            style={{marginTop: 10, padding: 10}}
+            onClick={onClick}
+        >
+            {i.name}
+        </Button>
+    )
 }
 
 export default posts;

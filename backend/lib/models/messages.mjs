@@ -3,7 +3,7 @@ import Base from "./base.mjs";
 export default class Messages extends Base {
 	static modelSchema = {
 		id: { type: this.DT.UUID, defaultValue: this.DT.UUIDV4, primaryKey: true },
-		name: this.DT.STRING,
+		title: this.DT.STRING,
 		descriptions: this.DT.STRING,
 		isActive: this.DT.BOOLEAN,
 		chatId: this.DT.UUID,

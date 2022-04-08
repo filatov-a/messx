@@ -15,7 +15,9 @@ export function ws(param){
         ws.send(JSON.stringify({userId: decode.id}));
     }
 
-    ws.onmessage = function (event) {
+    ws.onmessage = (event) => {
+        const dataJson = JSON.parse(event.data);
+    }
 
-    };
+    return ws;
 }

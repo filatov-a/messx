@@ -26,6 +26,7 @@ const loadingMarkup = (
 )
 
 const render = () => {
+
     ReactDOM.render(
         <Suspense fallback={loadingMarkup}>
             <Provider store={store}>

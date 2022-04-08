@@ -10,8 +10,8 @@ import Toolbar from "./components/toolbar/toolbar";
 import NotFound from "./components/utils/notfound";
 import Users from "./components/users/users";
 import Posts from "./components/posts/posts";
-import SepcUser from "./components/users/sepcUser";
-import SepcUserInfo from "./components/users/sepcUserInfo";
+import SpecUser from "./components/users/specUser";
+import SpecUserInfo from "./components/users/specUserInfo";
 import SpecPost from "./components/posts/specPost";
 import Name from "./components/users/name";
 import FullName from "./components/users/fullname";
@@ -20,6 +20,7 @@ import Email from "./components/users/email";
 import CreatePost from "./components/posts/createPost";
 import PostsDay from "./components/posts/postsDay";
 import UpdatePost from "./components/posts/updatePost";
+import SpecCategory from "./components/categories/specCategory";
 import {createTheme} from "@mui/material";
 import {ThemeProvider} from "@emotion/react";
 import config from "./config/config";
@@ -29,8 +30,10 @@ import * as rd from "react-router-dom";
 import {parseToken} from "./utils/parseToken";
 import {ws} from "./ws/main";
 import * as r from "react";
+import Chats from "./components/chats/chats";
+import CreateChat from "./components/chats/createChat";
+import SpecChat from "./components/chats/specChat";
 // import Categories from "./components/categories/categories";
-// import SpecCategory from "./components/categories/specCategory";
 // import CreateCategory from "./components/categories/createCategory";
 // import CreateUser from "./components/users/createUser";
 
@@ -42,9 +45,10 @@ const darkTheme = createTheme({
 
 function App(){
     const users = rr.useSelector(state => state.users);
+    const [Ws, setWs] = r.useState(null);
     r.useEffect(()=>{
         if (users.token)
-            ws({users});
+            setWs(ws({users}));
     }, [])
     return (
         <ThemeProvider theme={darkTheme}>
@@ -55,19 +59,21 @@ function App(){
                     </Routes>
                     <Routes>
                         {/*<RouteClient exact path="/createuser" element={CreateUser}/>*/}
-                        <Route exact path="/createpost" element={<CreatePost/>}/>
-                        {/*<RouteClient exact path="/createcategory" element={CreateCategory}/>*/}
+                        <Route exact path="/create-post" element={<CreatePost/>}/>
+                        <Route exact path="/create-chat" element={<CreateChat/>}/>
+                        <Route exact path="/chats" element={<Chats/>}/>
+                        <Route exact path="/chats/:id" element={<SpecChat ws={Ws}/>}/>
                         <Route exact path="/name" element={<Name/>}/>
-                        <Route exact path="/fullname" element={<FullName/>}/>
+                        <Route exact path="/full-name" element={<FullName/>}/>
                         <Route exact path="/password" element={<Password/>}/>
                         <Route exact path="/email" element={<Email/>}/>
-                        <Route exact path="/users/:id/info" element={<SepcUserInfo/>} />
-                        <Route path="/users/:id" element={<SepcUser/>} />
+                        <Route exact path="/users/:id/info" element={<SpecUserInfo ws={Ws}/>} />
+                        <Route path="/users/:id" element={<SpecUser/>} />
                         <Route exact path="/posts/:id/answers" element={<SpecPost isAnswers={true}/>} />
                         <Route exact path="/posts/:id/questions" element={<SpecPost isQuestions={true}/>} />
-                        <Route exact path="/posts_top" element={<PostsDay/>} />
+                        <Route exact path="/posts-top" element={<PostsDay/>} />
                         <Route exact path="/posts/:id/update" element={<UpdatePost/>} />
-                        {/*<Route exact path="/categories/:id" element={SpecCategory} />*/}
+                        <Route exact path="/posts-categories/:id" element={<SpecCategory/>} />
                         {/*<Route exact path="/categories" element={Categories} />*/}
                         <Route exact path="/search" element={<Users/>} />
                         <Route exact path="/login" element={<Login/>}/>

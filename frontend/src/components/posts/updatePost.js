@@ -3,7 +3,7 @@ import {Button, TextField} from "@mui/material";
 import Autocomplete from '@mui/material/Autocomplete';
 import {styleAuth, CustomInput} from "../../styles/main";
 import {sendUpdatePost, sendGetPostById} from "../../redux/modules/posts";
-import {sendGetAllCategories} from "../../redux/modules/categories";
+import {sendGetAllCategories} from "../../redux/modules/postsCategories";
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
 import * as r from "react";

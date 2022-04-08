@@ -1,5 +1,6 @@
 import {WebSocketServer} from "ws";
 import Users from "../../models/users.mjs";
+import Chats from "../../models/chats.mjs";
 import url from "url";
 import jwt from "jsonwebtoken";
 import config from "#messx-global-config";
@@ -17,11 +18,26 @@ export default async (server) => {
 		await setStatus(userData.id);
 
 		ws.on("message", async function message(data) {
-
+			const dataJson = JSON.parse(data);
+			const chat = await Chats.findOne({
+				where: {id: dataJson.chatId},
+				include: Users
+			});
+			for (let i in chat.Users){
+				for (let j in list){
+					if (list[j].id === chat.Users[i].id){
+						list[j].ws.send(JSON.stringify(dataJson));
+						console.log(`${list[j].id} sent message to chat ${chat.name}`);
+					}
+				}
+			}
 		});
 
 		ws.on("close", async function close() {
 			await setStatusOffline(ws.userId);
+			list = list.map(i => {
+				if (i.userId !== userData) return i;
+			});
 		});
 	});
 

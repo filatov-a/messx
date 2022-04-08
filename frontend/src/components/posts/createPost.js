@@ -3,7 +3,7 @@ import {Button, TextField} from "@mui/material";
 import Autocomplete from '@mui/material/Autocomplete';
 import {styleAuth, CustomInput} from "../../styles/main";
 import {sendCreatePost} from "../../redux/modules/posts";
-import {sendGetAllCategories} from "../../redux/modules/categories";
+import {sendGetAllCategories} from "../../redux/modules/postsCategories";
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
 import * as r from "react";
@@ -11,7 +11,7 @@ import * as r from "react";
 function createPost(props) {
     const dispatch = rr.useDispatch();
     const users = rr.useSelector(state => state.users);
-    const categories = rr.useSelector(state => state.categories);
+    const categories = rr.useSelector(state => state.postsCategories);
 
     const [title, setTitle] = r.useState('');
     const [content, setContent] = r.useState('');

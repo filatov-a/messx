@@ -8,7 +8,10 @@ export default class Get extends Base {
 		const {id} = data;
 		const category = await categories.findOne({
 			where: {id: id},
-			include: Chats
+			include: {
+				model: Chats,
+				order: ["createdAt", "DESC"]
+			}
 		});
 
 		return {category};

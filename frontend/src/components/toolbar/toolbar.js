@@ -11,7 +11,7 @@ import {
     useScrollTrigger,
     Slide
 } from "@mui/material";
-import {Add, Send, Whatshot, Stars, Search} from "@mui/icons-material"
+import {Add, Send, Whatshot, Stars, Search, Notifications} from "@mui/icons-material"
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
 import config from "../../config/config";
@@ -23,6 +23,7 @@ import PropTypes from 'prop-types';
 import {useEffect} from "react";
 import {sendGetUser} from "../../redux/modules/users";
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+// import OneSignal from 'react-onesignal';
 import Zoom from '@mui/material/Zoom';
 const Tr = useTranslation;
 
@@ -76,6 +77,10 @@ export default function ToolbarMain(props) {
     }
 
     useEffect(()=>{
+        // OneSignal.init({
+        //     appId: "24f5ca16-6947-485f-a615-15fdf2a2a688"
+        // });
+        // OneSignal.sendTag("hello")
         if (decode?.id) dispatch(sendGetUser({id: decode?.id, token: users.token}))
     }, [])
 
@@ -93,7 +98,7 @@ export default function ToolbarMain(props) {
                                 </Link>
                             </Tooltip>
                             <Tooltip title="daily top" arrow style={{marginLeft: 10}}>
-                                <Link to={'/posts_top'}>
+                                <Link to={'/posts-top'}>
                                     <Fab color="secondary" size="small">
                                         <Whatshot/>
                                     </Fab>
@@ -124,9 +129,16 @@ export default function ToolbarMain(props) {
                     {users.token && decode && users.user &&
                         <Box display='flex'>
                             <Tooltip title="Add post" arrow style={{marginLeft: 10}}>
-                                <Link to={'/createpost'}>
+                                <Link to={'/create-post'}>
                                     <Fab color="primary" size="small">
                                         <Add/>
+                                    </Fab>
+                                </Link>
+                            </Tooltip>
+                            <Tooltip title="Notifications" arrow style={{marginLeft: 10}}>
+                                <Link to={'/notifications'}>
+                                    <Fab color="secondary" size="small">
+                                        <Notifications/>
                                     </Fab>
                                 </Link>
                             </Tooltip>

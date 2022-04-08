@@ -47,8 +47,10 @@ export const sendGetUserPosts = createAsyncThunk(
 
 export const sendGetAllPostsFromCategory = createAsyncThunk(
     'posts/sendGetAllPostsFromCategory',
-    async (id) => {
-        const res = await axios.get(`${config.url}/api/categories/${id}/posts`);
+    async (param) => {
+        const header = { headers: { Authorization: `Bearer ${param.token}` }}
+        const res = await axios.get(`${config.url}/posts-categories/${param.id}/posts`, header);
+
         convertDate(res.data);
         return res.data;
     }
@@ -171,9 +173,8 @@ const slice = createSlice({
             state.hasMore = action.payload.length !== 0;
         })
         builder.addCase(sendGetAllPostsFromCategory.fulfilled, (state, action) => {
-            state.posts = action.payload.posts;
-            state.count = action.payload.count;
-            if (action.payload.page) state.page = action.payload.page;
+            state.posts = action.payload;
+            state.hasMore = action.payload.length !== 0;
         })
         builder.addCase(sendSetLike.fulfilled, (state, action) => {
             addLike(state.posts, action.payload.like, "post");

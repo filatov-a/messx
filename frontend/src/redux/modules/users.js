@@ -170,6 +170,7 @@ const slice = createSlice({
             state.user = null;
             state.token = null;
             state.success = "logout";
+            action.payload.ws.close();
             localStorage.removeItem('token');
         },
         setAvatar: (state, action) => {

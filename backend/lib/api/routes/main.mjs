@@ -14,6 +14,7 @@ router.post("/register", controllerActions.register);
 router.get("/verify-email/:token", controllerActions.registerVerify);
 router.post("/login", controllerActions.login);
 
+router.get("/chats", controllerChats.getAll);
 router.get("/chats/:id", controllerChats.get);
 router.post("/chats", controllerChats.create);
 router.delete("/chats/:id", controllerChats.delete);
@@ -29,6 +30,7 @@ router.delete("/users/:id", controllerUser.delete);
 
 router.get("/posts-categories", controllerPostsCategories.getAll);
 router.get("/posts-categories/:id", controllerPostsCategories.get);
+router.get("/posts-categories/:id/posts", controllerPostsCategories.getPosts);
 router.post("/posts-categories", controllerPostsCategories.create);
 router.patch("/posts-categories/:id", controllerPostsCategories.update);
 router.delete("/posts-categories/:id", controllerPostsCategories.delete);

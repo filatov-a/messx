@@ -107,13 +107,6 @@ export const styleToolbar = {
             color: '#a22929'
         }
     },
-    menuList: {
-        position: 'relative',
-        width: "15%",
-        height: "100%",
-        borderRight: "1px solid rgb(51, 153, 255)",
-        color: "rgb(51, 153, 255)"
-    }
 }
 
 export const stylesCart = {
@@ -167,8 +160,8 @@ export const stylesCart = {
     up: {
         margin: "auto",
         width: "300px",
-        borderRight: "0.1px solid yellow",
-        borderLeft: "0.1px solid yellow",
+        // borderRight: "0.1px solid yellow",
+        borderLeft: "2px solid yellow",
         height: 40
     },
     menu: {

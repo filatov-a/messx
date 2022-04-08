@@ -58,10 +58,6 @@ export const CustomCard = (props) => {
         navigate(0)
     }
 
-    const onClickCategory = () => {
-        navigate(`/users/${props.post.userId}`)
-    }
-
     const onClickEmoji = () => {
         setChosenEmojiOpen(!chosenEmojiOpen)
     }
@@ -137,9 +133,7 @@ export const CustomCard = (props) => {
                     <CardActions style={{display: "block"}}>
                         <div style={{display: "flex", flexWrap: "wrap", marginBottom: 10}}>
                             {props.post.PostsCategories?.map(i=>(
-                                <Button key={i.id} suppressContentEditableWarning={true} style={{margin: 5, textAlign: "center"}} onClick={onClickCategory} variant={"outlined"} color="secondary">
-                                    {i.title}
-                                </Button>
+                                <Category i={i}/>
                             ))}
                         </div>
                         <Box display={'flex'} style={stylesCart.textBlue}>
@@ -224,4 +218,26 @@ export const CustomCard = (props) => {
             />
         </div>
     );
+}
+
+function Category(props){
+    const {i} = props;
+    const navigate = rd.useNavigate();
+    const onClick = () => {
+        navigate(`/posts-categories/${i.id}`)
+        navigate(0)
+    }
+
+    return (
+        <div key={i.id}>
+            <Button
+                style={{margin: 5, textAlign: "center"}}
+                onClick={onClick}
+                variant={"outlined"}
+                color="secondary"
+            >
+                {i.title}
+            </Button>
+        </div>
+    )
 }

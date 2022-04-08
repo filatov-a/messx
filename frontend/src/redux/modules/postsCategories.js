@@ -3,11 +3,11 @@ import axios from "../utils/axios";
 import config from "../../config/config";
 
 export const sendGetAllCategories = createAsyncThunk(
-    'categories/sendCreatePost',
+    'postsCategories/sendCreatePost',
     async (param, thunkAPI) => {
         try {
             const res = await axios.get(`/posts-categories`);
-            return {data: res.data.all, error: null};
+            return {data: res.data, error: null};
         } catch (err) {
             return {error: err.response.data.error, data: []};
         }
@@ -15,7 +15,7 @@ export const sendGetAllCategories = createAsyncThunk(
 )
 
 export const sendGetCategoryById = createAsyncThunk(
-    'categories/sendGetCategoryById',
+    'postsCategories/sendGetCategoryById',
     async (id, thunkAPI) => {
         try {
             const res = await axios.get(`/posts-categories/${id}`);
@@ -27,7 +27,7 @@ export const sendGetCategoryById = createAsyncThunk(
 )
 
 export const sendDeleteCategory = createAsyncThunk(
-    'categories/sendDeleteCategory',
+    'postsCategories/sendDeleteCategory',
     async (param, thunkAPI) => {
         try {
             const res = await axios.delete(`/posts-categories/${param.id}`);
@@ -40,7 +40,7 @@ export const sendDeleteCategory = createAsyncThunk(
 )
 
 export const sendCreateCategory = createAsyncThunk(
-    'categories/sendDeleteCategory',
+    'postsCategories/sendDeleteCategory',
     async (param, thunkAPI) => {
         try {
             const res = await axios.post(`/posts-categories/`, param.user);
@@ -54,14 +54,13 @@ export const sendCreateCategory = createAsyncThunk(
 
 const initialState = {
     categories: [],
-    posts: [],
     specCategory: null,
     error: null,
     status: 'idle',
 };
 
 const slice = createSlice({
-    name: 'categories',
+    name: 'postsCategories',
     initialState: initialState,
     reducers: {},
     extraReducers: {

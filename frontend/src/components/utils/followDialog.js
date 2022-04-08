@@ -35,11 +35,11 @@ export default function AlertDialogSlide(props) {
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
                         {props.follow && props.follow.length !== 0 &&
-                            <Box display='flex'>
+                            <Box>
                                 {props.follow.map(i => (
-                                    <Box key={i.id} display={'flex'} style={{margin: "auto",}}>
+                                    <Box key={i.id} display={'flex'} style={{margin: "auto"}}>
                                         <Button onClick={()=>{navigate(`/users/${i.id}`); navigate(0)}}>
-                                            <Box display={'flex'}>
+                                            <Box display={'flex'} style={{justifyContent:'space-between'}}>
                                                 <Box style={{margin: "auto", fontSize:15}}>
                                                     {i.full_name}
                                                 </Box>

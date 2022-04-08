@@ -1,78 +1,92 @@
 import React from "react";
-import {sendGetAllUsers} from '../../redux/modules/users';
 import {
-    sendDeletePost, sendGetAllPostsFromCategory
+    sendGetAllPosts,
+    sendGetAllPostsFromCategory
 } from '../../redux/modules/posts';
-import { sendGetCategoryById, sendDeleteCategory } from '../../redux/modules/categories';
+import { sendGetCategoryById, sendDeleteCategory } from '../../redux/modules/postsCategories';
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
-import {Avatar, ButtonBase, Box, Button} from '@mui/material';
+import {Box, Button} from '@mui/material';
 import * as r from "react";
-import {UseStyles} from '../../styles/specP';
 import {parseToken} from '../../utils/parseToken';
-import DeleteIcon from "@material-ui/icons/Delete";
 import {CustomCard} from '../utils/card'
+import InfiniteScroll from "react-infinite-scroll-component";
+
+const styles = {
+    divPosts: {
+        width: '90%',
+        minWidth: '400px',
+        margin: 'auto',
+        paddingLeft: 10,
+        paddingRight: 10,
+        textAlign: 'left',
+    },
+}
 
 function category() {
     const users = rr.useSelector(state => state.users);
     const posts = rr.useSelector(state => state.posts);
-    const categories = rr.useSelector(state => state.categories);
+    const categories = rr.useSelector(state => state.postsCategories);
     const navigate = rd.useNavigate();
     const dispatch = rr.useDispatch();
-    const classes = UseStyles();
-    const id = parseInt(rd.useParams().id);
+    const id = rd.useParams().id;
     const decode = parseToken(users.token)
+    // const [page, setPage] = r.useState(0);
 
     let clientId = '';
     if (decode) clientId = decode.id;
 
     r.useEffect(() => {
-        if (posts.status === 'idle') dispatch(sendGetAllPostsFromCategory(id));
-    }, [dispatch])
-
-    r.useEffect(() => {
         dispatch(sendGetCategoryById(id));
-    },[dispatch])
+        dispatch(sendGetAllPostsFromCategory({id, token: users.token}));
+    }, [])
 
-    const handleDelete = () => {
-        dispatch(sendDeleteCategory({id: id, navigate}));
-    }
-
-    // console.log(posts);
-
+    // const handleDelete = () => {
+    //     dispatch(sendDeleteCategory({id: id, navigate}));
+    // }
+    //
+    // const trigger = () => {
+    //     dispatch(sendGetAllPosts({token: users?.token, page}));
+    //     setPage((prevPageNumber) => prevPageNumber + 1);
+    // }
     return (
         <div>
             {categories.specCategory &&
             <div>
-                <div className={classes.post}>
-                    <h2>{categories.specCategory.title}</h2>
-                    <div className={classes.content}>
-                        {categories.specCategory.description}
-                    </div>
-                    {users.user && (users.user.role === 'admin') &&
-                    <Button onClick={handleDelete} style={{fontSize:12, marginBottom: 20}} variant='contained' color='secondary'>
-                        <DeleteIcon fontSize='small'/>
-                        delete
-                    </Button>
-                    }
+                <div>
+                    <h2 style={{color: "#a2a2a2"}}>
+                        {categories.specCategory.title}
+                    </h2>
+                    {/*{users.user && (users.user.role === 'admin') &&*/}
+                    {/*<Button onClick={handleDelete} style={{fontSize:12, marginBottom: 20}} variant='contained' color='secondary'>*/}
+                    {/*    <DeleteIcon fontSize='small'/>*/}
+                    {/*    delete*/}
+                    {/*</Button>*/}
+                    {/*}*/}
                 </div>
-                <h2>Posts</h2>
-                {posts.posts.length !== 0 && posts.posts[0].user &&
-                <Box>
-                    {posts.posts.map(i => (
-                        <div key={i.post.id}>
-                            <CustomCard
-                                title={i.post.title}
-                                content={i.post.content}
-                                to={`/posts/${i.post.id}`}
-                                author={i.user.profile_picture}
-                                userId={i.post.userId}
-                                votes={i.votes}
-                                answers={i.answers}
-                            />
-                        </div>
-                    ))}
-                </Box>
+                {posts.posts &&
+                    <div style={{width: "90%", margin: "auto"}}>
+                        {/*<InfiniteScroll*/}
+                        {/*    dataLength={posts.posts.length}*/}
+                        {/*    next={trigger}*/}
+                        {/*    hasMore={posts.hasMore}*/}
+                        {/*    loader={<h4 style={{color: "#a2a2a2"}}>Loading...</h4>}*/}
+                        {/*>*/}
+                            { posts.posts.length &&
+                                <Box style={styles.divPosts}>
+                                    {posts.posts.map( (i) => (
+                                        <div key={i.id}>
+                                            <CustomCard
+                                                cardActions={true}
+                                                post={i}
+                                                users={users}
+                                            />
+                                        </div>
+                                    ))}
+                                </Box>
+                            }
+                        {/*</InfiniteScroll>*/}
+                    </div>
                 }
             </div>
             }

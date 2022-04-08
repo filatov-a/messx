@@ -52,7 +52,7 @@ const styles = {
     }
 }
 
-function accountInfo() {
+function accountInfo(props) {
     const users = rr.useSelector(state => state.users);
     const navigate = rd.useNavigate();
     const dispatch = rr.useDispatch();
@@ -68,7 +68,7 @@ function accountInfo() {
     },[]);
 
     const handleLogOut = () => {
-        dispatch(logOut());
+        dispatch(logOut({ws: props.ws}));
         navigate('/login');
     }
 

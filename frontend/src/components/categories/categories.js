@@ -1,6 +1,6 @@
 import React from "react";
 import {Box} from '@mui/material';
-import {sendDeleteCategory, sendGetAllCategories} from '../../redux/modules/categories'
+import {sendDeleteCategory, sendGetAllCategories} from '../../redux/modules/postsCategories'
 import * as rr from "react-redux";
 import * as r from "react";
 import {CustomCard} from '../utils/card'

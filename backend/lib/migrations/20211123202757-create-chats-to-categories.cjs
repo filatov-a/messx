@@ -7,7 +7,7 @@ module.exports = {
 				defaultValue: Sequelize.UUIDV4,
 				primaryKey: true,
 			},
-			cahtId: {
+			chatId: {
 				type: Sequelize.UUID,
 				allowNull: false,
 				references: { model: "Chats", key: "id" },

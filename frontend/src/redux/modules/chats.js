@@ -4,16 +4,18 @@ import config from "../../config/config";
 import {convertDate} from "../../utils/date";
 
 export const sendGetAllChats = createAsyncThunk(
-    'posts/sendGetAllPosts',
+    'chats/sendGetAllChats',
     async (param) => {
         try {
             const lim = 10;
-            const url = `${config.url}/chats?limit=${lim}&offset=${lim*(param.page-1)}&title=${param.text}`;
-            const res = await axios.get(url);
+            let header = { headers: { Authorization: `Bearer ${param.token}`}}
+            // const url = `${config.url}/chats?limit=${lim}&offset=${lim*(param.page-1)}`;
+            const url = `${config.url}/chats`;
+            const res = await axios.get(url, header);
 
             convertDate(res.data);
 
-            return {posts: res, page: param.page, count: res.data.count};
+            return res.data;
         } catch (err) {
             return {error: err.response.data.error};
         }
@@ -21,7 +23,7 @@ export const sendGetAllChats = createAsyncThunk(
 )
 
 export const sendDeleteChat = createAsyncThunk(
-    'posts/sendDeletePost',
+    'chats/sendDeleteChat',
     async (id, thunkAPI) => {
         try {
             const res = await axios.delete(`${config.url}/caht/${id}`);
@@ -34,13 +36,13 @@ export const sendDeleteChat = createAsyncThunk(
 )
 
 export const sendGetChatById = createAsyncThunk(
-    'posts/sendGetPostById',
+    'chats/sendGetChatById',
     async (param, thunkAPI) => {
         try {
             // let header = { headers: { Authorization: `Bearer ${param.token}`}}
             const chats = await axios.get(`${config.url}/chats/${param.id}`);
     
-            return {cahts: chats};
+            return chats.data;
         } catch (err) {
             return {error: err.response.data.error};
         }
@@ -48,25 +50,24 @@ export const sendGetChatById = createAsyncThunk(
 );
 
 export const sendCreateChat = createAsyncThunk(
-    'posts/sendCreatePost',
+    'chats/sendCreateChat',
     async (param, thunkAPI) => {
         try {
             let header = { headers: { Authorization: `Bearer ${param.token}` }}
-            const res = await axios.post(`${config.url}/cahts/`, param.user, header);
+            const res = await axios.post(`${config.url}/chats/`, param.chat, header);
             return {specChat: res.data};
         } catch (err) {
             return {error: err.response.data.error};
         }
     }
-)
+);
 
-export const sendGetAllChatsFromUser = createAsyncThunk(
-    'posts/sendCreatePost',
+export const sendMessage = createAsyncThunk(
+    'chats/sendMessage',
     async (param, thunkAPI) => {
         try {
-            let header = { headers: { Authorization: `Bearer ${param.token}` }}
-            const res = await axios.get(`${config.url}/cahts/`, param.user, header);
-            return {chats: res.data};
+            const res = await axios.post(`${config.url}/messages`, param.message);
+            param.ws.send(JSON.stringify(res.data));
         } catch (err) {
             return {error: err.response.data.error};
         }
@@ -85,10 +86,17 @@ const initialState = {
 const slice = createSlice({
     name: 'chats',
     initialState: initialState,
-    reducers: {},
+    reducers: {
+        addMessage: (state, action) => {
+            state.specChat?.Messages.unshift({...action.payload});
+        },
+    },
     extraReducers: {
+        [sendMessage.fulfilled]: (state, action) => {
+            state.error = null;
+        },
         [sendGetChatById.fulfilled]: (state, action) => {
-            state.specPost = action.payload.post;
+            state.specChat = action.payload;
         },
         [sendCreateChat.fulfilled]: (state, action) => {
             state.error = action.payload.error
@@ -104,17 +112,10 @@ const slice = createSlice({
             state.posts = tmp;
         },
         [sendGetAllChats.fulfilled]: (state, action) => {
-            state.chats = action.payload.posts;
-            if (action.payload.page) state.page = action.payload.page;
-            state.count = action.payload.count;
-            state.specPost = null;
-        },
-        [sendGetAllChatsFromUser.fulfilled]: (state, action) => {
-            state.chats = action.payload.posts;
-            if (action.payload.page) state.page = action.payload.page;
-            state.count = action.payload.count;
-            state.specPost = null;
+            state.chats = action.payload;
         },
     }
 })
+
 export default slice.reducer;
+export const { addMessage } = slice.actions;

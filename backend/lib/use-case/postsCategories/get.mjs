@@ -8,9 +8,9 @@ export default class Get extends Base {
 		const category = await PostsCategories.findOne({
 			where: {id: id},
 			include: [
-				Posts
+				{model: Posts}
 			]
 		});
-		return {category};
+		return category;
 	}
 }
