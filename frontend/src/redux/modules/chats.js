@@ -41,7 +41,8 @@ export const sendGetChatById = createAsyncThunk(
         try {
             // let header = { headers: { Authorization: `Bearer ${param.token}`}}
             const chats = await axios.get(`${config.url}/chats/${param.id}`);
-    
+            convertDate(chats.data);
+            convertDate(chats.data.Messages);
             return chats.data;
         } catch (err) {
             return {error: err.response.data.error};
@@ -67,6 +68,7 @@ export const sendMessage = createAsyncThunk(
     async (param, thunkAPI) => {
         try {
             const res = await axios.post(`${config.url}/messages`, param.message);
+            convertDate(res.data);
             param.ws.send(JSON.stringify(res.data));
         } catch (err) {
             return {error: err.response.data.error};

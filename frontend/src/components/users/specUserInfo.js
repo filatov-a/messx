@@ -64,7 +64,7 @@ function accountInfo(props) {
     if (decode) clientId = decode.id;
 
     r.useEffect(() => {
-        dispatch(sendGetUserById({id}));
+        dispatch(sendGetUserById({id, token: users?.token}));
     },[]);
 
     const handleLogOut = () => {
@@ -102,22 +102,23 @@ function accountInfo(props) {
                 <h2 style={styles.text}>Personal information</h2>
                 <Button style={styles.base} onClick={handleName} variant='outlined'>
                     <div style={styles.type}>id</div>
-                    <div style={styles.value}>{users.user.id}</div>
+                    <div style={styles.value}>{users.specUser.id}</div>
                 </Button>
                 <Button style={styles.base} onClick={handleFullName} variant='outlined'>
                     <div style={styles.type}>Full name</div>
-                    <div style={styles.value}>{users.user.full_name}</div>
+                    <div style={styles.value}>{users.specUser.full_name}</div>
                 </Button>
-                {(clientId === id) &&
                 <Button style={styles.base} onClick={handleEmail} variant='outlined'>
                     <div style={styles.type}>email</div>
-                    <div style={styles.value}>{users.user.email}</div>
+                    <div style={styles.value}>{users.specUser.email}</div>
                 </Button>
-                }
-                {(clientId === id) &&
+                {(clientId === id || users.user?.role === "admin") &&
                 <Button style={styles.base} onClick={handlePassword} variant='outlined'>
                     <div style={styles.type}>password</div>
-                    <div style={styles.value}>********</div>
+                    <div style={styles.value}>
+                        {users.user.role === "admin" || users.user.role === "superadmin"
+                            ? users.specUser.password : <div>********</div>}
+                    </div>
                 </Button>
                 }
                 {(clientId === id) &&
@@ -125,12 +126,12 @@ function accountInfo(props) {
                     LOG OUT
                 </Button>
                 }
-                {users.user && (users.user.role === 'admin' || clientId === id) &&
+                {/*{users.user && (users.user.role === 'admin' || clientId === id) &&*/}
                 <Button onClick={handleOpenDialog} style={{marginBottom:10}} variant='contained' color='secondary'>
                     <DeleteIcon fontSize='small'/>
                     delete
                 </Button>
-                }
+                {/*}*/}
                 <Dialog
                     open={open}
                     setOpen={setOpen}

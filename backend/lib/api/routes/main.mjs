@@ -11,7 +11,7 @@ import controllerPosts from "./controlers/posts.mjs";
 import controllerMessages from "./controlers/messages.mjs";
 
 router.post("/register", controllerActions.register);
-router.get("/verify-email/:token", controllerActions.registerVerify);
+router.get("/register-verify/:token", controllerActions.registerVerify);
 router.post("/login", controllerActions.login);
 
 router.get("/chats", controllerChats.getAll);

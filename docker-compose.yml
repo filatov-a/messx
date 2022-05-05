@@ -1,17 +1,17 @@
 version: "3.9"  # optional since v1.27.0
 services:
-#  s3:
-#    platform: linux/amd64
-#    image: minio/minio
-#    container_name: minio
-#    ports:
-#      - "9000:9000"
-#    volumes:
-#      - ./storage/minio:/data
-#    environment:
-#      MINIO_ACCESS_KEY: minio_access_key
-#      MINIO_SECRET_KEY: minio_secret_key
-#    command: server /data
+  s3:
+    platform: linux/amd64
+    image: minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./storage/minio:/data
+    environment:
+      MINIO_ACCESS_KEY: minio_access_key
+      MINIO_SECRET_KEY: minio_secret_key
+    command: server /data
   db:
     platform: linux/amd64
     image: mysql:8.0.27
@@ -27,32 +27,32 @@ services:
     ports: [ '3306:3306' ]
     volumes:
       - ./database:/var/lib/mysql
-#  backend:
-#    platform: linux/amd64
-#    container_name: backend
-#    build:
-#      context: ./backend
-#      dockerfile: Dockerfile
-#    ports:
-#      - "5001:5001"
-#    depends_on:
-#      - db
-#    environment:
-#      TZ: Europe/Kiev
-#    volumes:
-#      - './backend:/app'
-#      - '/app/node_modules'
-#    command: sh -c 'npm run migrate && npm run nodemon'
-#  frontend:
-#     platform: linux/amd64
-#     container_name: frontend
-#     build:
-#       context: ./frontend
-#       dockerfile: Dockerfile
-#     volumes:
-#       - './frontend/:/app'
-#       - '/app/node_modules'
-#     ports:
-#       - 3000:3000
-#     environment:
-#       - CHOKIDAR_USEPOLLING=true
+  backend:
+    platform: linux/amd64
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 5001:5001
+    depends_on:
+      - db
+    environment:
+      TZ: Europe/Kiev
+    volumes:
+      - './backend:/app'
+      - '/app/node_modules'
+    command: sh -c 'npm run migrate && npm run nodemon'
+  frontend:
+     platform: linux/amd64
+     container_name: frontend
+     build:
+       context: ./frontend
+       dockerfile: Dockerfile
+     volumes:
+       - './frontend/:/app'
+       - '/app/node_modules'
+     ports:
+       - 3000:3000
+     environment:
+       - CHOKIDAR_USEPOLLING=true

@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node lib/index.mjs",
-    "nodemon": "nodemon lib/index.mjs",
+    "start": "nodemon lib/index.mjs",
     "lint": "eslint lib --fix --ext .mjs",
     "migrate": "npx sequelize-cli db:migrate",
     "migrate:create": "npx sequelize-cli model:generate --name User --attributes firstName:string",
@@ -37,6 +36,7 @@
     "nodemon": "^2.0.14",
     "path": "^0.12.7",
     "query-string": "^7.0.1",
+    "random-words": "^1.1.2",
     "sequelize": "^6.8.0",
     "url": "^0.11.0",
     "uuid": "^8.3.2",

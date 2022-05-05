@@ -6,8 +6,6 @@ export default class Users extends Base {
 		id: { type: this.DT.UUID, defaultValue: this.DT.UUIDV4, primaryKey: true },
 		password: this.DT.STRING,
 		full_name: this.DT.STRING,
-		gender: this.DT.ENUM(["male", "female"]),
-		email: this.DT.STRING,
 		profile_picture: this.DT.STRING,
 		rating: this.DT.INTEGER,
 		role: this.DT.ENUM(["user", "admin", "superAdmin"]),
@@ -40,14 +38,6 @@ export default class Users extends Base {
 	}
 	static async createUser(params){
 		let errors = {};
-		const username = await this.findOne({ where: { id: params.id } });
-		const email = await this.findOne({ where: { email: params.email } });
-		if (username) {
-			errors.id = "id is busy";
-		}
-		if (email) {
-			errors.email = "email is busy";
-		}
 		if (Object.keys(errors).length){
 			throw errors;
 		}

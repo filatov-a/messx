@@ -134,6 +134,7 @@ function account() {
     const [openFollowers, setOpenFollowers] = r.useState(false);
 
     r.useEffect(() => {
+        console.log({id})
         dispatch(sendGetUserById({id, token: users?.token}));
         dispatch(sendGetUserPosts({id, token: users?.token, page}));
         setPage((prevPageNumber) => prevPageNumber + 1);
@@ -150,9 +151,7 @@ function account() {
     }
 
     const handleInfo = () => {
-        if (decode.id === id) {
-            navigate(`/users/${users.specUser.id}/info`)
-        }
+        navigate(`/users/${id}/info`)
     }
 
     const handleFollowToUser = () => {
@@ -212,7 +211,7 @@ function account() {
                                 </ButtonBase>
                             </Box>
                             <Box>
-                                {decode && decode.id!==users.specUser.id &&
+                                {users.specUser &&
                                     <Button style={styles.button} onClick={handleFollowToUser} variant='outlined'>
                                         { users.specUser.userFollower ?
                                             <Star style={{color: "yellow"}}/> :
@@ -220,16 +219,15 @@ function account() {
                                         }
                                     </Button>
                                 }
-                                {decode && decode.id!==users.specUser.id &&
+                                {users.specUser &&
                                     <Button style={styles.button} variant='outlined'>
                                         direct
                                     </Button>
                                 }
                                 {
-                                    users.user?.role === "admin" ||
+                                    (users.user?.role === "admin" ||
                                     users.user?.role === "superAdmin" ||
-                                    decode &&
-                                    decode.id===users.specUser.id &&
+                                    decode?.id===users.specUser.id) &&
                                     <Button style={styles.button} onClick={handleInfo} variant='outlined'>
                                         <Settings/>
                                     </Button>

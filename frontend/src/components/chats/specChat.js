@@ -9,8 +9,9 @@ import * as rd from "react-router-dom";
 import * as r from "react";
 
 import {parseToken} from '../../utils/parseToken';
-import {Box, Button} from "@mui/material";
-import {CustomInput} from "../../styles/main";
+import {Avatar, Box, Button, ButtonBase} from "@mui/material";
+import {CustomInput, styleToolbar} from "../../styles/main";
+import config from "../../config/config";
 
 function specChat(props) {
     const users = rr.useSelector(state => state.users);
@@ -35,9 +36,9 @@ function specChat(props) {
     }
 
     const onChange = (e) => setText(e.target.value);
-    const onSend = async () => {
+    const onSend = () => {
         const param = {userId: users.user.id, chatId: id, descriptions: text}
-        const data = await dispatch(sendMessage({message: param, ws}));
+        dispatch(sendMessage({message: param, ws}));
         setText('');
     }
 
@@ -66,6 +67,7 @@ function specChat(props) {
 
 function Messages(props) {
     const {i, userId} = props;
+    const navigate = rd.useNavigate();
 
     const styles = {
         main: {
@@ -75,8 +77,7 @@ function Messages(props) {
             maxWidth: "50%",
             minWidth: "30%",
             margin: "auto",
-            borderRadius: 50,
-            marginBottom: 20,
+            borderRadius: 10,
         },
         title: {
             color: "#a2a2a2",
@@ -86,35 +87,49 @@ function Messages(props) {
         descriptions: {
             color: "#a2a2a2"
         },
-        userId: {
+
+        user: {
             fontFamily: "'Shadows Into Light', cursive",
             color: "rgb(51, 153, 255)",
-            position: "absolute",
             lineHeight: "25px",
             outline: 0,
             fontSize: 18,
-            textOverflow: 'ellipsis',
-            margin: "auto"
+            // textOverflow: 'ellipsis',
+            margin: "auto",
+            width: 200
         }
     }
 
     if (userId === i.userId){
         styles.main.boxShadow = "2px 3px 10px black, 0 0 5px yellow inset"
         styles.main.border = "0.1px solid yellow"
-        styles.userId.color = "yellow"
+        styles.user.color = "yellow"
+    }
+
+    const onAvatar = () => {
+        navigate(`/users/${i.userId}`)
+        navigate(0)
     }
 
     return (
-        <Box display={"flex"}>
-            <div style={styles.main}>
+        <Box display={"flex"} style={{justifyContent: "space-between", marginBottom: 30}}>
+            <Box display={'flex'} style={styles.user}>
+                <div style={{marginTop: "auto", marginBottom: "auto"}}>{i.userId}</div>
+                <ButtonBase onClick={onAvatar} style={{borderRadius:100, marginLeft: 10}}>
+                    <Avatar style={styleToolbar.Avatar} alt="Remy Sharp" src={`${config.url}/images/${i.User.profile_picture}`}/>
+                </ButtonBase>
+            </Box>
+            <Box style={styles.main}>
                 {i.title &&
                     <div style={styles.title}>{i.title}</div>
                 }
                 <div style={styles.descriptions}>
                     {i.descriptions}
                 </div>
+            </Box>
+            <div style={styles.user}>
+                {i.createdAt}
             </div>
-            <div style={styles.userId}>{i.userId}</div>
         </Box>
     )
 }

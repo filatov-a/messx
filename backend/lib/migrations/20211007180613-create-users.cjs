@@ -14,15 +14,6 @@ module.exports = {
 				type: Sequelize.STRING,
 				allowNull: true,
 			},
-			gender: {
-				type: Sequelize.ENUM(["male", "female"]),
-				defaultValue: "male",
-			},
-			email: {
-				type: Sequelize.STRING,
-				allowNull: false,
-				unique: true,
-			},
 			profile_picture: {
 				type: Sequelize.STRING,
 				defaultValue: "defaultUser-male.png",

@@ -1,6 +1,6 @@
 module.exports = {
 	development: {
-		username: "artem",
+		username: "filatov",
 		password: "password",
 		database: "messx",
 		host: "127.0.0.1",
@@ -9,7 +9,7 @@ module.exports = {
 		logging: false
 	},
 	test: {
-		username: "artem",
+		username: "filatov",
 		password: "password",
 		database: "messx",
 		host: "127.0.0.1",
@@ -17,10 +17,10 @@ module.exports = {
 		dialect: "mysql"
 	},
 	production: {
-		username: "artem",
+		username: "filatov",
 		password: "password",
 		database: "messx",
-		host: "db",
+		host: "127.0.0.1",
 		port: 3306,
 		dialect: "mysql",
 		logging: false
