@@ -78,7 +78,7 @@ function App(){
                         <Route exact path="/search" element={<Users/>} />
                         <Route exact path="/login" element={<Login/>}/>
                         <Route exact path="/register" element={<Register/>}/>
-                        <Route exact path="/verify-email/:token" element={<RegisterVerify/>}/>
+                        <Route exact path="/register-verify" element={<RegisterVerify/>}/>
                         <Route exact path="/" element={<Posts/>} />
                         <Route exact path="/404" element={<NotFound/>} />
                         <Route path="*" element={<NotFound/>}/>

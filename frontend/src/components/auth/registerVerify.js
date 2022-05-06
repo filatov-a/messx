@@ -1,33 +1,46 @@
 import React from "react";
-import {sendVerifyEmail} from "../../redux/modules/users";
+import {sendRegisterVerify, sendVerifyEmail} from "../../redux/modules/users";
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
 import {Navigate} from "react-router-dom";
 import * as r from "react";
-import {styleAuth} from "../../styles/main";
+import {CustomInput, styleAuth} from "../../styles/main";
+import {useTranslation} from 'react-i18next'
+import {Button} from "@mui/material";
+const Tr = useTranslation;
 
 function verify() {
+    const {t} = Tr();
     const dispatch = rr.useDispatch();
     const users = rr.useSelector(state => state.users);
+
+    const [token, setToken] = r.useState(null);
+    const [isPushed, setIsPushed] = r.useState(false);
     const navigate = rd.useNavigate();
-    const { token } = rd.useParams();
 
-    r.useEffect(() => {
+    const click = () => {
         if (users.status === 'idle'){
-            dispatch(sendVerifyEmail({token, navigate}))
+            dispatch(sendRegisterVerify({token, navigate}))
+            setIsPushed(true);
         }
-    },[dispatch])
+    }
 
-    const ok = (
-        <div>
-            <h2 style={styleAuth.Title}>Verify account</h2>
-        </div>
-    );
+    const onChangeToken = (e) => setToken(e.target.value);
+
 
     return (
-        <div>
-            {users.error && <Navigate to="/404" />}
-            {!users.error && ok}
+        <div style={styleAuth.Div}>
+            <h3 style={styleAuth.Title}>Put verify token</h3>
+            {!isPushed &&
+                <form style={styleAuth.Form}>
+                    <CustomInput onChange={onChangeToken} required placeholder={t('token')}/>
+                    {token ?
+                        <Button style={styleAuth.Button} onClick={click} variant='contained' color='primary'>{t("go->")}</Button>
+                        :
+                        <Button style={styleAuth.Button} disabled onClick={click} variant='contained' color='primary'>{t("You have to fill")}</Button>
+                    }
+                </form>
+            }
         </div>
     )
 }

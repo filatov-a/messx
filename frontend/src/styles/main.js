@@ -59,7 +59,7 @@ export const styleAuth = {
         width: '100%',
         height: '40px',
         marginBottom: 10,
-        marginTop: 0,
+        marginTop: 10,
     },
     TextField: {
         width: '100%',

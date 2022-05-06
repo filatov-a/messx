@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "../utils/axios";
 import {parseToken} from "../../utils/parseToken";
+import register from "../../components/auth/register";
 
 export const sendGetUserById = createAsyncThunk(
     'users/sendGetUserById',
@@ -119,20 +120,19 @@ export const sendRegister = createAsyncThunk(
     'users/sendRegister',
     async (param, thunkAPI) => {
         try {
-            await axios.post(`/register`, param.user);
-            param.navigate('/login');
-            return {error: null, success: "check your email"};
+            const res = await axios.post(`/register`, {...param});
+            return {data: res.data, success: "You have to save this info"};
         } catch (err) {
             return {error: err.response.data.error};
         }
     }
 )
 
-export const sendVerifyEmail = createAsyncThunk(
+export const sendRegisterVerify = createAsyncThunk(
     'users/sendVerifyEmail',
     async (params, thunkAPI) => {
         try {
-            await axios.get(`/verify-email/${params.token}`);
+            await axios.get(`/register-verify/${params.token}`);
             params.navigate("/login")
             return {success: "email is verified"};
         } catch (err) {
@@ -160,6 +160,7 @@ const initialState = {
     user: null,
     count: 1,
     page: 1,
+    registerData: null,
 };
 
 const slice = createSlice({
@@ -230,10 +231,11 @@ const slice = createSlice({
             state.success = action.payload.success;
         })
         builder.addCase(sendRegister.fulfilled, (state, action) => {
+            state.registerData = action.payload.data;
             state.error = action.payload.error;
             state.success = action.payload.success;
         })
-        builder.addCase(sendVerifyEmail.fulfilled, (state, action) => {
+        builder.addCase(sendRegisterVerify.fulfilled, (state, action) => {
             state.error = action.payload.error;
             state.success = action.payload.success;
         })

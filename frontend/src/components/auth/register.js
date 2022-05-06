@@ -13,45 +13,74 @@ function register() {
     const dispatch = rr.useDispatch();
     const users = rr.useSelector(state => state.users);
 
-    const [full_name, setFullName] = r.useState('');
-    const [id, setId] = r.useState('');
-    const [email, setEmail] = r.useState('');
-    const [password, setPassword] = r.useState('');
-    const [gender, setGender] = r.useState('male');
+    const [full_name, setFullName] = r.useState(null);
+    const [isPushed, setIsPushed] = r.useState(false);
     const navigate = rd.useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const User = { full_name, id, email, password, gender };
-        dispatch(sendRegister({user: User, navigate: navigate}));
-
+        dispatch(sendRegister({ full_name }));
+        setIsPushed(true);
     }
 
-    const onChangeId = (e) => setId(e.target.value);
+    const goToVerify = async () => {
+        navigate("/register-verify")
+    }
+
     const onChangeName = (e) => setFullName(e.target.value);
-    const onChangePassword = (e) => setPassword(e.target.value);
-    const onChangeEmail = (e) => setEmail(e.target.value);
-    const onChangeGender = (event, newValue) => setGender(newValue);
 
     return (
         <div style={styleAuth.Div}>
             <h2 style={styleAuth.Title}>{t('register')}</h2>
             <form onSubmit={handleSubmit} style={styleAuth.Form}>
-                <CustomInput onChange={onChangeId} required placeholder={t('id')}/>
-                <CustomInput onChange={onChangeName} required placeholder={t('full name')}/>
-                <CustomInput onChange={onChangeEmail} required placeholder={t('email')} type='email'/>
-                <CustomInput onChange={onChangePassword} required placeholder={t('password')} type='password'/>
-                <Tabs
-                    value={gender}
-                    onChange={onChangeGender}
-                    textColor="secondary"
-                    indicatorColor="secondary"
-                    aria-label="secondary tabs example"
-                >
-                    <Tab style={styleAuth.Title} value="male" label={t("male")} />
-                    <Tab style={styleAuth.Title} value="female" label={t("female")} />
-                </Tabs>
-                <Button style={styleAuth.Button} type="submit" variant='contained' color='primary'>{t("send")}</Button>
+                {!isPushed &&
+                    <div>
+                        <CustomInput onChange={onChangeName} required placeholder={t('full name')}/>
+                        {full_name ?
+                            <Button style={styleAuth.Button} type="submit" variant='contained' color='primary'>{t("go->")}</Button>
+                            :
+                            <Button style={styleAuth.Button} disabled type="submit" variant='contained' color='primary'>{t("You have to fill")}</Button>
+                        }
+                    </div>
+                }
+                {isPushed &&
+                    <div>
+                        <div style={{color: "white", width: 300, margin: "auto"}}>
+                            <p>
+                                <p>ID</p>
+                                {/*<p>{users.registerData?.id}</p>*/}
+                                <Button onClick={()=>{
+                                    navigator.clipboard.writeText(users.registerData?.id)}}
+                                >
+                                    Copy password
+                                </Button>
+                            </p>
+                            <p>
+                                <p>Password</p>
+                                {/*<p>{users.registerData?.password}</p>*/}
+                                <Button onClick={()=>{
+                                    navigator.clipboard.writeText(users.registerData?.password)}}
+                                >
+                                    Copy password
+                                </Button>
+                            </p>
+                            <p>
+                                <p>Token (just to verify)</p>
+                                <Button onClick={()=>{
+                                    navigator.clipboard.writeText(users.registerData?.token)}}
+                                >
+                                    Copy token
+                                </Button>
+                            </p>
+                        </div>
+                        <Button
+                            style={styleAuth.Button}
+                            variant='contained'
+                            color='primary'
+                            onClick={goToVerify}
+                        >{t("go->(save all data before)")}</Button>
+                    </div>
+                }
             </form>
         </div>
     );

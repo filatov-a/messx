@@ -17,7 +17,7 @@ export default class register extends Base {
 	}
 
 	async execute({data}){
-		const password = randomWords({min: 20, max: 40, join: " "});
+		const password = randomWords({min: 20, max: 40, join: "-"});
 		const id = uuidv4();
 		data.password = await argon2.hash(password);
 		data.profile_picture = `defaultUser-${data.gender}.png`;

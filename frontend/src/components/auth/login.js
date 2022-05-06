@@ -30,8 +30,8 @@ function login() {
         <div style={styleAuth.Div}>
             <h2 style={styleAuth.Title}>{t('sing in')}</h2>
             <form onSubmit={handleSubmit} style={styleAuth.Form}>
-                <CustomInput onChange={onChangeId} required placeholder={t('username')}/>
-                <CustomInput onChange={onChangePassword} required placeholder={t('password')} type='password'/>
+                <CustomInput onChange={onChangeId} required placeholder={t('ID')}/>
+                <CustomInput onChange={onChangePassword} required placeholder={t('Password')} type='password'/>
                 <Button style={styleAuth.Button} type="submit" variant='contained' color='primary'>{t("send")}</Button>
             </form>
         </div>
