@@ -33,7 +33,7 @@ let styles = {
         textAlign: 'left',
     },
     divPostsBig: {
-        width: '70%',
+        width: 700,
         minWidth: '400px',
         margin: 'auto',
         // border: "1px solid black",
@@ -42,7 +42,7 @@ let styles = {
         textAlign: 'left',
     },
     divPostsSmall: {
-        width: '90%',
+        width: 500,
         minWidth: '400px',
         margin: 'auto',
         // border: "1px solid black",
@@ -84,7 +84,7 @@ let styles = {
     },
     grayText: {
         color: "#a2a2a2",
-        font: "italic small-caps bold 24px/2 cursive"
+        font: "italic small-caps bold 15px/2 cursive",
     },
     headText: {
         color: "rgb(51, 153, 255)",

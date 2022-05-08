@@ -77,10 +77,6 @@ export default function ToolbarMain(props) {
     }
 
     useEffect(()=>{
-        // OneSignal.init({
-        //     appId: "24f5ca16-6947-485f-a615-15fdf2a2a688"
-        // });
-        // OneSignal.sendTag("hello")
         if (decode?.id) dispatch(sendGetUser({id: decode?.id, token: users.token}))
     }, [])
 
@@ -91,7 +87,7 @@ export default function ToolbarMain(props) {
                     <div style={{flexGrow: 7, textAlign: 'left'}}>
                         <Box display={'flex'}>
                             <Tooltip title="posts from starts" arrow style={{marginLeft: 10}}>
-                                <Link to={'/'}>
+                                <Link to={'/posts'}>
                                     <Fab color="primary" size="small">
                                         <Stars/>
                                     </Fab>

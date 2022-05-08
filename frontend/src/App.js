@@ -13,10 +13,8 @@ import Posts from "./components/posts/posts";
 import SpecUser from "./components/users/specUser";
 import SpecUserInfo from "./components/users/specUserInfo";
 import SpecPost from "./components/posts/specPost";
-import Name from "./components/users/name";
 import FullName from "./components/users/fullname";
 import Password from "./components/users/password";
-import Email from "./components/users/email";
 import CreatePost from "./components/posts/createPost";
 import PostsDay from "./components/posts/postsDay";
 import UpdatePost from "./components/posts/updatePost";
@@ -33,6 +31,7 @@ import * as r from "react";
 import Chats from "./components/chats/chats";
 import CreateChat from "./components/chats/createChat";
 import SpecChat from "./components/chats/specChat";
+import Home from "./components/home/home";
 // import Categories from "./components/categories/categories";
 // import CreateCategory from "./components/categories/createCategory";
 // import CreateUser from "./components/users/createUser";
@@ -63,10 +62,8 @@ function App(){
                         <Route exact path="/create-chat" element={<CreateChat/>}/>
                         <Route exact path="/chats" element={<Chats/>}/>
                         <Route exact path="/chats/:id" element={<SpecChat ws={Ws}/>}/>
-                        <Route exact path="/name" element={<Name/>}/>
                         <Route exact path="/full-name" element={<FullName/>}/>
                         <Route exact path="/password" element={<Password/>}/>
-                        <Route exact path="/email" element={<Email/>}/>
                         <Route exact path="/users/:id/info" element={<SpecUserInfo ws={Ws}/>} />
                         <Route path="/users/:id" element={<SpecUser/>} />
                         <Route exact path="/posts/:id/answers" element={<SpecPost isAnswers={true}/>} />
@@ -79,7 +76,8 @@ function App(){
                         <Route exact path="/login" element={<Login/>}/>
                         <Route exact path="/register" element={<Register/>}/>
                         <Route exact path="/register-verify" element={<RegisterVerify/>}/>
-                        <Route exact path="/" element={<Posts/>} />
+                        <Route exact path="/posts" element={<Posts/>} />
+                        <Route exact path="/" element={<Home/>} />
                         <Route exact path="/404" element={<NotFound/>} />
                         <Route path="*" element={<NotFound/>}/>
                     </Routes>

@@ -88,8 +88,7 @@ export const sendUpdate = createAsyncThunk(
     async (param, thunkAPI) => {
         try {
             const res = await axios.patch(`/users/${param.id}`, param.user);
-            param.navigate(`/users/${param.id}`);
-            return {success: "updated", user: res.data};
+            return {success: "Updated", user: res.data.user, updateData: res.data.updateData};
         } catch (err) {
             return {error: err.response.data.error};
         }
@@ -160,7 +159,7 @@ const initialState = {
     user: null,
     count: 1,
     page: 1,
-    registerData: null,
+    updateData: null,
 };
 
 const slice = createSlice({
@@ -223,6 +222,7 @@ const slice = createSlice({
             state.error = action.payload.error;
             state.success = action.payload.success;
             state.user = action.payload.user;
+            state.updateData = action.payload.updateData;
         })
         builder.addCase(sendLogin.fulfilled, (state, action) => {
             state.token = action.payload.token;
@@ -231,7 +231,7 @@ const slice = createSlice({
             state.success = action.payload.success;
         })
         builder.addCase(sendRegister.fulfilled, (state, action) => {
-            state.registerData = action.payload.data;
+            state.updateData = action.payload.data;
             state.error = action.payload.error;
             state.success = action.payload.success;
         })
@@ -255,4 +255,4 @@ const slice = createSlice({
 })
 
 export default slice.reducer;
-export const { logOut, setAvatar, clearMess } = slice.actions;
+export const { logOut, setAvatar, clearMess, successMess } = slice.actions;

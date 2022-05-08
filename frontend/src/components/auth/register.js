@@ -50,7 +50,7 @@ function register() {
                                 <p>ID</p>
                                 {/*<p>{users.registerData?.id}</p>*/}
                                 <Button onClick={()=>{
-                                    navigator.clipboard.writeText(users.registerData?.id)}}
+                                    navigator.clipboard.writeText(users.updateData?.id)}}
                                 >
                                     Copy password
                                 </Button>
@@ -59,7 +59,7 @@ function register() {
                                 <p>Password</p>
                                 {/*<p>{users.registerData?.password}</p>*/}
                                 <Button onClick={()=>{
-                                    navigator.clipboard.writeText(users.registerData?.password)}}
+                                    navigator.clipboard.writeText(users.updateData?.password)}}
                                 >
                                     Copy password
                                 </Button>
@@ -67,7 +67,7 @@ function register() {
                             <p>
                                 <p>Token (just to verify)</p>
                                 <Button onClick={()=>{
-                                    navigator.clipboard.writeText(users.registerData?.token)}}
+                                    navigator.clipboard.writeText(users.updateData?.token)}}
                                 >
                                     Copy token
                                 </Button>

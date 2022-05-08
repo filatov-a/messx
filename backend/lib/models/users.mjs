@@ -1,5 +1,6 @@
 import Base from "./base.mjs";
 import argon2 from "argon2";
+import randomWords from "random-words";
 
 export default class Users extends Base {
 	static modelSchema = {
@@ -45,29 +46,26 @@ export default class Users extends Base {
 	}
 
 	static async updateUser({id, params}){
+		let {password, full_name} = params;
 		const user = await this.findOne({ where: { id: id } });
 		let errors = {};
-		if (params.id){
-			const username = await this.findOne({ where: { id: params.id } });
-			if (username !== null) {
-				errors.id = "username is busy";
-			}
-		}
-		if (params.email){
-			const email = await this.findOne({ where: { email: params.email } });
-			if (email) {
-				errors.email = "email is busy";
-			}
-		}
 
-		if (params.password){
-			params.password = await argon2.hash(params.password);
+		let obj = {};
+
+		if (password){
+			password = randomWords({min: 20, max: 40, join: "-"});
+			obj.password = await argon2.hash(password);
+		}
+		if (full_name){
+			obj.full_name = full_name
 		}
 
 		if (Object.keys(errors).length){
 			throw errors
 		}
 
-		return user.update({...params});
+		const userUpdate = await user.update({...obj});
+
+		return {user: userUpdate, updateData: {password, full_name}};
 	}
 }

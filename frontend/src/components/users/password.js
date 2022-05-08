@@ -12,27 +12,43 @@ function password() {
     const users = rr.useSelector(state => state.users);
     const decode = parseToken(users.token)
 
-    const [password, setPassword] = r.useState('');
+    const [isPushed, setIsPushed] = r.useState(false);
     const navigate = rd.useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const User = {
-            password: password,
+            password: true,
         };
         if (users.status === 'idle'){
-            dispatch(sendUpdate({user: User, navigate: navigate, id: decode.id}));
+            dispatch(sendUpdate({user: User, id: decode.id}));
+            setIsPushed(true);
         }
     };
-
-    const onChangePass = (e) => setPassword(e.target.value);
 
     return (
         <div style={styleAuth.Div}>
             <h2 style={styleAuth.Title}>Change password</h2>
             <form onSubmit={handleSubmit}>
-                <CustomInput onChange={onChangePass} required placeholder='password' type='password'/>
-                <Button style={styleAuth.Button} type="submit" variant='contained' color='primary'>Send</Button>
+                {isPushed ?
+                    <div>
+                        <Button onClick={()=>{
+                            navigator.clipboard.writeText(users.updateData?.password)}}
+                        >
+                            Copy password
+                        </Button>
+                        <Button disabled style={styleAuth.Button} type="submit" variant='contained' color='primary'>Update</Button>
+                    </div>
+                    :
+                    <div>
+                        <Button disabled onClick={()=>{
+                            navigator.clipboard.writeText(users.updateData?.password)}}
+                        >
+                            Copy password
+                        </Button>
+                        <Button style={styleAuth.Button} type="submit" variant='contained' color='primary'>Update</Button>
+                    </div>
+                }
             </form>
         </div>
     )

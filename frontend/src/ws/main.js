@@ -8,11 +8,11 @@ export function ws(param){
     const ws = new WebSocket(`${config.urlWs}/?token=${users.token}`);
 
     ws.onopen = (event) => {
-        ws.send(JSON.stringify({userId: decode.id}));
+        // ws.send(JSON.stringify({userId: decode.id}));
     };
 
     ws.onclose = (event) => {
-        ws.send(JSON.stringify({userId: decode.id}));
+        // ws.send(JSON.stringify({userId: decode.id}));
     }
 
     ws.onmessage = (event) => {

@@ -1,8 +1,8 @@
 import React from "react";
-import {sendDeleteUser, sendGetUserById, sendSetAvatar} from '../../redux/modules/users';
+import {successMess, sendDeleteUser, sendGetUserById, sendSetAvatar} from '../../redux/modules/users';
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
-import {Avatar, Button, ButtonBase} from '@mui/material';
+import {Avatar, Box, Button, ButtonBase} from '@mui/material';
 import Lg from '../toolbar/lgSelector';
 import * as r from "react";
 import {logOut} from "../../redux/modules/users";
@@ -59,6 +59,7 @@ function accountInfo(props) {
     const id = rd.useParams().id;
     const decode = parseToken(users.token)
     const [open, setOpen] = r.useState(false);
+    const [isPushed, setIsPushed] = r.useState(false);
 
     let clientId = '';
     if (decode) clientId = decode.id;
@@ -82,9 +83,12 @@ function accountInfo(props) {
         }
     }
 
-    const handleName = () => {if (clientId === id) navigate('/name')}
-    const handleEmail = () => {if (clientId === id) navigate('/email')}
-    const handleFullName = () => {if (clientId === id) navigate('/fullname')}
+    const handleCopeId = () => {
+        navigator.clipboard.writeText(id)
+        setIsPushed(true)
+    }
+
+    const handleFullName = () => {if (clientId === id) navigate('/full-name')}
     const handlePassword = () => {if (clientId === id) navigate('/password')}
 
     const handleOpenDialog = () => {setOpen(true)}
@@ -100,24 +104,22 @@ function accountInfo(props) {
                 </div>
                 }
                 <h2 style={styles.text}>Personal information</h2>
-                <Button style={styles.base} onClick={handleName} variant='outlined'>
+                <Button style={styles.base} onClick={handleCopeId} variant='outlined'>
                     <div style={styles.type}>id</div>
                     <div style={styles.value}>{users.specUser.id}</div>
+                    { isPushed &&
+                        <b>coped ✅</b>
+                    }
                 </Button>
                 <Button style={styles.base} onClick={handleFullName} variant='outlined'>
                     <div style={styles.type}>Full name</div>
                     <div style={styles.value}>{users.specUser.full_name}</div>
                 </Button>
-                <Button style={styles.base} onClick={handleEmail} variant='outlined'>
-                    <div style={styles.type}>email</div>
-                    <div style={styles.value}>{users.specUser.email}</div>
-                </Button>
                 {(clientId === id || users.user?.role === "admin") &&
                 <Button style={styles.base} onClick={handlePassword} variant='outlined'>
                     <div style={styles.type}>password</div>
                     <div style={styles.value}>
-                        {users.user.role === "admin" || users.user.role === "superadmin"
-                            ? users.specUser.password : <div>********</div>}
+                        <div>********</div>
                     </div>
                 </Button>
                 }
@@ -126,12 +128,12 @@ function accountInfo(props) {
                     LOG OUT
                 </Button>
                 }
-                {/*{users.user && (users.user.role === 'admin' || clientId === id) &&*/}
+                {(users.user?.role === 'admin' || clientId === id) &&
                 <Button onClick={handleOpenDialog} style={{marginBottom:10}} variant='contained' color='secondary'>
                     <DeleteIcon fontSize='small'/>
                     delete
                 </Button>
-                {/*}*/}
+                }
                 <Dialog
                     open={open}
                     setOpen={setOpen}

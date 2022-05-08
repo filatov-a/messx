@@ -116,7 +116,7 @@ export const stylesCart = {
         boxShadow: "2px 3px 10px black, 0 0 10px #a2a2a2 inset",
         background: 'rgba(0,30,60,0)',
         border: "1px solid #a2a2a2",
-        borderRadius: 10
+        borderRadius: 10,
     },
     link: {
         textDecoration: 'none',

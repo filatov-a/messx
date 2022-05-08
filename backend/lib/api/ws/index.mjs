@@ -15,7 +15,7 @@ export default async (server) => {
 
 		ws.userId = userData.id;
 		list.push({ws, id: userData.id});
-		await setStatus(userData.id);
+		// await setStatus(userData.id);
 
 		ws.on("message", async function message(data) {
 			const dataJson = JSON.parse(data);
@@ -34,7 +34,7 @@ export default async (server) => {
 		});
 
 		ws.on("close", async function close() {
-			await setStatusOffline(ws.userId);
+			// await setStatusOffline(ws.userId);
 			list = list.map(i => {
 				if (i.userId !== userData) return i;
 			});
