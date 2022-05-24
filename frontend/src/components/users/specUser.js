@@ -9,7 +9,7 @@ import {Avatar, Box, Button, ButtonBase, Grid} from "@mui/material";
 import config from "../../config/config";
 import {Settings, Star, StarOutline} from "@mui/icons-material";
 import {CustomCard} from "../utils/card";
-import UseMediaQuery from '@mui/material/useMediaQuery';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import FollowDialog from "../utils/followDialog"
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -120,13 +120,13 @@ const loadingMarkup = (
 )
 
 
-function account() {
+function Account() {
     const users = rr.useSelector(state => state.users);
     const posts = rr.useSelector(state => state.posts);
     const navigate = rd.useNavigate();
     const dispatch = rr.useDispatch();
     const id = rd.useParams().id;
-    const matches = UseMediaQuery('(min-width:1200px)');
+    const matches = useMediaQuery('(min-width:1200px)');
 
     const [decode, setDecode] = r.useState(null);
     const [page, setPage] = r.useState(0);
@@ -271,4 +271,4 @@ function account() {
     )
 }
 
-export default account;
+export default Account;

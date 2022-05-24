@@ -11,7 +11,7 @@ import {
     useScrollTrigger,
     Slide
 } from "@mui/material";
-import {Add, Send, Whatshot, Stars, Search, Notifications} from "@mui/icons-material"
+import {Add, Send, Whatshot, Stars, Search, Notifications, Home} from "@mui/icons-material"
 import * as rr from "react-redux";
 import * as rd from "react-router-dom";
 import config from "../../config/config";
@@ -25,6 +25,7 @@ import {sendGetUser} from "../../redux/modules/users";
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 // import OneSignal from 'react-onesignal';
 import Zoom from '@mui/material/Zoom';
+import useMediaQuery from "@mui/material/useMediaQuery";
 const Tr = useTranslation;
 
 export function ScrollTop(props) {
@@ -66,6 +67,7 @@ export default function ToolbarMain(props) {
     const dispatch = rr.useDispatch();
     const navigate = rd.useNavigate();
     const decode = parseToken(users.token);
+    const matches = useMediaQuery('(min-width:800px)');
 
     const register = () => {
         navigate('/register');
@@ -86,30 +88,41 @@ export default function ToolbarMain(props) {
                 <Toolbar >
                     <div style={{flexGrow: 7, textAlign: 'left'}}>
                         <Box display={'flex'}>
-                            <Tooltip title="posts from starts" arrow style={{marginLeft: 10}}>
-                                <Link to={'/posts'}>
+                            <Tooltip title="home" arrow style={{marginLeft: 10}}>
+                                <Link to={'/'}>
                                     <Fab color="primary" size="small">
-                                        <Stars/>
+                                        <Home/>
                                     </Fab>
                                 </Link>
                             </Tooltip>
-                            <Tooltip title="daily top" arrow style={{marginLeft: 10}}>
-                                <Link to={'/posts-top'}>
-                                    <Fab color="secondary" size="small">
-                                        <Whatshot/>
-                                    </Fab>
-                                </Link>
-                            </Tooltip>
-                            <Tooltip title="search" arrow style={{marginLeft: 10}}>
-                                <Link to={'/search'}>
-                                    <Fab color="primary" size="small">
-                                        <Search/>
-                                    </Fab>
-                                </Link>
-                            </Tooltip>
+                            {matches &&
+                                <div>
+                                    <Tooltip title="posts from starts" arrow style={{marginLeft: 10}}>
+                                        <Link to={'/posts'}>
+                                            <Fab color="primary" size="small">
+                                                <Stars/>
+                                            </Fab>
+                                        </Link>
+                                    </Tooltip>
+                                    <Tooltip title="daily top" arrow style={{marginLeft: 10}}>
+                                        <Link to={'/posts-top'}>
+                                            <Fab color="secondary" size="small">
+                                                <Whatshot/>
+                                            </Fab>
+                                        </Link>
+                                    </Tooltip>
+                                    <Tooltip title="search" arrow style={{marginLeft: 10}}>
+                                        <Link to={'/search'}>
+                                            <Fab color="primary" size="small">
+                                                <Search/>
+                                            </Fab>
+                                        </Link>
+                                    </Tooltip>
+                                </div>
+                            }
                         </Box>
                     </div>
-                    {!users.token && <Lg/>}
+                    {!users.token && matches && <Lg/>}
                     {!users.token &&
                         <div>
                             <Link style={styleToolbar.Link} to="/login">{t("sing in")}</Link>
