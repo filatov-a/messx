@@ -2,7 +2,6 @@ import Base from "../base.mjs";
 import Users from "../../models/users.mjs";
 
 import jwt from "jsonwebtoken";
-import mail from "../../utils/email.mjs";
 import argon2  from "argon2";
 import randomWords from "random-words";
 import { v4 as uuidv4 } from "uuid";
